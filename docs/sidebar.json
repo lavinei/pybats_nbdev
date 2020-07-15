@@ -1,6 +1,8 @@
 {
   "pybats_nbdev": {
     "Overview": "/",
-    "dglm": "/dglm"
+    "dglm": "/dglm",
+    "update": "/update",
+    "forecast": "/forecast"
   }
 }

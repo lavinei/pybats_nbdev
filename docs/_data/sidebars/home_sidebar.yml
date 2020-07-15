@@ -12,6 +12,12 @@ entries:
     - output: web,pdf
       title: dglm
       url: /dglm
+    - output: web,pdf
+      title: update
+      url: /update
+    - output: web,pdf
+      title: forecast
+      url: /forecast
     output: web
     title: pybats_nbdev
   output: web
