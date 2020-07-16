@@ -3,6 +3,10 @@
 __all__ = ['update', 'update_dlm', 'update_bindglm']
 
 # Internal Cell
+
+import numpy as np
+
+# Internal Cell
 def update_F(mod, X, F=None):
     if F is None:
         if mod.nregn > 0:

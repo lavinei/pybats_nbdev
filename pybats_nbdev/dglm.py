@@ -2,6 +2,28 @@
 
 __all__ = ['dglm', 'bern_dglm', 'pois_dglm']
 
+# Internal Cell
+from nbdev.showdoc import *
+
+
+import numpy as np
+import scipy as sc
+from collections.abc import Iterable
+
+from pybats.latent_factor_fxns import update_lf_analytic, update_lf_sample, forecast_marginal_lf_analytic, \
+    forecast_marginal_lf_sample, forecast_path_lf_copula, forecast_path_lf_sample, get_mean_and_var_lf, \
+    get_mean_and_var_lf_dlm, update_lf_analytic_dlm
+from pybats.seasonal import seascomp, createFourierToSeasonalL
+from pybats.update import update, update_dlm, update_bindglm
+from pybats.forecast import forecast_marginal, forecast_path, forecast_path_copula,\
+    forecast_marginal_bindglm, forecast_path_dlm, forecast_state_mean_and_var
+from pybats.conjugates import trigamma, bern_conjugate_params, bin_conjugate_params, pois_conjugate_params
+
+# These are for the bernoulli and Poisson DGLMs
+from scipy.special import digamma
+from scipy.special import beta as beta_fxn
+from scipy import stats
+
 # Cell
 class dglm:
     """

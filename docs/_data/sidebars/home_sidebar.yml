@@ -18,6 +18,42 @@ entries:
     - output: web,pdf
       title: forecast
       url: /forecast
+    - output: web,pdf
+      title: define_models
+      url: /define_models
+    - output: web,pdf
+      title: Seasonal
+      url: /seasonal
+    - output: web,pdf
+      title: analysis
+      url: /analysis
+    - output: web,pdf
+      title: conjugates
+      url: /conjugates
+    - output: web,pdf
+      title: point_forecast
+      url: /point_forecast
+    - output: web,pdf
+      title: loss_functions
+      url: /loss_functions
+    - output: web,pdf
+      title: plot
+      url: /plot
+    - output: web,pdf
+      title: shared
+      url: /shared
+    - output: web,pdf
+      title: dcmm
+      url: /dcmm
+    - output: web,pdf
+      title: dbcm
+      url: /dbcm
+    - output: web,pdf
+      title: latent_factor
+      url: /latent_factor
+    - output: web,pdf
+      title: latent_factor_fxns
+      url: /latent_factor_fxns
     output: web
     title: pybats_nbdev
   output: web

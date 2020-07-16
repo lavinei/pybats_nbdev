@@ -3,6 +3,18 @@
     "Overview": "/",
     "dglm": "/dglm",
     "update": "/update",
-    "forecast": "/forecast"
+    "forecast": "/forecast",
+    "define_models": "/define_models",
+    "Seasonal": "/seasonal",
+    "analysis": "/analysis",
+    "conjugates": "/conjugates",
+    "point_forecast": "/point_forecast",
+    "loss_functions": "/loss_functions",
+    "plot": "/plot",
+    "shared": "/shared",
+    "dcmm": "/dcmm",
+    "dbcm": "/dbcm",
+    "latent_factor": "/latent_factor",
+    "latent_factor_fxns": "/latent_factor_fxns"
   }
 }
