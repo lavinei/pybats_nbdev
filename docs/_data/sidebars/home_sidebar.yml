@@ -13,46 +13,46 @@ entries:
       title: dglm
       url: /dglm
     - output: web,pdf
-      title: update
+      title: Update
       url: /update
     - output: web,pdf
-      title: forecast
+      title: Forecast
       url: /forecast
     - output: web,pdf
-      title: define_models
+      title: Define Models
       url: /define_models
     - output: web,pdf
-      title: Seasonal
+      title: Seasonal Components
       url: /seasonal
     - output: web,pdf
-      title: analysis
+      title: Analysis
       url: /analysis
     - output: web,pdf
-      title: conjugates
+      title: Conjugates
       url: /conjugates
     - output: web,pdf
-      title: point_forecast
+      title: Point Forecasts
       url: /point_forecast
     - output: web,pdf
-      title: loss_functions
+      title: Loss Functions
       url: /loss_functions
     - output: web,pdf
-      title: plot
+      title: Plotting
       url: /plot
     - output: web,pdf
-      title: shared
+      title: Shared Functions
       url: /shared
     - output: web,pdf
-      title: dcmm
+      title: DCMMs
       url: /dcmm
     - output: web,pdf
-      title: dbcm
+      title: DBCMs
       url: /dbcm
     - output: web,pdf
-      title: latent_factor
+      title: Latent Factors
       url: /latent_factor
     - output: web,pdf
-      title: latent_factor_fxns
+      title: Latent Factor Functions
       url: /latent_factor_fxns
     output: web
     title: pybats_nbdev

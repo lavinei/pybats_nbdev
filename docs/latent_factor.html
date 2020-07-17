@@ -1,6 +1,6 @@
 ---
 
-title: latent_factor
+title: Latent Factors
 
 keywords: fastai
 sidebar: home_sidebar
@@ -23,20 +23,6 @@ description: "This module contains the class latent factor. A latent factor is a
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>WARNING: Unable to load interpolator. Code will run slower.
-</pre>
-</div>
-</div>
-
-</div>
-</div>
 
 </div>
     {% endraw %}
@@ -225,16 +211,6 @@ description: "This module contains the class latent factor. A latent factor is a
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">hol_lf</span> <span class="o">=</span> <span class="n">latent_factor</span><span class="p">(</span><span class="n">gen_fxn</span> <span class="o">=</span> <span class="n">hol_fxn</span><span class="p">,</span> <span class="n">gen_forecast_fxn</span><span class="o">=</span><span class="n">hol_forecast_fxn</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -286,7 +262,7 @@ description: "This module contains the class latent factor. A latent factor is a
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="Y_fxn" class="doc_header"><code>Y_fxn</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L316" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Y_fxn</code>(<strong><code>date</code></strong>, <strong><code>mod</code></strong>, <strong><code>Y</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="Y_fxn" class="doc_header"><code>Y_fxn</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L319" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Y_fxn</code>(<strong><code>date</code></strong>, <strong><code>mod</code></strong>, <strong><code>Y</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -317,7 +293,7 @@ description: "This module contains the class latent factor. A latent factor is a
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="Y_forecast_fxn" class="doc_header"><code>Y_forecast_fxn</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L320" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Y_forecast_fxn</code>(<strong><code>date</code></strong>, <strong><code>mod</code></strong>, <strong><code>X</code></strong>, <strong><code>k</code></strong>, <strong><code>nsamps</code></strong>, <strong><code>horizons</code></strong>, <strong><code>forecast_path</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="Y_forecast_fxn" class="doc_header"><code>Y_forecast_fxn</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L323" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Y_forecast_fxn</code>(<strong><code>date</code></strong>, <strong><code>mod</code></strong>, <strong><code>X</code></strong>, <strong><code>k</code></strong>, <strong><code>nsamps</code></strong>, <strong><code>horizons</code></strong>, <strong><code>forecast_path</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -333,16 +309,6 @@ description: "This module contains the class latent factor. A latent factor is a
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Y_lf</span> <span class="o">=</span> <span class="n">latent_factor</span><span class="p">(</span><span class="n">gen_fxn</span> <span class="o">=</span> <span class="n">Y_fxn</span><span class="p">,</span> <span class="n">gen_forecast_fxn</span> <span class="o">=</span> <span class="n">Y_forecast_fxn</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -394,7 +360,7 @@ description: "This module contains the class latent factor. A latent factor is a
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="seas_weekly_fxn" class="doc_header"><code>seas_weekly_fxn</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L363" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>seas_weekly_fxn</code>(<strong><code>date</code></strong>, <strong><code>mod</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="seas_weekly_fxn" class="doc_header"><code>seas_weekly_fxn</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L369" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>seas_weekly_fxn</code>(<strong><code>date</code></strong>, <strong><code>mod</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -425,7 +391,7 @@ description: "This module contains the class latent factor. A latent factor is a
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="seas_weekly_forecast_fxn" class="doc_header"><code>seas_weekly_forecast_fxn</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L376" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>seas_weekly_forecast_fxn</code>(<strong><code>date</code></strong>, <strong><code>mod</code></strong>, <strong><code>k</code></strong>, <strong><code>horizons</code></strong>, <strong><code>forecast_path</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="seas_weekly_forecast_fxn" class="doc_header"><code>seas_weekly_forecast_fxn</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L382" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>seas_weekly_forecast_fxn</code>(<strong><code>date</code></strong>, <strong><code>mod</code></strong>, <strong><code>k</code></strong>, <strong><code>horizons</code></strong>, <strong><code>forecast_path</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -441,16 +407,6 @@ description: "This module contains the class latent factor. A latent factor is a
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">seas_weekly_lf</span> <span class="o">=</span> <span class="n">latent_factor</span><span class="p">(</span><span class="n">gen_fxn</span> <span class="o">=</span> <span class="n">seas_weekly_fxn</span><span class="p">,</span> <span class="n">gen_forecast_fxn</span><span class="o">=</span><span class="n">seas_weekly_forecast_fxn</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -502,7 +458,7 @@ description: "This module contains the class latent factor. A latent factor is a
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="pois_coef_fxn" class="doc_header"><code>pois_coef_fxn</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L403" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>pois_coef_fxn</code>(<strong><code>date</code></strong>, <strong><code>mod</code></strong>, <strong><code>idx</code></strong>=<em><code>None</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="pois_coef_fxn" class="doc_header"><code>pois_coef_fxn</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L412" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>pois_coef_fxn</code>(<strong><code>date</code></strong>, <strong><code>mod</code></strong>, <strong><code>idx</code></strong>=<em><code>None</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -533,7 +489,7 @@ description: "This module contains the class latent factor. A latent factor is a
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="pois_coef_forecast_fxn" class="doc_header"><code>pois_coef_forecast_fxn</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L416" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>pois_coef_forecast_fxn</code>(<strong><code>date</code></strong>, <strong><code>mod</code></strong>, <strong><code>k</code></strong>, <strong><code>idx</code></strong>=<em><code>None</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="pois_coef_forecast_fxn" class="doc_header"><code>pois_coef_forecast_fxn</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L425" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>pois_coef_forecast_fxn</code>(<strong><code>date</code></strong>, <strong><code>mod</code></strong>, <strong><code>k</code></strong>, <strong><code>idx</code></strong>=<em><code>None</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -600,7 +556,7 @@ description: "This module contains the class latent factor. A latent factor is a
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="bern_coef_fxn" class="doc_header"><code>bern_coef_fxn</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L444" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>bern_coef_fxn</code>(<strong><code>date</code></strong>, <strong><code>mod</code></strong>, <strong><code>idx</code></strong>=<em><code>None</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="bern_coef_fxn" class="doc_header"><code>bern_coef_fxn</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L453" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>bern_coef_fxn</code>(<strong><code>date</code></strong>, <strong><code>mod</code></strong>, <strong><code>idx</code></strong>=<em><code>None</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -631,7 +587,7 @@ description: "This module contains the class latent factor. A latent factor is a
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="bern_coef_forecast_fxn" class="doc_header"><code>bern_coef_forecast_fxn</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L457" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>bern_coef_forecast_fxn</code>(<strong><code>date</code></strong>, <strong><code>mod</code></strong>, <strong><code>k</code></strong>, <strong><code>idx</code></strong>=<em><code>None</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="bern_coef_forecast_fxn" class="doc_header"><code>bern_coef_forecast_fxn</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L466" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>bern_coef_forecast_fxn</code>(<strong><code>date</code></strong>, <strong><code>mod</code></strong>, <strong><code>k</code></strong>, <strong><code>idx</code></strong>=<em><code>None</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -698,7 +654,7 @@ description: "This module contains the class latent factor. A latent factor is a
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="dlm_coef_fxn" class="doc_header"><code>dlm_coef_fxn</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L486" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>dlm_coef_fxn</code>(<strong><code>date</code></strong>, <strong><code>mod</code></strong>, <strong><code>idx</code></strong>=<em><code>None</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="dlm_coef_fxn" class="doc_header"><code>dlm_coef_fxn</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L495" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>dlm_coef_fxn</code>(<strong><code>date</code></strong>, <strong><code>mod</code></strong>, <strong><code>idx</code></strong>=<em><code>None</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -729,7 +685,7 @@ description: "This module contains the class latent factor. A latent factor is a
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="dlm_coef_forecast_fxn" class="doc_header"><code>dlm_coef_forecast_fxn</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L493" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>dlm_coef_forecast_fxn</code>(<strong><code>date</code></strong>, <strong><code>mod</code></strong>, <strong><code>k</code></strong>, <strong><code>idx</code></strong>=<em><code>None</code></em>, <strong><code>forecast_path</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="dlm_coef_forecast_fxn" class="doc_header"><code>dlm_coef_forecast_fxn</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L502" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>dlm_coef_forecast_fxn</code>(<strong><code>date</code></strong>, <strong><code>mod</code></strong>, <strong><code>k</code></strong>, <strong><code>idx</code></strong>=<em><code>None</code></em>, <strong><code>forecast_path</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -796,7 +752,7 @@ description: "This module contains the class latent factor. A latent factor is a
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="dlm_dof_fxn" class="doc_header"><code>dlm_dof_fxn</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L523" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>dlm_dof_fxn</code>(<strong><code>date</code></strong>, <strong><code>mod</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="dlm_dof_fxn" class="doc_header"><code>dlm_dof_fxn</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L532" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>dlm_dof_fxn</code>(<strong><code>date</code></strong>, <strong><code>mod</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -827,7 +783,7 @@ description: "This module contains the class latent factor. A latent factor is a
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="dlm_dof_forecast_fxn" class="doc_header"><code>dlm_dof_forecast_fxn</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L528" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>dlm_dof_forecast_fxn</code>(<strong><code>date</code></strong>, <strong><code>mod</code></strong>, <strong><code>k</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="dlm_dof_forecast_fxn" class="doc_header"><code>dlm_dof_forecast_fxn</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L537" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>dlm_dof_forecast_fxn</code>(<strong><code>date</code></strong>, <strong><code>mod</code></strong>, <strong><code>k</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -894,7 +850,7 @@ description: "This module contains the class latent factor. A latent factor is a
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="merge_fxn" class="doc_header"><code>merge_fxn</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L553" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>merge_fxn</code>(<strong><code>date</code></strong>, <strong><code>latent_factors</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="merge_fxn" class="doc_header"><code>merge_fxn</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L562" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>merge_fxn</code>(<strong><code>date</code></strong>, <strong><code>latent_factors</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -925,7 +881,7 @@ description: "This module contains the class latent factor. A latent factor is a
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="merge_forecast_fxn" class="doc_header"><code>merge_forecast_fxn</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L569" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>merge_forecast_fxn</code>(<strong><code>date</code></strong>, <strong><code>latent_factors</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="merge_forecast_fxn" class="doc_header"><code>merge_forecast_fxn</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L578" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>merge_forecast_fxn</code>(<strong><code>date</code></strong>, <strong><code>latent_factors</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -956,7 +912,7 @@ description: "This module contains the class latent factor. A latent factor is a
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="merge_latent_factors" class="doc_header"><code>merge_latent_factors</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L594" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>merge_latent_factors</code>(<strong><code>latent_factors</code></strong>)</p>
+<h4 id="merge_latent_factors" class="doc_header"><code>merge_latent_factors</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L603" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>merge_latent_factors</code>(<strong><code>latent_factors</code></strong>)</p>
 </blockquote>
 <p>:param latent_factors: list of the same latent factor from different sources to be combined into 1 using precision weighted averaging
 :return: A single latent factor</p>
@@ -989,7 +945,7 @@ description: "This module contains the class latent factor. A latent factor is a
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="merge_lf_with_predictor" class="doc_header"><code>merge_lf_with_predictor</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L625" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>merge_lf_with_predictor</code>(<strong><code>latent_factor</code></strong>, <strong><code>X</code></strong>, <strong><code>X_dates</code></strong>)</p>
+<h4 id="merge_lf_with_predictor" class="doc_header"><code>merge_lf_with_predictor</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L634" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>merge_lf_with_predictor</code>(<strong><code>latent_factor</code></strong>, <strong><code>X</code></strong>, <strong><code>X_dates</code></strong>)</p>
 </blockquote>
 <p>Function to modify a latent factor by multiplying it by a known predictor. Example of latent factor is
  the coefficient on effect of price from an external model, while the price itself is a known predictor.</p>
@@ -1025,7 +981,7 @@ description: "This module contains the class latent factor. A latent factor is a
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="pct_chg_from_lf_avg" class="doc_header"><code>pct_chg_from_lf_avg</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L710" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>pct_chg_from_lf_avg</code>(<strong><code>latent_factor</code></strong>, <strong><code>window</code></strong>=<em><code>10</code></em>)</p>
+<h4 id="pct_chg_from_lf_avg" class="doc_header"><code>pct_chg_from_lf_avg</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L719" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>pct_chg_from_lf_avg</code>(<strong><code>latent_factor</code></strong>, <strong><code>window</code></strong>=<em><code>10</code></em>)</p>
 </blockquote>
 
 </div>
@@ -1056,7 +1012,7 @@ description: "This module contains the class latent factor. A latent factor is a
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="load_latent_factor" class="doc_header"><code>load_latent_factor</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L744" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>load_latent_factor</code>(<strong><code>filename</code></strong>)</p>
+<h4 id="load_latent_factor" class="doc_header"><code>load_latent_factor</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L753" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>load_latent_factor</code>(<strong><code>filename</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -1087,7 +1043,7 @@ description: "This module contains the class latent factor. A latent factor is a
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="forecast_holiday_effect_dlm" class="doc_header"><code>forecast_holiday_effect_dlm</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L749" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_holiday_effect_dlm</code>(<strong><code>mod</code></strong>, <strong><code>X</code></strong>, <strong><code>k</code></strong>)</p>
+<h4 id="forecast_holiday_effect_dlm" class="doc_header"><code>forecast_holiday_effect_dlm</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor.py#L758" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_holiday_effect_dlm</code>(<strong><code>mod</code></strong>, <strong><code>X</code></strong>, <strong><code>k</code></strong>)</p>
 </blockquote>
 
 </div>

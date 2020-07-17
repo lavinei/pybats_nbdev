@@ -30,7 +30,8 @@ from pybats_nbdev.analysis import *
 from pybats_nbdev.point_forecast import *
 from pybats_nbdev.plot import *
 
-data = load_sales_example()                                 # Load example sales and advertising data. Source: Abraham & Ledolter (1983)
+# Load example sales and advertising data. Source: Abraham & Ledolter (1983)
+data = load_sales_example()             
 data.head(3)
 ```
 
@@ -89,9 +90,9 @@ Finally, we set the start and end time for forecasting. In this case we specify 
 Y = data['Sales'].values
 X = data['Advertising'].values
 
-k = 1                                                       # Forecast 1 step ahead
-forecast_start = 15                                         # Start forecast at time step 15
-forecast_end = 35                                           # End forecast at time step 35 (final time step)
+k = 1                                               # Forecast 1 step ahead
+forecast_start = 15                                 # Start forecast at time step 15
+forecast_end = 35                                   # End forecast at time step 35 (final time step)
 ```
 
 We use the _analysis_ function as a helper to a) define the model b) Run sequential updating (forward filtering) and c) forecasting. By default, it will return samples from the forecast distribution as well as the model after the final observation.
@@ -116,11 +117,11 @@ The model has the posterior mean and variance of the state vector stored as ```m
 ```python
 import matplotlib.pyplot as plt
 
+# Take the median as the point forecast
+forecast = median(samples)                                  
 
-forecast = median(samples)                                  # Take the median as the point forecast
-
-
-fig, ax = plt.subplots(1,1, figsize=(8, 6))   # Plot the 1-step ahead point forecast plus the 95% credible interval
+# Plot the 1-step ahead point forecast plus the 95% credible interval
+fig, ax = plt.subplots(1,1, figsize=(8, 6))   
 ax = plot_data_forecast(fig, ax, Y[forecast_start:forecast_end + k], forecast, samples,
                         dates=np.arange(forecast_start, forecast_end+1, dtype='int'))
 ax = ax_style(ax, ylabel='Sales', xlabel='Time', xlim=[forecast_start, forecast_end],

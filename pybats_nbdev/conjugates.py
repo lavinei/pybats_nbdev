@@ -32,6 +32,10 @@ except:
     interp_beta, interp_gamma = None, None
 
 
+# Internal Cell
+assert interp_beta is not None
+assert interp_gamma is not None
+
 # Cell
 def beta_approx(x, ft, qt):
     x = x ** 2
