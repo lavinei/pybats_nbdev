@@ -4,8 +4,8 @@ __all__ = ['dbcm']
 
 # Internal Cell
 #exporti
-from pybats.dglm import bin_dglm
-from pybats.dcmm import dcmm
+from .dglm import bin_dglm
+from .dcmm import dcmm
 from functools import partial
 import numpy as np
 

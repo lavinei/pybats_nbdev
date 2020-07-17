@@ -7,10 +7,10 @@ __all__ = ['define_dglm', 'define_dlm_params', 'define_bern_params', 'define_bin
 #exporti
 import numpy as np
 
-from pybats.dbcm import dbcm
-from pybats.dcmm import dcmm
+from .dbcm import dbcm
+from .dcmm import dcmm
+from .dglm import dlm, pois_dglm, bern_dglm, bin_dglm
 
-from pybats.dglm import dlm, pois_dglm, bern_dglm, bin_dglm
 import statsmodels.api as sm
 
 # Cell

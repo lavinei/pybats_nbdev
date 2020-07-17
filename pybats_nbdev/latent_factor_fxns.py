@@ -9,9 +9,9 @@ __all__ = ['update_lf_sample', 'update_lf_sample_forwardfilt', 'update_lf_analyt
 #exporti
 import numpy as np
 
-from pybats.forecast import forecast_path_copula_sim, forecast_path_copula_density_MC, forecast_aR, \
+from .forecast import forecast_path_copula_sim, forecast_path_copula_density_MC, forecast_aR, \
     forecast_joint_copula_density_MC, forecast_joint_copula_sim
-from pybats.update import update_F
+from .update import update_F
 import multiprocessing
 from functools import partial
 

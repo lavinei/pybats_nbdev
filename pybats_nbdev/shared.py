@@ -94,7 +94,7 @@ def load_sales_example():
     :return: A Pandas data frame
     """
     data_dir = os.path.dirname(os.path.abspath(__file__)) + '/pkg_data/'
-    return pd.read_csv(data_dir + 'sales.csv', index_col=0)
+    return pd.read_csv(data_dir + 'sales.csv', index_col=0)[['Sales', 'Advertising']]
 
 # Cell
 def load_sales_example2():

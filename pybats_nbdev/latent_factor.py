@@ -17,11 +17,11 @@ from collections.abc import Iterable
 import copy
 import pickle
 
-from pybats.seasonal import get_seasonal_effect_fxnl, forecast_weekly_seasonal_factor, forecast_path_weekly_seasonal_factor
-from pybats.dbcm import dbcm
-from pybats.dcmm import dcmm
-from pybats.forecast import forecast_aR, forecast_R_cov
-from pybats.dglm import dlm
+from .seasonal import get_seasonal_effect_fxnl, forecast_weekly_seasonal_factor, forecast_path_weekly_seasonal_factor
+from .dbcm import dbcm
+from .dcmm import dcmm
+from .forecast import forecast_aR, forecast_R_cov
+from .dglm import dlm
 
 # Cell
 class latent_factor:

@@ -24,10 +24,14 @@ First we load in the data, and take a quick look at the first couples of entries
 
 ```python
 import numpy as np
-from pybats.shared import load_sales_example
+
+from pybats_nbdev.shared import load_sales_example
+from pybats_nbdev.analysis import *
+from pybats_nbdev.point_forecast import *
+from pybats_nbdev.plot import *
 
 data = load_sales_example()                                 # Load example sales and advertising data. Source: Abraham & Ledolter (1983)
-data[['Sales', 'Advertising']].head(3)
+data.head(3)
 ```
 
 
@@ -93,8 +97,6 @@ forecast_end = 35                                           # End forecast at ti
 We use the _analysis_ function as a helper to a) define the model b) Run sequential updating (forward filtering) and c) forecasting. By default, it will return samples from the forecast distribution as well as the model after the final observation.
 
 ```python
-from pybats.analysis import analysis
-
 mod, samples = analysis(Y, X, family="poisson",
 forecast_start=forecast_start,      # First time step to forecast on
 forecast_end=forecast_end,          # Final time step to forecast on
@@ -113,8 +115,7 @@ The model has the posterior mean and variance of the state vector stored as ```m
 
 ```python
 import matplotlib.pyplot as plt
-from pybats.point_forecast import median
-from pybats.plot import plot_data_forecast, ax_style
+
 
 forecast = median(samples)                                  # Take the median as the point forecast
 

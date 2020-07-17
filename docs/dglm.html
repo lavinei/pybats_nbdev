@@ -24,6 +24,20 @@ description: "The class Dynamic Generalized Linear Model (DGLM) is at the core o
     
 <div class="cell border-box-sizing code_cell rendered">
 
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>WARNING: Unable to load interpolator. Code will run slower.
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
     {% endraw %}
 
@@ -178,6 +192,89 @@ mod.forecast_path(k, X[t+1:t+k+1], nsamps=1000)</p>
 </div>
     {% endraw %}
 
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pybats.shared</span> <span class="kn">import</span> <span class="n">load_sales_example</span>
+<span class="n">load_sales_example</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Advertising</th>
+      <th>Sales</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>12.0</td>
+      <td>15</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>20.5</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>21.0</td>
+      <td>18</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>15.5</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>15.3</td>
+      <td>21</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Bernoulli-DGLM">Bernoulli DGLM<a class="anchor-link" href="#Bernoulli-DGLM"> </a></h3>
@@ -265,62 +362,30 @@ mod.forecast_path(k, X[t+1:t+k+1], nsamps=1000)</p>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
 
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">dlm</span><span class="p">(</span><span class="n">dglm</span><span class="p">):</span>
+</div>
+    {% endraw %}
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">n0</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">s0</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">delVar</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">delVar</span> <span class="o">=</span> <span class="n">delVar</span>  <span class="c1"># Discount factor for the variance - using a beta-gamma random walk</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n0</span>  <span class="c1"># Prior sample size for the variance</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">s0</span>  <span class="c1"># Prior mean for the variance</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
 
-    <span class="k">def</span> <span class="nf">get_mean_and_var</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">R</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">F</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">a</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">R</span> <span class="o">@</span> <span class="n">F</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span>
+<div class="output_wrapper">
+<div class="output">
 
-    <span class="k">def</span> <span class="nf">get_mean_and_var_lf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">phi_mu</span><span class="p">,</span> <span class="n">phi_sigma</span><span class="p">,</span> <span class="n">ilf</span><span class="p">):</span>
-        <span class="n">ct</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="n">ft</span><span class="p">,</span> <span class="n">qt</span> <span class="o">=</span> <span class="n">get_mean_and_var_lf_dlm</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">phi_mu</span><span class="p">,</span> <span class="n">phi_sigma</span><span class="p">,</span> <span class="n">ilf</span><span class="p">,</span> <span class="n">ct</span><span class="p">)</span>
-        <span class="n">qt</span> <span class="o">=</span> <span class="n">qt</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span>
-        <span class="k">return</span> <span class="n">ft</span><span class="p">,</span> <span class="n">qt</span>
+<div class="output_area">
 
-    <span class="k">def</span> <span class="nf">get_mean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ft</span><span class="p">,</span> <span class="n">qt</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">ft</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">get_conjugate_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ft</span><span class="p">,</span> <span class="n">qt</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">var</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">ft</span><span class="p">,</span> <span class="n">qt</span>
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="dlm" class="doc_header"><code>class</code> <code>dlm</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/dglm.py#L499" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>dlm</code>(<strong>*<code>args</code></strong>, <strong><code>n0</code></strong>=<em><code>1</code></em>, <strong><code>s0</code></strong>=<em><code>1</code></em>, <strong><code>delVar</code></strong>=<em><code>1</code></em>, <strong>**<code>kwargs</code></strong>) :: <a href="/pybats_nbdev/dglm"><code>dglm</code></a></p>
+</blockquote>
+<p>Core class of dynamic generalized linear models (DGLMs).</p>
+<p>Children include Poisson, Bernoulli, and Binomial DGLMs, as well as the Normal DLM.</p>
 
-    <span class="k">def</span> <span class="nf">simulate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">nsamps</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">mean</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">standard_t</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">[</span><span class="n">nsamps</span><span class="p">])</span>
+</div>
 
-    <span class="k">def</span> <span class="nf">simulate_from_sampling_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">nsamps</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var</span><span class="p">),</span> <span class="n">nsamps</span><span class="p">)</span>
+</div>
 
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">phi_mu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">phi_sigma</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">analytic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">phi_samps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">latent_factor</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">analytic</span><span class="p">:</span>
-                <span class="n">update_lf_analytic_dlm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">phi_mu</span><span class="p">,</span> <span class="n">phi_sigma</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sampled-based updating for the Latent Factor DLM is not yet implemented - please use analytic inference&#39;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">update_dlm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">forecast_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nsamps</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">latent_factor</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Path forecasting for latent factor DLMs is not yet implemented&#39;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">forecast_path_dlm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">nsamps</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">update_lf_analytic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">phi_mu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">phi_sigma</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="n">update_lf_analytic_dlm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">phi_mu</span><span class="p">,</span> <span class="n">phi_sigma</span><span class="p">)</span>
-        
-    <span class="k">def</span> <span class="nf">loglik</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">var</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">logpdf</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="n">mean</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var</span><span class="p">))</span>
-</pre></div>
-
-    </div>
 </div>
 </div>
 
@@ -336,65 +401,30 @@ mod.forecast_path(k, X[t+1:t+k+1], nsamps=1000)</p>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
 
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">bin_dglm</span><span class="p">(</span><span class="n">dglm</span><span class="p">):</span>
+</div>
+    {% endraw %}
 
-    <span class="k">def</span> <span class="nf">get_conjugate_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ft</span><span class="p">,</span> <span class="n">qt</span><span class="p">,</span> <span class="n">alpha_init</span><span class="p">,</span> <span class="n">beta_init</span><span class="p">):</span>
-        <span class="c1"># Choose conjugate prior, beta, and match mean &amp; variance</span>
-        <span class="k">return</span> <span class="n">bin_conjugate_params</span><span class="p">(</span><span class="n">ft</span><span class="p">,</span> <span class="n">qt</span><span class="p">,</span> <span class="n">alpha_init</span><span class="p">,</span> <span class="n">beta_init</span><span class="p">,</span> <span class="n">interp</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolate</span><span class="p">)</span>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
 
-    <span class="k">def</span> <span class="nf">update_conjugate_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">):</span>
-        <span class="c1"># Update alpha and beta to the conjugate posterior coefficients</span>
-        <span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">+</span> <span class="n">y</span>
-        <span class="n">beta</span> <span class="o">=</span> <span class="n">beta</span> <span class="o">+</span> <span class="n">n</span> <span class="o">-</span> <span class="n">y</span>
+<div class="output_wrapper">
+<div class="output">
 
-        <span class="c1"># Get updated ft* and qt*</span>
-        <span class="n">ft_star</span> <span class="o">=</span> <span class="n">digamma</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span> <span class="o">-</span> <span class="n">digamma</span><span class="p">(</span><span class="n">beta</span><span class="p">)</span>
-        <span class="n">qt_star</span> <span class="o">=</span> <span class="n">trigamma</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span> <span class="o">+</span> <span class="n">trigamma</span><span class="p">(</span><span class="n">beta</span><span class="p">)</span>
+<div class="output_area">
 
-        <span class="c1"># constrain this thing from going to crazy places?</span>
-        <span class="n">ft_star</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">ft_star</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
-        <span class="n">qt_star</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.001</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">qt_star</span><span class="p">,</span> <span class="mi">4</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">ft_star</span><span class="p">,</span> <span class="n">qt_star</span>
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="bin_dglm" class="doc_header"><code>class</code> <code>bin_dglm</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/dglm.py#L550" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>bin_dglm</code>(<strong><code>a0</code></strong>=<em><code>None</code></em>, <strong><code>R0</code></strong>=<em><code>None</code></em>, <strong><code>nregn</code></strong>=<em><code>0</code></em>, <strong><code>ntrend</code></strong>=<em><code>0</code></em>, <strong><code>nlf</code></strong>=<em><code>0</code></em>, <strong><code>nhol</code></strong>=<em><code>0</code></em>, <strong><code>seasPeriods</code></strong>=<em><code>[]</code></em>, <strong><code>seasHarmComponents</code></strong>=<em><code>[]</code></em>, <strong><code>deltrend</code></strong>=<em><code>1</code></em>, <strong><code>delregn</code></strong>=<em><code>1</code></em>, <strong><code>dellf</code></strong>=<em><code>1</code></em>, <strong><code>delhol</code></strong>=<em><code>1</code></em>, <strong><code>delseas</code></strong>=<em><code>1</code></em>, <strong><code>rho</code></strong>=<em><code>1</code></em>, <strong><code>interpolate</code></strong>=<em><code>True</code></em>, <strong><code>adapt_discount</code></strong>=<em><code>False</code></em>, <strong><code>adapt_factor</code></strong>=<em><code>0.5</code></em>, <strong><code>discount_forecast</code></strong>=<em><code>False</code></em>) :: <a href="/pybats_nbdev/dglm"><code>dglm</code></a></p>
+</blockquote>
+<p>Core class of dynamic generalized linear models (DGLMs).</p>
+<p>Children include Poisson, Bernoulli, and Binomial DGLMs, as well as the Normal DLM.</p>
 
-    <span class="k">def</span> <span class="nf">simulate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">nsamps</span><span class="p">):</span>
-        <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="p">[</span><span class="n">nsamps</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span> <span class="n">p</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">[</span><span class="n">nsamps</span><span class="p">])</span>
+</div>
 
-    <span class="k">def</span> <span class="nf">simulate_from_sampling_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">nsamps</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="p">[</span><span class="n">nsamps</span><span class="p">])</span>
+</div>
 
-    <span class="k">def</span> <span class="nf">prior_inverse_cdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cdf</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">stats</span><span class="o">.</span><span class="n">beta</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">cdf</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">marginal_cdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">):</span>
-        <span class="n">cdf</span> <span class="o">=</span> <span class="mf">0.0</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-            <span class="n">cdf</span> <span class="o">+=</span> <span class="n">sc</span><span class="o">.</span><span class="n">misc</span><span class="o">.</span><span class="n">comb</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="n">beta_fxn</span><span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="n">y</span> <span class="o">+</span> <span class="n">beta</span><span class="p">)</span> <span class="o">/</span> <span class="n">beta_fxn</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">cdf</span>
-
-    <span class="k">def</span> <span class="nf">loglik</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">):</span>
-        <span class="n">n</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">data</span>
-        <span class="k">return</span> <span class="n">stats</span><span class="o">.</span><span class="n">binom</span><span class="o">.</span><span class="n">logpmf</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">/</span> <span class="p">(</span><span class="n">alpha</span> <span class="o">+</span> <span class="n">beta</span><span class="p">))</span>
-
-    <span class="k">def</span> <span class="nf">get_mean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="n">alpha</span> <span class="o">/</span> <span class="p">(</span><span class="n">alpha</span> <span class="o">+</span> <span class="n">beta</span><span class="p">)))[</span><span class="mi">0</span><span class="p">]</span>
-
-    <span class="k">def</span> <span class="nf">get_prior_var</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">alpha</span> <span class="o">*</span> <span class="n">beta</span><span class="p">)</span> <span class="o">/</span> <span class="p">((</span><span class="n">alpha</span> <span class="o">+</span> <span class="n">beta</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">alpha</span> <span class="o">+</span> <span class="n">beta</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
-
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="n">update_bindglm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">forecast_marginal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nsamps</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">mean_only</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">forecast_marginal_bindglm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">nsamps</span><span class="p">,</span> <span class="n">mean_only</span><span class="p">)</span>
-</pre></div>
-
-    </div>
 </div>
 </div>
 

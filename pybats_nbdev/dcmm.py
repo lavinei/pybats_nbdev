@@ -5,9 +5,9 @@ __all__ = ['dcmm']
 # Internal Cell
 #exporti
 import numpy as np
-from pybats.latent_factor_fxns import forecast_marginal_lf_dcmm, forecast_path_lf_dcmm
-from pybats.dglm import bern_dglm, pois_dglm
-from pybats.update import update_F
+from .latent_factor_fxns import forecast_marginal_lf_dcmm, forecast_path_lf_dcmm
+from .dglm import bern_dglm, pois_dglm
+from .update import update_F
 
 # Cell
 class dcmm:

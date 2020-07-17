@@ -3,7 +3,6 @@
 __all__ = ['update', 'update_dlm', 'update_bindglm']
 
 # Internal Cell
-
 import numpy as np
 
 # Internal Cell

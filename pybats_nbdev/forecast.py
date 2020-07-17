@@ -10,7 +10,7 @@ import numpy as np
 from scipy import stats
 from scipy.special import gamma
 
-from pybats.update import update_F
+from .update import update_F
 
 # Internal Cell
 def forecast_aR(mod, k):

@@ -5,7 +5,7 @@ __all__ = ['seascomp', 'createFourierToSeasonalL', 'fourierToSeasonal', 'fourier
 # Internal Cell
 #exporti
 import numpy as np
-from pybats.forecast import forecast_aR, forecast_R_cov
+from .forecast import forecast_aR, forecast_R_cov
 
 # Cell
 def seascomp(period, harmComponents):

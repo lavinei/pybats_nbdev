@@ -5,6 +5,8 @@ __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 index = {"dglm": "00_dglm.ipynb",
          "bern_dglm": "00_dglm.ipynb",
          "pois_dglm": "00_dglm.ipynb",
+         "dlm": "00_dglm.ipynb",
+         "bin_dglm": "00_dglm.ipynb",
          "update_F": "01_update.ipynb",
          "update": "01_update.ipynb",
          "update_dlm": "01_update.ipynb",
