@@ -17,8 +17,8 @@ import zlib
 import os
 
 # Internal Cell
-#pkg_data_dir = os.path.dirname(os.path.abspath(__file__)) + '/pkg_data'
-pkg_data_dir = os.getcwd().split('pybats_nbdev')[0] + 'pybats_nbdev/pybats_nbdev/pkg_data'
+pkg_data_dir = os.path.dirname(os.path.abspath(__file__)) + '/pkg_data'
+#pkg_data_dir = os.getcwd().split('pybats_nbdev')[0] + 'pybats_nbdev/pybats_nbdev/pkg_data'
 
 try:
     with open(pkg_data_dir + '/interp_beta.pickle.gzip', 'rb') as fl:
