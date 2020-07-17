@@ -125,7 +125,6 @@ class latent_factor:
         file = open(filename, "wb")
         pickle.dump(self, file=file)
 
-
 # Cell
 class multi_latent_factor(latent_factor):
     def __init__(self, latent_factors):
@@ -264,7 +263,6 @@ class multi_latent_factor(latent_factor):
         file = open(filename, "wb")
         pickle.dump(self, file=file)
 
-
 # Cell
 def hol_fxn(date, mod, X, **kwargs):
     is_hol = np.any(X[-mod.nhol:] != 0)
@@ -360,7 +358,6 @@ def Y_update_via_forecast_fxn(date, mod, X, nsamps=200, **kwargs):
     mean = mod.forecast_marginal(k=1, X=X, mean_only=True)
     forecast = mod.forecast_marginal(k=1, X=X)
     return mean, forecast.var()
-
 
 # Internal Cell
 Y_forecast_lf = latent_factor(gen_fxn = Y_update_via_forecast_fxn, gen_forecast_fxn = Y_forecast_fxn)
@@ -532,11 +529,9 @@ dlm_coef_lf = latent_factor(gen_fxn = dlm_coef_fxn, gen_forecast_fxn=dlm_coef_fo
 def dlm_dof_fxn(date, mod, **kwargs):
     return mod.n, 0
 
-
 # Cell
 def dlm_dof_forecast_fxn(date, mod, k, **kwargs):
     return [mod.n for x in range(k)], [0 for x in range(k)]
-
 
 # Cell
 dlm_dof_lf = latent_factor(gen_fxn = dlm_dof_fxn, gen_forecast_fxn=dlm_dof_forecast_fxn)
@@ -545,7 +540,6 @@ dlm_dof_lf = latent_factor(gen_fxn = dlm_dof_fxn, gen_forecast_fxn=dlm_dof_forec
 def copy_fxn(date, latent_factor):
     s = latent_factor.get_lf(date)
     return copy.deepcopy(s[0]), copy.deepcopy(s[1])
-
 
 # Internal Cell
 def copy_forecast_fxn(date, latent_factor):
@@ -556,7 +550,6 @@ def copy_forecast_fxn(date, latent_factor):
         means.append(copy.deepcopy(ms[h]))
         vars.append(copy.deepcopy(vs[h]))
     return means, vars
-
 
 # Cell
 def merge_fxn(date, latent_factors, **kwargs):

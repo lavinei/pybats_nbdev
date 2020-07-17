@@ -16,7 +16,6 @@ def update_F(mod, X, F=None):
             F[mod.iregn] = X.reshape(mod.nregn, 1)
         return F
 
-
 # Cell
 def update(mod, y = None, X = None):
 

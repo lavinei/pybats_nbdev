@@ -191,7 +191,6 @@ def define_dglm(Y, X, family="normal", n=None,
 
     return mod
 
-
 # Cell
 def define_dlm_params(Y, X=None):
     n = len(Y)
@@ -365,7 +364,6 @@ def define_dcmm(Y, X,
                )
 
     return mod
-
 
 # Cell
 def define_dbcm(Y_transaction, X_transaction=None, Y_cascade=None, X_cascade=None, excess_baskets=[], excess_values=[],

@@ -24,20 +24,6 @@ description: "This module contains the primary helper function to run a full sta
     
 <div class="cell border-box-sizing code_cell rendered">
 
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>WARNING: Unable to load interpolator. Code will run slower.
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
     {% endraw %}
 
@@ -214,7 +200,7 @@ description: "This module contains the primary helper function to run a full sta
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="analysis_dbcm" class="doc_header"><code>analysis_dbcm</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/analysis.py#L384" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>analysis_dbcm</code>(<strong><code>Y_transaction</code></strong>, <strong><code>X_transaction</code></strong>, <strong><code>Y_cascade</code></strong>, <strong><code>X_cascade</code></strong>, <strong><code>excess</code></strong>, <strong><code>prior_length</code></strong>, <strong><code>k</code></strong>, <strong><code>forecast_start</code></strong>, <strong><code>forecast_end</code></strong>, <strong><code>nsamps</code></strong>=<em><code>500</code></em>, <strong><code>rho</code></strong>=<em><code>0.6</code></em>, <strong><code>latent_factor</code></strong>=<em><code>None</code></em>, <strong><code>mean_only</code></strong>=<em><code>False</code></em>, <strong><code>dates</code></strong>=<em><code>None</code></em>, <strong><code>holidays</code></strong>=<em><code>[]</code></em>, <strong><code>seasPeriods</code></strong>=<em><code>[]</code></em>, <strong><code>seasHarmComponents</code></strong>=<em><code>[]</code></em>, <strong><code>ret</code></strong>=<em><code>['forecast']</code></em>, <strong><code>new_latent_factors</code></strong>=<em><code>None</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="analysis_dbcm" class="doc_header"><code>analysis_dbcm</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/analysis.py#L383" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>analysis_dbcm</code>(<strong><code>Y_transaction</code></strong>, <strong><code>X_transaction</code></strong>, <strong><code>Y_cascade</code></strong>, <strong><code>X_cascade</code></strong>, <strong><code>excess</code></strong>, <strong><code>prior_length</code></strong>, <strong><code>k</code></strong>, <strong><code>forecast_start</code></strong>, <strong><code>forecast_end</code></strong>, <strong><code>nsamps</code></strong>=<em><code>500</code></em>, <strong><code>rho</code></strong>=<em><code>0.6</code></em>, <strong><code>latent_factor</code></strong>=<em><code>None</code></em>, <strong><code>mean_only</code></strong>=<em><code>False</code></em>, <strong><code>dates</code></strong>=<em><code>None</code></em>, <strong><code>holidays</code></strong>=<em><code>[]</code></em>, <strong><code>seasPeriods</code></strong>=<em><code>[]</code></em>, <strong><code>seasHarmComponents</code></strong>=<em><code>[]</code></em>, <strong><code>ret</code></strong>=<em><code>['forecast']</code></em>, <strong><code>new_latent_factors</code></strong>=<em><code>None</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <h1 id="Run-updating-+-forecasting-using-a-dcmm.-Latent-Factor-option-available">Run updating + forecasting using a dcmm. Latent Factor option available<a class="anchor-link" href="#Run-updating-+-forecasting-using-a-dcmm.-Latent-Factor-option-available"> </a></h1><p>:param Y_transaction: Array of daily transactions (n <em> 1)
 :param X_transaction: Covariate array (n </em> p)

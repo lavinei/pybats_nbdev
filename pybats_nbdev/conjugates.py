@@ -10,31 +10,11 @@ from scipy.special import digamma
 from scipy import optimize as opt
 from functools import partial
 
-from .shared import trigamma
+from .shared import trigamma, load_interpolators, load_sales_example
 
 import pickle
 import zlib
 import os
-
-# Internal Cell
-pkg_data_dir = os.path.dirname(os.path.abspath(__file__)) + '/pkg_data'
-#pkg_data_dir = os.getcwd().split('pybats_nbdev')[0] + 'pybats_nbdev/pybats_nbdev/pkg_data'
-
-try:
-    with open(pkg_data_dir + '/interp_beta.pickle.gzip', 'rb') as fl:
-        interp_beta = pickle.loads(zlib.decompress(fl.read()))
-
-    with open(pkg_data_dir + '/interp_gamma.pickle.gzip', 'rb') as fl:
-        interp_gamma = pickle.loads(zlib.decompress(fl.read()))
-
-except:
-    print('WARNING: Unable to load interpolator. Code will run slower.')
-    interp_beta, interp_gamma = None, None
-
-
-# Internal Cell
-assert interp_beta is not None
-assert interp_gamma is not None
 
 # Cell
 def beta_approx(x, ft, qt):
@@ -101,6 +81,10 @@ def conj_params(ft, qt, alpha=1., beta=1., interp=False, solver_fn=None, interp_
     # all else fails, do the optimization
     return solver_fn(ft, qt, alpha, beta)
 
+# Internal Cell
+interp_beta, interp_gamma = load_interpolators()
+assert interp_beta is not None
+assert interp_gamma is not None
 
 # Cell
 # specific conjugate params functions

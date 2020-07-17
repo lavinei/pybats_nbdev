@@ -379,7 +379,6 @@ def analysis_dcmm(Y, X, prior_length, k, forecast_start, forecast_end, nsamps=50
     else:
         return out
 
-
 # Cell
 def analysis_dbcm(Y_transaction, X_transaction, Y_cascade, X_cascade, excess,
                   prior_length, k, forecast_start, forecast_end, nsamps = 500, rho = .6,

@@ -46,7 +46,6 @@ def weighted_quantile(samp, weights, quantile=0.5):
     upper = ord_samp[np.min(np.where(np.cumsum(ord_weights) > quantile))]
     return np.round((upper + lower) / 2)
 
-
 # Cell
 
 # Optimal for APE. Always less than the median. Ignores samples that are 0.
@@ -71,7 +70,6 @@ def m_one_median(samps):
     forecast = np.apply_along_axis(m_one_median, 0, samps)
 
     return forecast
-
 
 # Cell
 
@@ -105,7 +103,6 @@ def joint_m_one_median(samps):
     elif samps.ndim == 3:
         return np.array(list(map(joint_m_one_median, samps.transpose([1,0,2]))))
 
-
 # Cell
 
 # For the constrained point forecasts
@@ -116,7 +113,6 @@ def constrained_mean(samps, F):
     n = means.shape[1]
     diff = (F - np.sum(means, axis=1))/n
     return means + diff.reshape(-1,1)
-
 
 # Cell
 

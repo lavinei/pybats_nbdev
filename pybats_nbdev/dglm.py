@@ -389,7 +389,6 @@ class dglm:
             Discount = self.Discount
         return self.R / Discount - self.R
 
-
 # Cell
 class bern_dglm(dglm):
 
@@ -442,7 +441,6 @@ class bern_dglm(dglm):
 
     def get_prior_var(self, alpha, beta):
         return (alpha * beta) / ((alpha + beta) ** 2 * (alpha + beta + 1))
-
 
 # Cell
 class pois_dglm(dglm):

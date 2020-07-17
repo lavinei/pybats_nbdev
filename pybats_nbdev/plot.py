@@ -47,7 +47,6 @@ def plot_data_forecast(fig, ax, y, f, samples, dates, linewidth=1, linecolor='b'
 
     return ax
 
-
 # Cell
 
 def plot_coef(fig, ax, coef, dates, linewidth=1, linecolor=None, legend_inside_plot=True, coef_samples=None, **kwargs):

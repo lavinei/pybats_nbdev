@@ -424,7 +424,6 @@ def forecast_path_lf_copula(mod, k, X = None, phi_mu = None, phi_sigma = None, p
     else:
         return forecast_path_copula_sim(mod, k, lambda_mu, lambda_cov, nsamps, t_dist, nu)
 
-
 # Cell
 def forecast_joint_marginal_lf_copula(mod_list, k, X_list=None, phi_mu = None, phi_sigma = None,
                                       nsamps=1, y=None, t_dist=False, nu=9, return_cov=False):
@@ -483,7 +482,6 @@ def forecast_joint_marginal_lf_copula(mod_list, k, X_list=None, phi_mu = None, p
         return forecast_joint_copula_density_MC(mod_list, y, lambda_mu, lambda_cov, t_dist, nu, nsamps)
     else:
         return forecast_joint_copula_sim(mod_list, lambda_mu, lambda_cov, nsamps, t_dist, nu)
-
 
 # Cell
 def forecast_joint_marginal_lf_copula_dcmm(dcmm_list, k, X_list=None, phi_mu = None, phi_sigma = None,
@@ -568,7 +566,6 @@ def forecast_joint_marginal_lf_copula_dcmm(dcmm_list, k, X_list=None, phi_mu = N
         return np.cov(samps.T)
 
     return samps
-
 
 # Cell
 def forecast_marginal_lf_dcmm(mod, k, X=None, phi_mu=None, phi_sigma=None, nsamps=1, t_dist=False, nu=9, return_cov=False):
