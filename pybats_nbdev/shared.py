@@ -126,7 +126,9 @@ def load_sales_example2():
     :return: A Pandas data frame
     """
     data_dir = os.path.dirname(os.path.abspath(__file__)) + '/pkg_data/'
-    return pd.read_pickle(data_dir + 'sim_sales_data')
+    data = pd.read_pickle(data_dir + 'sim_sales_data')
+    data = data.set_index('Date')
+    return data
 
 # Cell
 def load_dcmm_latent_factor_example():
