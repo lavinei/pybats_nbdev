@@ -552,4 +552,10 @@ ax.set_ylim([0, 25])
 ![png](docs/images/output_60_1.png)
 
 
+## Types of Models
+
+The correct model type depends upon your time series, $Y$. The most common type of data features continuous real number, which can be modeled using a normal Dynamic Linear Model (`dlm`).
+
+One of the primary use cases for PyBATS is that it can handle non-normally distributed observations. Positive integers can be modeled with a Poisson DGLM (`pois_dglm`), with the classic example above being counts of sales. Data that can be coded as $0-1$, or success-failure, is modeled with a Bernoulli DGLM (`bern_dglm`). An example of Binomial data is a time series of whether a stock went up or down. Finally, data that is represented as the sum of Bernoulli $0-1$ outcomes can be modeled as Binomial (`bin_dglm`). An example of Binomial data is a time series of the number of respondents to a survey; There are $n$ people contacted each day, and each person responds independently with probability $p$.
+
 ## In-Depth Sales Forecasting Example
