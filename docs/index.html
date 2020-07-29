@@ -5,8 +5,8 @@ title: PyBATS
 keywords: fastai
 sidebar: home_sidebar
 
-summary: "PyBATS is a package for Bayesian time series modeling and forecasting. It is designed to be flexible, offering many options to customize the model form, prior, and forecast period. The focus of the package is the class Dynamic Generalized Linear Model ('dglm'). The supported DGLMs are Poisson, Bernoulli, Normal (a DLM), and Binomial. These models are based upon *Bayesian Forecasting and Dynamic Models*, by West and Harrison (1997)."
-description: "PyBATS is a package for Bayesian time series modeling and forecasting. It is designed to be flexible, offering many options to customize the model form, prior, and forecast period. The focus of the package is the class Dynamic Generalized Linear Model ('dglm'). The supported DGLMs are Poisson, Bernoulli, Normal (a DLM), and Binomial. These models are based upon *Bayesian Forecasting and Dynamic Models*, by West and Harrison (1997)."
+summary: "PyBATS is a package for Bayesian time series modeling and forecasting. It is designed to be flexible, offering many options to customize the model form, prior, and forecast period. The focus of the package is the class Dynamic Generalized Linear Model ('dglm'). The supported DGLMs are Poisson, Bernoulli, Normal (a DLM), and Binomial. These models are primarily based on <a href='http://www2.stat.duke.edu/~mw/West&HarrisonBook/), by West and Harrison (1997'>*Bayesian Forecasting and Dynamic Models*</a>."
+description: "PyBATS is a package for Bayesian time series modeling and forecasting. It is designed to be flexible, offering many options to customize the model form, prior, and forecast period. The focus of the package is the class Dynamic Generalized Linear Model ('dglm'). The supported DGLMs are Poisson, Bernoulli, Normal (a DLM), and Binomial. These models are primarily based on <a href='http://www2.stat.duke.edu/~mw/West&HarrisonBook/), by West and Harrison (1997'>*Bayesian Forecasting and Dynamic Models*</a>."
 ---
 <!--
 
@@ -303,7 +303,7 @@ $ sudo python setup.py install</code></pre>
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Model-Components">Model Components<a class="anchor-link" href="#Model-Components"> </a></h2>
+<h2 id="Types-of-Models">Types of Models<a class="anchor-link" href="#Types-of-Models"> </a></h2>
 </div>
 </div>
 </div>
@@ -315,7 +315,42 @@ $ sudo python setup.py install</code></pre>
 <li><strong>Generalized</strong>: We can choose the distribution of the observations (Normal, Poisson, Bernoulli, or Binomial)</li>
 <li><strong>Linear</strong>: Forecasts are made by a standard linear combination of coefficients multiplied by predictors</li>
 </ol>
-<p>The coefficients in a DGLM are all stored in the state vector, $\theta_t$. The state vector is defined by a set of different components, which are defined up front by the modeler.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The correct model type depends upon your time series, $y_t$. The most common type of observations are continuous real numbers, which can be modeled using a normal Dynamic Linear Model (<a href="/pybats_nbdev/dglm#dlm"><code>dlm</code></a>).</p>
+<p>PyBATS is unique in the current Python ecosystem because it provides dynamic models for non-normally distribution observations:</p>
+<ul>
+<li>Poisson DGLMs (<a href="/pybats_nbdev/dglm#pois_dglm"><code>pois_dglm</code></a>) model positive integers, as in the example above with counts of daily item sales.</li>
+<li>Bernoulli DGLMs (<a href="/pybats_nbdev/dglm#bern_dglm"><code>bern_dglm</code></a>) model data that can be encoded as $0-1$, or success-failure. An example is a time series of changes in stock price, where positive changes are coded as $1$, and negative changes are coded as $0$.</li>
+<li>Binomial DGLMs (<a href="/pybats_nbdev/dglm#bin_dglm"><code>bin_dglm</code></a>) model the sum of Bernoulli $0-1$ outcomes. An example is the daily count of responses to a survey, in which $n_t$ people are contacted each day, and they choose whether to respond independently.</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Model-Components">Model Components<a class="anchor-link" href="#Model-Components"> </a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The <em>linear</em> combination in a DGLM is the multiplication (dot product) of the state vector by the regression vector</p>
+<p>{% raw %}
+$$\lambda_t = F_t^{'} \theta_t$$
+{% endraw %}</p>
+<p>Where:</p>
+<ul>
+<li>$\lambda_t$ is called the linear predictor</li>
+<li>$\theta_t$ is called the state vector</li>
+<li>$F_t$ is called the regression vector</li>
+</ul>
+<p>The coefficients in a DGLM are all stored in the state vector, $\theta_t$. The state vector is defined by a set of different <em>components</em>, which are defined up front by the modeler.</p>
 
 </div>
 </div>
@@ -716,7 +751,7 @@ $ sudo python setup.py install</code></pre>
 <p>Seasonal components represent cyclical or periodic behavior in the time series  - e.g. daily, weekly, or annual patterns. In PyBATS, seasonal components are defined by their period (e.g. $p = 7$ for a weekly trend on daily observation), and their harmonic components. The seasonal trends are defined through sine and cosine functions. Each harmonic component involves $2$ parameters, so there should never be more than $p/2$ harmonic components.</p>
 <p>For example, if the period is $p=7$ (defined by setting <code>seasPeriods=[7]</code>) then a fully parameterized seasonal component has harmonic components <code>seasHarmComponents = [1,2,3]</code>.</p>
 <p>If there is an annual trend on daily data, then the period is $p=365$. However, using all possible harmonic components, <code>seasHarmComponents = [1,2,...,182]</code>, is far too many parameters to learn. It is much more common to use the first several harmonic components, such as <code>seasHarmComponents = [1,2]</code>. The $r^{th}$ harmonic component has a cycle legth of $p/r$. So in the example of an annual pattern, the first harmonic component will have a cycle length of $365/2 = 182.5$, representing a semi-annual cycle, and the second harmonic component will have a length of $365/4$, for a quarterly cycle.</p>
-<p>For more details, refer to Chapter 8.6 in Bayesian Forecasting and Dynamic Models by West and Harrison <strong>XXX PROVIDE BETTER REFERENCE/LINK HERE</strong>.</p>
+<p>For more details, refer to Chapter 8.6 in <a href="http://www2.stat.duke.edu/~mw/West&amp;HarrisonBook/">Bayesian Forecasting and Dynamic Models</a> by West and Harrison.</p>
 <p>To see this in code, we'll load in some simulated daily sales data:</p>
 
 </div>
@@ -1264,21 +1299,42 @@ $ sudo python setup.py install</code></pre>
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Types-of-Models">Types of Models<a class="anchor-link" href="#Types-of-Models"> </a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>The correct model type depends upon your time series, $Y$. The most common type of data features continuous real number, which can be modeled using a normal Dynamic Linear Model (<a href="/pybats_nbdev/dglm#dlm"><code>dlm</code></a>).</p>
-<p>One of the primary use cases for PyBATS is that it can handle non-normally distributed observations. Positive integers can be modeled with a Poisson DGLM (<a href="/pybats_nbdev/dglm#pois_dglm"><code>pois_dglm</code></a>), with the classic example above being counts of sales. Data that can be coded as $0-1$, or success-failure, is modeled with a Bernoulli DGLM (<a href="/pybats_nbdev/dglm#bern_dglm"><code>bern_dglm</code></a>). An example of Binomial data is a time series of whether a stock went up or down. Finally, data that is represented as the sum of Bernoulli $0-1$ outcomes can be modeled as Binomial (<a href="/pybats_nbdev/dglm#bin_dglm"><code>bin_dglm</code></a>). An example of Binomial data is a time series of the number of respondents to a survey; There are $n$ people contacted each day, and each person responds independently with probability $p$.</p>
+<h2 id="Combinations-of-DGLMs">Combinations of DGLMs<a class="anchor-link" href="#Combinations-of-DGLMs"> </a></h2><p><strong>XXX DESCRIBE DCMMs and DBCMs</strong></p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="In-Depth-Sales-Forecasting-Example">In-Depth Sales Forecasting Example<a class="anchor-link" href="#In-Depth-Sales-Forecasting-Example"> </a></h2>
+<h2 id="Latent-Factors">Latent Factors<a class="anchor-link" href="#Latent-Factors"> </a></h2><p><strong>DESCRIBED USING LATENT FACTORS IN MODELS</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Examples">Examples<a class="anchor-link" href="#Examples"> </a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="In-Depth-Sales-Forecasting-Example"><a href="https://github.com/lavinei/pybats_nbdev/blob/master/examples/Poisson_DGLM_In_Depth_Example.ipynb">In-Depth Sales Forecasting Example</a><a class="anchor-link" href="#In-Depth-Sales-Forecasting-Example"> </a></h3><p>This example continues the analysis of retail sales, and dives into interpretation of model coefficients, especially the weekly seasonal effects. It also demonstrates how to use the PyBATS plotting functions to effectively visualize your forecasts.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="DCMM-Example-with-Latent-Factors"><a href="https://github.com/lavinei/pybats_nbdev/blob/master/examples/DCMM%20Latent%20Factor%20Example.ipynb">DCMM Example with Latent Factors</a><a class="anchor-link" href="#DCMM-Example-with-Latent-Factors"> </a></h3><p>This example demonstrates how to use a <a href="/pybats_nbdev/dcmm"><code>dcmm</code></a> for modeling retail sales. A latent factor is derived from aggregate sales, and used to enhance forecasts for an individual item.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="DBCM-Example-with-Latent-Factors"><a href="https://github.com/lavinei/pybats_nbdev/blob/master/examples/DBCM%20Latent%20Factor%20Example.ipynb">DBCM Example with Latent Factors</a><a class="anchor-link" href="#DBCM-Example-with-Latent-Factors"> </a></h3><p>This example demonstrates how to use a <a href="/pybats_nbdev/dbcm"><code>dbcm</code></a> for modeling retail sales. A latent factor is derived from aggregate sales, and used to enhance forecasts for an individual item.</p>
+
 </div>
 </div>
 </div>
