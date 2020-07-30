@@ -28,9 +28,6 @@ entries:
       title: Analysis
       url: /analysis
     - output: web,pdf
-      title: Conjugates
-      url: /conjugates
-    - output: web,pdf
       title: Point Forecasts
       url: /point_forecast
     - output: web,pdf
@@ -39,9 +36,6 @@ entries:
     - output: web,pdf
       title: Plotting
       url: /plot
-    - output: web,pdf
-      title: Title
-      url: /shared
     - output: web,pdf
       title: DCMMs
       url: /dcmm
