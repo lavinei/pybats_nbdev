@@ -40,7 +40,7 @@ entries:
       title: Plotting
       url: /plot
     - output: web,pdf
-      title: Shared Functions
+      title: Title
       url: /shared
     - output: web,pdf
       title: DCMMs

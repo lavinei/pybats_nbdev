@@ -29,7 +29,7 @@ description: "The class Dynamic Generalized Linear Model (DGLM), which is the co
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The PyBATS library supports many types of DGLMs - Poisson, Bernoulli, Normal (a DLM), and Binomial. These models are based upon <a href="http://www2.stat.duke.edu/~mw/West&amp;HarrisonBook/"><em>Bayesian Forecasting and Dynamic Models</em></a>, by West and Harrison (1997).</p>
+<p>The PyBATS library supports many types of DGLMs - Poisson, Bernoulli, Normal (a DLM), and Binomial.</p>
 <p>A Dynamic Generalized Linear Model is defined by:</p>
 <ul>
 <li>The exponential family of the observations Y: Normal, Poisson, Bernoulli, or Binomial</li>
@@ -47,14 +47,8 @@ $$<p>Where:</p>
 <li>$\theta_t$ is the state vector</li>
 <li>$F_t$ is the regression vector, containing all of the predictors $X_t$</li>
 </ul>
-<p>A PyBATS DGLM has three core methods. <a href="/pybats_nbdev/update"><code>update</code></a> will update the state vector $\theta_t$ after observing $y_t$. <a href="/pybats_nbdev/forecast#forecast_marginal"><code>forecast_marginal</code></a> simulates from the forecast distribution for $y$ at $k$ time steps into the future. <a href="/pybats_nbdev/forecast#forecast_path"><code>forecast_path</code></a> simulates from the forecast distribution for $y$ from today through to $k$ steps into the future.</p>
+<p>A PyBATS DGLM has three core methods. <a href="/pybats_nbdev/dglm#dglm.update"><code>dglm.update</code></a> will update the state vector $\theta_t$ after observing $y_t$. <a href="/pybats_nbdev/dglm#dglm.forecast_marginal"><code>dglm.forecast_marginal</code></a> simulates from the forecast distribution for $y$ at $k$ time steps into the future. <a href="/pybats_nbdev/dglm#dglm.forecast_path"><code>dglm.forecast_path</code></a> simulates from the forecast distribution for $y$ from today through to $k$ steps into the future.</p>
 
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="DGLM-Class">DGLM Class<a class="anchor-link" href="#DGLM-Class"> </a></h2>
 </div>
 </div>
 </div>
