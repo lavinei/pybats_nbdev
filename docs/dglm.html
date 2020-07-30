@@ -29,7 +29,7 @@ description: "The class Dynamic Generalized Linear Model (DGLM), which is the co
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The PyBATS library supports many types of DGLMs - Poisson, Bernoulli, Normal (a DLM), and Binomial. These models are based upon <em>Bayesian Forecasting and Dynamic Models</em>, by West and Harrison (1997).</p>
+<p>The PyBATS library supports many types of DGLMs - Poisson, Bernoulli, Normal (a DLM), and Binomial. These models are based upon <a href="http://www2.stat.duke.edu/~mw/West&amp;HarrisonBook/"><em>Bayesian Forecasting and Dynamic Models</em></a>, by West and Harrison (1997).</p>
 <p>A Dynamic Generalized Linear Model is defined by:</p>
 <ul>
 <li>The exponential family of the observations Y: Normal, Poisson, Bernoulli, or Binomial</li>
@@ -404,6 +404,24 @@ $$<p>Where:</p>
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>A Bernoulli DGLM models $0-1$ observations:</p>
+$$
+\begin{aligned}
+y_t &amp;\sim Bern(\pi_t) \\
+\pi_t &amp;= 1/(1 + e^{-\lambda_t}) \\
+\lambda_{t} &amp;= F_{t}' \theta_{t}
+\end{aligned}
+$$<p>Where</p>
+<ul>
+<li>Bern($\pi_t$) is the <a href="https://en.wikipedia.org/wiki/Bernoulli_distribution">Bernoulli distribution</a> with probability $\pi_t$</li>
+<li>$\lambda_t$ is transformed through the <a href="https://en.wikipedia.org/wiki/Logistic_function">logistic function</a> to become $\pi_t$</li>
+</ul>
+
+</div>
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -437,6 +455,24 @@ $$<p>Where:</p>
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>A Poisson DGLM models non-negative integers:</p>
+$$
+\begin{aligned}
+y_t &amp;\sim Pois(\mu_t) \\
+\mu_t &amp;= e^{\lambda_t} \\
+\lambda_{t} &amp;= F_{t}' \theta_{t}
+\end{aligned}
+$$<p>Where</p>
+<ul>
+<li>Pois($\mu_t$) is the <a href="https://en.wikipedia.org/wiki/Poisson_distribution">Poisson distribution</a> with rate parameter $\mu_t$</li>
+<li>$\mu_t$ is exponent of $\lambda_t$</li>
+</ul>
+
+</div>
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -470,6 +506,23 @@ $$<p>Where:</p>
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>A normal DLM has a slightly different form than other DGLMs:</p>
+$$
+\begin{aligned}
+y_t &amp;\sim N(\mu_t, \sigma^2_t) \\
+\mu_t &amp;= \lambda_{t} = F_{t}' \theta_{t}
+\end{aligned}
+$$<p>Where</p>
+<ul>
+<li>N($\mu_t, \sigma^2_t$) is the <a href="https://en.wikipedia.org/wiki/normal_distribution">Normal distribution</a> with mean $\mu_t$ and variance $\sigma^2_t$.</li>
+<li>$\sigma^2_t$ is also a dynamic parameter, with its own evolution through time. The discount factor delVar isset by the modeler, and controls the rate at which $\sigma^2$ changes. Typically it is set between $0.95-1$.  </li>
+</ul>
+
+</div>
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -503,6 +556,24 @@ $$<p>Where:</p>
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>A Binomial DGLM models the sum of independent $0-1$ observations:</p>
+$$
+\begin{aligned}
+y_t &amp;\sim Bin(n_t, pi_t) \\
+\pi_t &amp;= 1/(1 + e^{-\lambda_t}) \\
+\lambda_{t} &amp;= F_{t}' \theta_{t}
+\end{aligned}
+$$<p>Where</p>
+<ul>
+<li>Bin($n_t, pi_t$) is the <a href="https://en.wikipedia.org/wiki/Binomial_distribution">Binomial distribution</a> with $n_t$ independent trials, each having probability $\pi_t$</li>
+<li>$\lambda_t$ is transformed through the <a href="https://en.wikipedia.org/wiki/Logistic_function">logistic function</a> to become $\pi_t$</li>
+</ul>
+
+</div>
+</div>
+</div>
 </div>
  
 
