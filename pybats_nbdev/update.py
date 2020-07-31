@@ -39,7 +39,7 @@ def update(mod, y = None, X = None):
         # Mean and variance
         ft, qt = mod.get_mean_and_var(mod.F, mod.a, mod.R)
 
-        # Choose conjugate prior, match mean and variance
+        # Choose conjugate prior, match mean and variance (variational Bayes step)
         mod.param1, mod.param2 = mod.get_conjugate_params(ft, qt, mod.param1, mod.param2)
 
         # See time t observation y (which was passed into the update function)
@@ -48,7 +48,7 @@ def update(mod, y = None, X = None):
         # Update the conjugate parameters and get the implied ft* and qt*
         mod.param1, mod.param2, ft_star, qt_star = mod.update_conjugate_params(y, mod.param1, mod.param2)
 
-        # Kalman filter update on the state vector (using Linear Bayes approximation)
+        # Filter update on the state vector (using Linear Bayes approximation)
         mod.m = mod.a + mod.R @ mod.F * (ft_star - ft)/qt
         mod.C = mod.R - mod.R @ mod.F @ mod.F.T @ mod.R * (1 - qt_star/qt)/qt
 

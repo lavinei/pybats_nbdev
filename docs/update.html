@@ -5,8 +5,8 @@ title: Update
 keywords: fastai
 sidebar: home_sidebar
 
-summary: "This module contains the update algorithm for a DGLM. This follows the standard variational Bayes / Linear Bayes (VBLB) algorithm as described in *Bayesian Forecasting and Dynamic Models*, by West and Harrison (1997). Updates for a normal DLM follow a standard Kalman filter, with dynamic observation variance."
-description: "This module contains the update algorithm for a DGLM. This follows the standard variational Bayes / Linear Bayes (VBLB) algorithm as described in *Bayesian Forecasting and Dynamic Models*, by West and Harrison (1997). Updates for a normal DLM follow a standard Kalman filter, with dynamic observation variance."
+summary: "This module contains the update algorithm for a DGLM. After observing a new value $y_t$, updating incorporates the new information into the DGLM coefficients. It also applies the discount factors to reduce the impact of older information. For any model `mod`, the correct function use is `mod.update(y, X)` so they do not need to be used separately from the model."
+description: "This module contains the update algorithm for a DGLM. After observing a new value $y_t$, updating incorporates the new information into the DGLM coefficients. It also applies the discount factors to reduce the impact of older information. For any model `mod`, the correct function use is `mod.update(y, X)` so they do not need to be used separately from the model."
 ---
 <!--
 
@@ -66,7 +66,13 @@ description: "This module contains the update algorithm for a DGLM. This follows
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Testing:</p>
+<p>This update method works for Poisson and Bernoull DGLMs. Below are very simple tests:</p>
+<ul>
+<li>Manually define a simple DGLM with an intercept and 2 regression predictors</li>
+<li>Define new $y_t, X_t$</li>
+<li>Update the model, given $y_t, X_t$</li>
+<li>Check that the posterior mean $a_t$ and variance $R_t$ of the state vector is correct</li>
+</ul>
 
 </div>
 </div>
@@ -84,7 +90,6 @@ description: "This module contains the update algorithm for a DGLM. This follows
 <span class="n">a0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="n">R0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">mod_p</span> <span class="o">=</span> <span class="n">pois_dglm</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span> <span class="n">R0</span><span class="p">,</span> <span class="n">ntrend</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">nregn</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">deltrend</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">delregn</span><span class="o">=.</span><span class="mi">9</span><span class="p">)</span>
-<span class="n">mod_b</span> <span class="o">=</span> <span class="n">bin_dglm</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span> <span class="n">R0</span><span class="p">,</span> <span class="n">ntrend</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">nregn</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">deltrend</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">delregn</span><span class="o">=.</span><span class="mi">9</span><span class="p">)</span>
 <span class="n">mod_bern</span> <span class="o">=</span> <span class="n">bern_dglm</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span> <span class="n">R0</span><span class="p">,</span> <span class="n">ntrend</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">nregn</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">deltrend</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">delregn</span><span class="o">=.</span><span class="mi">9</span><span class="p">)</span>
 
 <span class="c1"># New data:</span>
@@ -100,16 +105,6 @@ description: "This module contains the update algorithm for a DGLM. This follows
 
 <span class="n">ans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.16107008</span><span class="p">,</span> <span class="mf">0.93214436</span><span class="p">])</span>
 <span class="k">assert</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">mod_p</span><span class="o">.</span><span class="n">R</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="mi">5</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
-
-<span class="c1"># Test the Binomial DGLM</span>
-<span class="n">mod_b</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">ans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span> <span class="mf">0.46543905</span><span class="p">],</span>
-   <span class="p">[</span> <span class="mf">0.46543905</span><span class="p">],</span>
-   <span class="p">[</span><span class="o">-</span><span class="mf">0.0691219</span> <span class="p">]])</span>
-<span class="k">assert</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">mod_b</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
-
-<span class="n">ans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.15854342</span><span class="p">,</span> <span class="mf">0.93495175</span><span class="p">])</span>
-<span class="k">assert</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">mod_b</span><span class="o">.</span><span class="n">R</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="mi">5</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
 
 <span class="c1"># Test the Bernoulli DGLM</span>
 <span class="n">mod_bern</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
@@ -166,6 +161,13 @@ description: "This module contains the update algorithm for a DGLM. This follows
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This update method works for normal DLMs. Here is a similar updating test, calling the method as <code>mod_n.update</code>:</p>
+
+</div>
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -173,15 +175,7 @@ description: "This module contains the update algorithm for a DGLM. This follows
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pybats_nbdev.dglm</span> <span class="kn">import</span> <span class="n">dlm</span><span class="p">,</span> <span class="n">pois_dglm</span><span class="p">,</span> <span class="n">bern_dglm</span><span class="p">,</span> <span class="n">bin_dglm</span>
-<span class="kn">from</span> <span class="nn">pybats_nbdev.analysis</span> <span class="kn">import</span> <span class="n">analysis</span>
-<span class="n">a0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-<span class="n">R0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">mod_n</span> <span class="o">=</span> <span class="n">dlm</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span> <span class="n">R0</span><span class="p">,</span> <span class="n">ntrend</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">nregn</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">deltrend</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">delregn</span><span class="o">=.</span><span class="mi">9</span><span class="p">)</span>
-
-<span class="c1"># New data:</span>
-<span class="n">y</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mod_n</span> <span class="o">=</span> <span class="n">dlm</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span> <span class="n">R0</span><span class="p">,</span> <span class="n">ntrend</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">nregn</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">deltrend</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">delregn</span><span class="o">=.</span><span class="mi">9</span><span class="p">)</span>
 
 <span class="c1"># Test the normal DLM</span>
 <span class="n">mod_n</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
@@ -232,6 +226,43 @@ description: "This module contains the update algorithm for a DGLM. This follows
 
 </div>
 
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This update method works for binomial DGLMs. Here is a similar updating test, calling the method as <code>mod_b.update</code>. Note that for a binomial DGLM, we must specify the number of trials, $n_t$.</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mod_b</span> <span class="o">=</span> <span class="n">bin_dglm</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span> <span class="n">R0</span><span class="p">,</span> <span class="n">ntrend</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">nregn</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">deltrend</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">delregn</span><span class="o">=.</span><span class="mi">9</span><span class="p">)</span>
+
+<span class="c1"># New data - the number of trials</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="c1"># Test the Binomial DGLM</span>
+<span class="n">mod_b</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+<span class="n">ans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span> <span class="mf">0.46543905</span><span class="p">],</span>
+   <span class="p">[</span> <span class="mf">0.46543905</span><span class="p">],</span>
+   <span class="p">[</span><span class="o">-</span><span class="mf">0.0691219</span> <span class="p">]])</span>
+<span class="k">assert</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">mod_b</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+
+<span class="n">ans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.15854342</span><span class="p">,</span> <span class="mf">0.93495175</span><span class="p">])</span>
+<span class="k">assert</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">mod_b</span><span class="o">.</span><span class="n">R</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="mi">5</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+</pre></div>
+
+    </div>
 </div>
 </div>
 
