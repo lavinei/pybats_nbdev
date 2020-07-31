@@ -27,6 +27,21 @@ description: "This module contains the update algorithm for a DGLM. After observ
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Updating occurs after observing a new value, $y_t$. The update function accepts $y_t$ and the predictors $X_t$.  It will update the state vector from $\theta_t$ into $\theta_{t+1}$, producing the new mean $a_{t+1}$ and variance matrix $R_{t+1}$. In a normal DLM, the updating also impacts the mean of the observation variance, $s_{t+1}$. These quantities can be access as <code>mod.a</code>, <code>mod.R</code>, and for a normal DLM, <code>mod.s</code>.</p>
+<p>To give the slightly more formal Bayesian interpretation of these steps:</p>
+<ul>
+<li>At time $t$, we know the prior moments of the state vector $\theta_t | \mathcal{D_t} \sim [a_t, R_t]$, where $\mathcal{D_t}$ is all of the observations up to time $t$. </li>
+<li>We then observe $y_t$, and incorporate the new information to give the posterior: $\theta_t | \mathcal{D_t}, y_t \sim [m_t, C_t]$. </li>
+<li>Finally, we discount the old information, to give us our new priors for the next time step: $\theta_{t+1} | \mathcal{D_{t+1}} \sim [a_{t+1}, R_{t+1}]$.</li>
+</ul>
+<p>If you are interested in the posterior moments of $\theta_t | \mathcal{D_t}, y_t$ before the discounting is applied, then you can access <code>mod.m</code> and <code>mod.C</code>, although these are rarely used.</p>
+<p>Again, these functions do not need to be accessed independently from a model. Every model in PyBATS has a <code>mod.update(y, X)</code> method, which will call the appropriate update function.</p>
+
+</div>
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
