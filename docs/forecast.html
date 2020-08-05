@@ -5,8 +5,8 @@ title: Forecast
 keywords: fastai
 sidebar: home_sidebar
 
-summary: "This module contains the forecast algorithm for a DGLM. This is described in *Bayesian Forecasting and Dynamic Models*, by West and Harrison (1997)."
-description: "This module contains the forecast algorithm for a DGLM. This is described in *Bayesian Forecasting and Dynamic Models*, by West and Harrison (1997)."
+summary: "This module contains the forecast algorithm for a DGLM. Given predictors, these functions return a random sample from the forecast distribution. From the random sample, you can find point estimates (means, medians), and measures of uncertainty such as credible intervals. For any model `mod`, the correct functions to use are `mod.forecast_marginal` and `mod.forecast_path`, so they do not need to be used separately from the model."
+description: "This module contains the forecast algorithm for a DGLM. Given predictors, these functions return a random sample from the forecast distribution. From the random sample, you can find point estimates (means, medians), and measures of uncertainty such as credible intervals. For any model `mod`, the correct functions to use are `mod.forecast_marginal` and `mod.forecast_path`, so they do not need to be used separately from the model."
 ---
 <!--
 
@@ -29,7 +29,7 @@ description: "This module contains the forecast algorithm for a DGLM. This is de
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Marginal-forecasting">Marginal forecasting<a class="anchor-link" href="#Marginal-forecasting"> </a></h2>
+<h2 id="Marginal-Forecasting">Marginal Forecasting<a class="anchor-link" href="#Marginal-Forecasting"> </a></h2>
 </div>
 </div>
 </div>
@@ -51,7 +51,7 @@ description: "This module contains the forecast algorithm for a DGLM. This is de
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="forecast_marginal" class="doc_header"><code>forecast_marginal</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/forecast.py#L41" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_marginal</code>(<strong><code>mod</code></strong>, <strong><code>k</code></strong>, <strong><code>X</code></strong>=<em><code>None</code></em>, <strong><code>nsamps</code></strong>=<em><code>1</code></em>, <strong><code>mean_only</code></strong>=<em><code>False</code></em>, <strong><code>state_mean_var</code></strong>=<em><code>False</code></em>, <strong><code>y</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="forecast_marginal" class="doc_header"><code>forecast_marginal</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/forecast.py#L39" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_marginal</code>(<strong><code>mod</code></strong>, <strong><code>k</code></strong>, <strong><code>X</code></strong>=<em><code>None</code></em>, <strong><code>nsamps</code></strong>=<em><code>1</code></em>, <strong><code>mean_only</code></strong>=<em><code>False</code></em>, <strong><code>state_mean_var</code></strong>=<em><code>False</code></em>, <strong><code>y</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Forecast function k steps ahead (marginal)</p>
 
@@ -59,6 +59,242 @@ description: "This module contains the forecast algorithm for a DGLM. This is de
 
 </div>
 
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This forecast method works for Poisson and Bernoulli DGLMs. Below are very simple tests:</p>
+<ul>
+<li>Manually define a simple DGLM with an intercept and 2 regression predictors</li>
+<li>Define new $X_t$</li>
+<li>Forecast by drawing a random sample at $k=5$, and getting a $95\%$ credible interval</li>
+<li>Forecast the mean only using a special flag, to test the function</li>
+</ul>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">pybats_nbdev.dglm</span> <span class="kn">import</span> <span class="n">dlm</span><span class="p">,</span> <span class="n">pois_dglm</span><span class="p">,</span> <span class="n">bern_dglm</span><span class="p">,</span> <span class="n">bin_dglm</span>
+<span class="kn">from</span> <span class="nn">pybats_nbdev.analysis</span> <span class="kn">import</span> <span class="n">analysis</span>
+
+<span class="c1"># Define Poisson and Bernoulli DGLMs, along with a normal DLM, with 1 trend term and 2 regression predictors</span>
+<span class="n">a0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">R0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">mod_n</span> <span class="o">=</span> <span class="n">dlm</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span> <span class="n">R0</span><span class="p">,</span> <span class="n">ntrend</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">nregn</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">deltrend</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">delregn</span><span class="o">=.</span><span class="mi">9</span><span class="p">,</span> <span class="n">discount_forecast</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">mod_p</span> <span class="o">=</span> <span class="n">pois_dglm</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span> <span class="n">R0</span><span class="p">,</span> <span class="n">ntrend</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">nregn</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">deltrend</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">delregn</span><span class="o">=.</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">mod_bern</span> <span class="o">=</span> <span class="n">bern_dglm</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span> <span class="n">R0</span><span class="p">,</span> <span class="n">ntrend</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">nregn</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">deltrend</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">delregn</span><span class="o">=.</span><span class="mi">9</span><span class="p">)</span>
+
+<span class="c1"># New predictors for k=5 steps into the future</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>First we're going to forecast from the Poisson DGLM, which will draw a random sample from the forecast distribution. We'll use the forecast samples to calculate a $95\%$ credible interval.</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Forecast using the Poisson DGLM, i.e. simulate from the forecast distribution</span>
+<span class="n">forecast_samples</span> <span class="o">=</span> <span class="n">mod_p</span><span class="o">.</span><span class="n">forecast_marginal</span><span class="p">(</span><span class="n">k</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">nsamps</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+
+<span class="c1"># Get the 95% credible intervals</span>
+<span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">forecast_samples</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">97.5</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>array([   0. , 1317.2])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can repeat this analysis using the normal DLM:</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Forecast using the normal DLM, i.e. simulate from the forecast distribution</span>
+<span class="n">forecast_samples</span> <span class="o">=</span> <span class="n">mod_n</span><span class="o">.</span><span class="n">forecast_marginal</span><span class="p">(</span><span class="n">k</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">nsamps</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+
+<span class="c1"># Get the 95% credible intervals</span>
+<span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">forecast_samples</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">97.5</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>array([-41.2778695 ,  39.14389697])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Next we'll test the models using the special flag <code>mean_only=True</code>. This will return only the mean value, without simulation from the forecast distribution. It is much faster if the mean is the only value of interest.</p>
+<p>Notice that we skipped simulating from the Bernoulli DGLM, because Bernoulli outcomes are only $0$ or $1$ anyway. The mean of the forecast distribution in a Bernoulli DGLM is equal to the probability of the outcome being $1$.</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Test the Poisson DGLM forecast mean is correct</span>
+<span class="c1"># Setting the flag mean_only=True returns the exact mean, without simulation</span>
+
+<span class="n">m_p</span> <span class="o">=</span> <span class="n">mod_p</span><span class="o">.</span><span class="n">forecast_marginal</span><span class="p">(</span><span class="n">k</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">mean_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ans</span> <span class="o">=</span> <span class="p">[</span><span class="mf">232.15794803433968</span><span class="p">]</span>
+<span class="k">assert</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">ans</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">5</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">m_p</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+
+<span class="c1"># Test the Bernoulli DGLM forecast mean is correct</span>
+<span class="c1"># Setting the flag mean_only=True returns the exact mean, without simulation</span>
+
+<span class="n">m_bern</span> <span class="o">=</span> <span class="n">mod_bern</span><span class="o">.</span><span class="n">forecast_marginal</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">mean_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ans</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.9344642829948064</span><span class="p">]</span>
+<span class="k">assert</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">ans</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">5</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">m_bern</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+
+<span class="c1"># Test the Bernoulli DGLM forecast mean is correct</span>
+<span class="c1"># Setting the flag state_mean_var=True returns the exact mean and variance, without simulation</span>
+
+<span class="n">m_n</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">mod_n</span><span class="o">.</span><span class="n">forecast_marginal</span><span class="p">(</span><span class="n">k</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">state_mean_var</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ans</span> <span class="o">=</span> <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">9.222222222</span><span class="p">]</span>
+<span class="k">assert</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">ans</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">5</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">m_n</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+<span class="k">assert</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">ans</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">5</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="forecast_marginal_bindglm" class="doc_header"><code>forecast_marginal_bindglm</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/forecast.py#L68" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_marginal_bindglm</code>(<strong><code>mod</code></strong>, <strong><code>n</code></strong>, <strong><code>k</code></strong>, <strong><code>X</code></strong>=<em><code>None</code></em>, <strong><code>nsamps</code></strong>=<em><code>1</code></em>, <strong><code>mean_only</code></strong>=<em><code>False</code></em>)</p>
+</blockquote>
+<p>Forecast function k steps ahead (marginal)</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Finally, we'll repeat the same tests from above on a binomial DGLM by specifying both the predictors <code>X</code> and the number of trials <code>n</code>.</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mod_b</span> <span class="o">=</span> <span class="n">bin_dglm</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span> <span class="n">R0</span><span class="p">,</span> <span class="n">ntrend</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">nregn</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">deltrend</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">delregn</span><span class="o">=.</span><span class="mi">9</span><span class="p">)</span>
+
+<span class="c1"># Test the Binomial DGLM</span>
+<span class="n">m_bin</span> <span class="o">=</span> <span class="n">mod_b</span><span class="o">.</span><span class="n">forecast_marginal</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">mean_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ans</span> <span class="o">=</span> <span class="p">[</span><span class="mf">9.34464283</span><span class="p">]</span>
+<span class="k">assert</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">ans</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">5</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">m_bin</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+</pre></div>
+
+    </div>
 </div>
 </div>
 
@@ -71,12 +307,6 @@ description: "This module contains the forecast algorithm for a DGLM. This is de
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Path-forecasting-via-sequential-simulation-(slow,-traditional)">Path forecasting via sequential simulation (slow, traditional)<a class="anchor-link" href="#Path-forecasting-via-sequential-simulation-(slow,-traditional)"> </a></h3>
-</div>
-</div>
-</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -95,7 +325,77 @@ description: "This module contains the forecast algorithm for a DGLM. This is de
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="forecast_path" class="doc_header"><code>forecast_path</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/forecast.py#L70" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_path</code>(<strong><code>mod</code></strong>, <strong><code>k</code></strong>, <strong><code>X</code></strong>=<em><code>None</code></em>, <strong><code>nsamps</code></strong>=<em><code>1</code></em>)</p>
+<h4 id="forecast_path" class="doc_header"><code>forecast_path</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/forecast.py#L94" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_path</code>(<strong><code>mod</code></strong>, <strong><code>k</code></strong>, <strong><code>X</code></strong>=<em><code>None</code></em>, <strong><code>nsamps</code></strong>=<em><code>1</code></em>)</p>
+</blockquote>
+<p>Forecast function for the k-step path
+k: steps ahead to forecast
+X: array with k rows for the future regression components
+nsamps: Number of samples to draw from forecast distribution</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="forecast_path_copula" class="doc_header"><code>forecast_path_copula</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/forecast.py#L149" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_path_copula</code>(<strong><code>mod</code></strong>, <strong><code>k</code></strong>, <strong><code>X</code></strong>=<em><code>None</code></em>, <strong><code>nsamps</code></strong>=<em><code>1</code></em>, <strong><code>t_dist</code></strong>=<em><code>False</code></em>, <strong><code>y</code></strong>=<em><code>None</code></em>, <strong><code>nu</code></strong>=<em><code>9</code></em>, <strong><code>return_cov</code></strong>=<em><code>False</code></em>)</p>
+</blockquote>
+<p>Forecast function for the k-step path
+k: steps ahead to forecast
+X: array with k rows for the future regression components
+nsamps: Number of samples to draw from forecast distribution</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="forecast_path_dlm" class="doc_header"><code>forecast_path_dlm</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/forecast.py#L201" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_path_dlm</code>(<strong><code>mod</code></strong>, <strong><code>k</code></strong>, <strong><code>X</code></strong>=<em><code>None</code></em>, <strong><code>nsamps</code></strong>=<em><code>1</code></em>, <strong><code>approx</code></strong>=<em><code>True</code></em>)</p>
 </blockquote>
 <p>Forecast function for the k-step path
 k: steps ahead to forecast
@@ -114,118 +414,39 @@ nsamps: Number of samples to draw from forecast distribution</p>
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Path-forecasting-with-a-copula-(new,-faster)">Path forecasting with a copula (new, faster)<a class="anchor-link" href="#Path-forecasting-with-a-copula-(new,-faster)"> </a></h3>
-</div>
-</div>
-</div>
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
+<p>There are two functions for path forecasting. The function <a href="/pybats_nbdev/forecast#forecast_path_copula"><code>forecast_path_copula</code></a> is the default method, and is part of my new <a href="https://arxiv.org/pdf/2007.04956.pdf">research</a>. It dramatically speeds up path forecasting in DGLMs. The traditional <a href="/pybats_nbdev/forecast#forecast_path"><code>forecast_path</code></a> function is only used when <code>mod.forecast_path</code> is called with the flag <code>copula=FALSE</code>.</p>
+<p>Below we'll test path forecasting - with a copula, as is the default - for $k=2$ steps into the future. The Poisson model will have $2$ trend terms - an intercept and a slope - and 1 regression term. This test will confirm that marginal forecasting and path forecasting lead to identical forecast means for $k=1$ and $k=2$ steps ahead.</p>
 
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="forecast_path_copula" class="doc_header"><code>forecast_path_copula</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/forecast.py#L125" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_path_copula</code>(<strong><code>mod</code></strong>, <strong><code>k</code></strong>, <strong><code>X</code></strong>=<em><code>None</code></em>, <strong><code>nsamps</code></strong>=<em><code>1</code></em>, <strong><code>t_dist</code></strong>=<em><code>False</code></em>, <strong><code>y</code></strong>=<em><code>None</code></em>, <strong><code>nu</code></strong>=<em><code>9</code></em>, <strong><code>return_cov</code></strong>=<em><code>False</code></em>)</p>
-</blockquote>
-<p>Forecast function for the k-step path
-k: steps ahead to forecast
-X: array with k rows for the future regression components
-nsamps: Number of samples to draw from forecast distribution</p>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Path-forecasting-for-a-DLM">Path forecasting for a DLM<a class="anchor-link" href="#Path-forecasting-for-a-DLM"> </a></h3>
 </div>
 </div>
 </div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
 
-</div>
-    {% endraw %}
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">a0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">R0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mi">10</span>
+<span class="n">mod_p</span> <span class="o">=</span> <span class="n">pois_dglm</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span> <span class="n">R0</span><span class="p">,</span> <span class="n">ntrend</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">nregn</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">deltrend</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">delregn</span><span class="o">=.</span><span class="mi">9</span><span class="p">)</span>
 
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
+<span class="c1"># The predictors for the next 2 time steps, X_t and X_(t+1), in a matrix with k=2 rows</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">]])</span>
 
-<div class="output_wrapper">
-<div class="output">
+<span class="c1"># Test the Poisson DGLM by comparing the path and marginal forecast distributions</span>
+<span class="n">samps_copula</span> <span class="o">=</span> <span class="n">mod_p</span><span class="o">.</span><span class="n">forecast_path_copula</span><span class="p">(</span><span class="n">k</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">nsamps</span><span class="o">=</span><span class="mi">100000</span><span class="p">)</span>
+<span class="n">m_samp</span> <span class="o">=</span> <span class="n">samps_copula</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">m_marg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">mod_p</span><span class="o">.</span><span class="n">forecast_marginal</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mean_only</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+          <span class="n">mod_p</span><span class="o">.</span><span class="n">forecast_marginal</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">mean_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">assert</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">m_samp</span> <span class="o">-</span> <span class="n">m_marg</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
 
-<div class="output_area">
+<span class="n">samps_path</span> <span class="o">=</span> <span class="n">mod_p</span><span class="o">.</span><span class="n">forecast_path</span><span class="p">(</span><span class="n">k</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">nsamps</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">copula</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">m_samp</span> <span class="o">=</span> <span class="n">samps_path</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="k">assert</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">m_samp</span> <span class="o">-</span> <span class="n">m_marg</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+</pre></div>
 
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="forecast_path_dlm" class="doc_header"><code>forecast_path_dlm</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/forecast.py#L177" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_path_dlm</code>(<strong><code>mod</code></strong>, <strong><code>k</code></strong>, <strong><code>X</code></strong>=<em><code>None</code></em>, <strong><code>nsamps</code></strong>=<em><code>1</code></em>, <strong><code>approx</code></strong>=<em><code>True</code></em>)</p>
-</blockquote>
-<p>Forecast function for the k-step path
-k: steps ahead to forecast
-X: array with k rows for the future regression components
-nsamps: Number of samples to draw from forecast distribution</p>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Marginal-forecasting-for-a-binomial-DGLM">Marginal forecasting for a binomial DGLM<a class="anchor-link" href="#Marginal-forecasting-for-a-binomial-DGLM"> </a></h3>
-</div>
-</div>
-</div>
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="forecast_marginal_bindglm" class="doc_header"><code>forecast_marginal_bindglm</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/forecast.py#L261" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_marginal_bindglm</code>(<strong><code>mod</code></strong>, <strong><code>n</code></strong>, <strong><code>k</code></strong>, <strong><code>X</code></strong>=<em><code>None</code></em>, <strong><code>nsamps</code></strong>=<em><code>1</code></em>, <strong><code>mean_only</code></strong>=<em><code>False</code></em>)</p>
-</blockquote>
-<p>Forecast function k steps ahead (marginal)</p>
-
-</div>
-
-</div>
-
+    </div>
 </div>
 </div>
 
@@ -256,7 +477,7 @@ nsamps: Number of samples to draw from forecast distribution</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="forecast_joint_copula_sim" class="doc_header"><code>forecast_joint_copula_sim</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/forecast.py#L367" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_joint_copula_sim</code>(<strong><code>mod_list</code></strong>, <strong><code>lambda_mu</code></strong>, <strong><code>lambda_cov</code></strong>, <strong><code>nsamps</code></strong>, <strong><code>t_dist</code></strong>=<em><code>False</code></em>, <strong><code>nu</code></strong>=<em><code>9</code></em>)</p>
+<h4 id="forecast_joint_copula_sim" class="doc_header"><code>forecast_joint_copula_sim</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/forecast.py#L365" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_joint_copula_sim</code>(<strong><code>mod_list</code></strong>, <strong><code>lambda_mu</code></strong>, <strong><code>lambda_cov</code></strong>, <strong><code>nsamps</code></strong>, <strong><code>t_dist</code></strong>=<em><code>False</code></em>, <strong><code>nu</code></strong>=<em><code>9</code></em>)</p>
 </blockquote>
 <p>lambda_mu: kx1 Mean vector for forecast mean over t+1:t+k
 lambda_cov: kxk Covariance matrix for the forecast over t+1:t+k</p>
@@ -289,40 +510,7 @@ lambda_cov: kxk Covariance matrix for the forecast over t+1:t+k</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="forecast_joint_copula_density_MC" class="doc_header"><code>forecast_joint_copula_density_MC</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/forecast.py#L410" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_joint_copula_density_MC</code>(<strong><code>mod_list</code></strong>, <strong><code>y</code></strong>, <strong><code>lambda_mu</code></strong>, <strong><code>lambda_cov</code></strong>, <strong><code>t_dist</code></strong>=<em><code>False</code></em>, <strong><code>nu</code></strong>=<em><code>9</code></em>, <strong><code>nsamps</code></strong>=<em><code>500</code></em>)</p>
-</blockquote>
-<p>lambda_mu: kx1 Mean vector for forecast mean over t+1:t+k
-lambda_cov: kxk Covariance matrix for the forecast over t+1:t+k</p>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="forecast_state_mean_and_var" class="doc_header"><code>forecast_state_mean_and_var</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/forecast.py#L489" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_state_mean_and_var</code>(<strong><code>mod</code></strong>, <strong><code>k</code></strong>=<em><code>1</code></em>, <strong><code>X</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="forecast_state_mean_and_var" class="doc_header"><code>forecast_state_mean_and_var</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/forecast.py#L487" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_state_mean_and_var</code>(<strong><code>mod</code></strong>, <strong><code>k</code></strong>=<em><code>1</code></em>, <strong><code>X</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Forecast function that returns the mean and variance of lambda = state vector * predictors</p>
 

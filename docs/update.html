@@ -60,6 +60,43 @@ description: "This module contains the update algorithm for a DGLM. After observ
 
 
 <div class="output_markdown rendered_html output_subarea ">
+<h4 id="update_F" class="doc_header"><code>update_F</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/update.py#L9" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>update_F</code>(<strong><code>mod</code></strong>, <strong><code>X</code></strong>, <strong><code>F</code></strong>=<em><code>None</code></em>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Update-Functions">Update Functions<a class="anchor-link" href="#Update-Functions"> </a></h2>
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
 <h4 id="update" class="doc_header"><code>update</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/update.py#L20" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>update</code>(<strong><code>mod</code></strong>, <strong><code>y</code></strong>=<em><code>None</code></em>, <strong><code>X</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 
@@ -75,7 +112,7 @@ description: "This module contains the update algorithm for a DGLM. After observ
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>This update method works for Poisson and Bernoull DGLMs. Below are very simple tests:</p>
+<p>This update method works for Poisson and Bernoulli DGLMs. Below are very simple tests:</p>
 <ul>
 <li>Manually define a simple DGLM with an intercept and 2 regression predictors</li>
 <li>Define new $y_t, X_t$</li>
@@ -96,6 +133,7 @@ description: "This module contains the update algorithm for a DGLM. After observ
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">pybats_nbdev.dglm</span> <span class="kn">import</span> <span class="n">dlm</span><span class="p">,</span> <span class="n">pois_dglm</span><span class="p">,</span> <span class="n">bern_dglm</span><span class="p">,</span> <span class="n">bin_dglm</span>
 <span class="kn">from</span> <span class="nn">pybats_nbdev.analysis</span> <span class="kn">import</span> <span class="n">analysis</span>
+
 <span class="n">a0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="n">R0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">mod_p</span> <span class="o">=</span> <span class="n">pois_dglm</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span> <span class="n">R0</span><span class="p">,</span> <span class="n">ntrend</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">nregn</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">deltrend</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">delregn</span><span class="o">=.</span><span class="mi">9</span><span class="p">)</span>
