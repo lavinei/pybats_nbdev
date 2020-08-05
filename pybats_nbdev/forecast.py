@@ -38,7 +38,7 @@ def forecast_R_cov(mod, k1, k2):
 # Cell
 def forecast_marginal(mod, k, X = None, nsamps = 1, mean_only = False, state_mean_var = False, y=None):
     """
-    Forecast function k steps ahead (marginal)
+    Marginal forecast function k steps ahead
     """
     # Plug in the correct F values
     F = update_F(mod, X, F=mod.F.copy())
@@ -67,7 +67,7 @@ def forecast_marginal(mod, k, X = None, nsamps = 1, mean_only = False, state_mea
 # Cell
 def forecast_marginal_bindglm(mod, n, k, X=None, nsamps=1, mean_only=False):
     """
-    Forecast function k steps ahead (marginal)
+    Marginal forecast function k steps ahead for a binomial DGLM
     """
     # Plug in the correct F values
     F = update_F(mod, X, F=mod.F.copy())
@@ -93,10 +93,7 @@ def forecast_marginal_bindglm(mod, n, k, X=None, nsamps=1, mean_only=False):
 # Cell
 def forecast_path(mod, k, X = None, nsamps = 1):
     """
-    Forecast function for the k-step path
-    k: steps ahead to forecast
-    X: array with k rows for the future regression components
-    nsamps: Number of samples to draw from forecast distribution
+    Path forecast function k steps ahead using sequential simulation
     """
 
     samps = np.zeros([nsamps, k])
@@ -148,10 +145,7 @@ def forecast_path(mod, k, X = None, nsamps = 1):
 # Cell
 def forecast_path_copula(mod, k, X = None, nsamps = 1, t_dist=False, y=None, nu=9, return_cov=False):
     """
-    Forecast function for the k-step path
-    k: steps ahead to forecast
-    X: array with k rows for the future regression components
-    nsamps: Number of samples to draw from forecast distribution
+    Path forecast function k steps ahead using a copula model
     """
 
     lambda_mu = np.zeros([k])
@@ -200,10 +194,7 @@ def forecast_path_copula(mod, k, X = None, nsamps = 1, t_dist=False, y=None, nu=
 # Cell
 def forecast_path_dlm(mod, k, X=None, nsamps=1, approx=True):
     """
-    Forecast function for the k-step path
-    k: steps ahead to forecast
-    X: array with k rows for the future regression components
-    nsamps: Number of samples to draw from forecast distribution
+    Path forecast function k steps ahead for a DLM
     """
 
     if approx:
@@ -364,8 +355,7 @@ def forecast_path_copula_density_MC(mod, y, lambda_mu, lambda_cov, t_dist=False,
 # Cell
 def forecast_joint_copula_sim(mod_list, lambda_mu, lambda_cov, nsamps, t_dist=False, nu=9):
     """
-    lambda_mu: kx1 Mean vector for forecast mean over t+1:t+k
-    lambda_cov: kxk Covariance matrix for the forecast over t+1:t+k
+    Jointly forecast from multiple DGLMs which share a latent factor
     """
 
     if t_dist:
@@ -486,8 +476,8 @@ def multivariate_t_density(y, mean, scale, nu):
 # Cell
 def forecast_state_mean_and_var(mod, k = 1, X = None):
     """
-       Forecast function that returns the mean and variance of lambda = state vector * predictors
-       """
+   Forecast function that returns the mean and variance of $\lambda$ = state vector * predictors
+   """
     # Plug in the correct F values
     F = update_F(mod, X, F=mod.F.copy())
     # F = np.copy(mod.F)
