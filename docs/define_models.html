@@ -97,12 +97,12 @@ description: "This module contains helper functions to define a DGLM, DCMM, or D
 <span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Advertising&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
 
 <span class="n">mod</span> <span class="o">=</span> <span class="n">define_dglm</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> 
-                  <span class="n">family</span><span class="o">=</span><span class="s1">&#39;poisson&#39;</span><span class="p">,</span>             <span class="c1"># Observation vector Y, regression predictors X, and the exponential family.</span>
-                  <span class="n">prior_length</span><span class="o">=</span><span class="mi">21</span><span class="p">,</span>              <span class="c1"># Number of observations to use in defining prior</span>
-                  <span class="n">ntrend</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>                     <span class="c1"># Number of &#39;trend&#39; or polynomial components. 1=intercept (local level). 2=intercept and local slope.</span>
-                  <span class="n">nhol</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>                       <span class="c1"># Number of holiday indicators in the model. These are regression components.</span>
-                  <span class="n">seasPeriods</span><span class="o">=</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span>              <span class="c1"># List of the periods of seasonal components. This includes a seasonal component with period 7, which is typical for day-of-week seasonality.</span>
-                  <span class="n">seasHarmComponents</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]]</span>  <span class="c1"># List of harmonic components for each seasonal component. These components go up to period/2, rounded down. So we include the 1st, 2nd, and 3rd component for a seasonality with period 7.</span>
+                  <span class="n">family</span><span class="o">=</span><span class="s1">&#39;poisson&#39;</span><span class="p">,</span>             
+                  <span class="n">prior_length</span><span class="o">=</span><span class="mi">21</span><span class="p">,</span>              
+                  <span class="n">ntrend</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>                     
+                  <span class="n">nhol</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>                       
+                  <span class="n">seasPeriods</span><span class="o">=</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span>              
+                  <span class="n">seasHarmComponents</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]]</span>
                   <span class="p">)</span>
 
 <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Intercept&#39;</span><span class="p">,</span> <span class="s1">&#39;Regn Coef&#39;</span><span class="p">,</span>

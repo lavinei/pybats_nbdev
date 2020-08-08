@@ -64,37 +64,13 @@ description: "This module contains functions to define the seasonal components i
 </div>
     {% endraw %}
 
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="createFourierToSeasonalL" class="doc_header"><code>createFourierToSeasonalL</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/seasonal.py#L27" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>createFourierToSeasonalL</code>(<strong><code>period</code></strong>, <strong><code>harmComponents</code></strong>, <strong><code>Fseas</code></strong>, <strong><code>Gseas</code></strong>)</p>
-</blockquote>
-
-</div>
-
-</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This function is called from <a href="/pybats_nbdev/dglm#dglm.__init__"><code>dglm.__init__</code></a> to define the seasonal components.</p>
 
 </div>
 </div>
-
 </div>
-    {% endraw %}
-
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -126,37 +102,13 @@ description: "This module contains functions to define the seasonal components i
 </div>
     {% endraw %}
 
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="fourierToSeasonalFxnl" class="doc_header"><code>fourierToSeasonalFxnl</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/seasonal.py#L43" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>fourierToSeasonalFxnl</code>(<strong><code>L</code></strong>, <strong><code>m</code></strong>, <strong><code>C</code></strong>, <strong><code>iseas</code></strong>)</p>
-</blockquote>
-
-</div>
-
-</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This function transforms the seasonal component of a model from fourier form into standard seasonal components. For example, if <code>seasPeriod = [7]</code>, then this would return a vector of length $7$, with each of the seasonal effects. The seasonal effects represent a deviation from the mean, so they will sum to $0$.</p>
 
 </div>
 </div>
-
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Functions-for-Latent-Factor-Inference">Functions for Latent Factor Inference<a class="anchor-link" href="#Functions-for-Latent-Factor-Inference"> </a></h3>
