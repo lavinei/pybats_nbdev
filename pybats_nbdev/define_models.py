@@ -27,39 +27,6 @@ def define_dglm(Y, X, family="normal", n=None,
     A helper function to define a DGLM.
 
     This function is especially useful if you do not know how to specifify a prior mean and variance (a0, R0) for the state vector.
-
-    .. code::
-
-        mod = define_dglm(Y, X, family='poisson',       # Observation vector Y, regression predictors X, and the exponential family.
-                          prior_length=21,              # Number of observations to use in defining prior
-                          ntrend=1,                     # Number of 'trend' or polynomial components. 1=intercept (local level). 2=intercept and local slope.
-                          nhol=0,                       # Number of holiday indicators in the model. These are regression components.
-                          seasPeriods=[7],              # List of the periods of seasonal components. This includes a seasonal component with period 7, which is typical for day-of-week seasonality.
-                          seasHarmComponents=[[1,2,3]]  # List of harmonic components for each seasonal component. These components go up to period/2, rounded down. So we include the 1st, 2nd, and 3rd component for a seasonality with period 7.
-                          )
-
-    This function is called automatically within 'analysis' if a model prior is not specified.
-
-    :param Y: Observation array used to define prior
-    :param X: Predictor array used to define prior (includes indicator columns for holidays)
-    :param ntrend: Number of trend components. 1 = Intercept only. 2 = Intercept + slope
-    :param nhol: Number of holiday components
-    :param seasPeriods: List of periods for seasonal components
-    :param seasHarmComponents: List of harmonic components included in each seasonal component
-    :param deltrend: Discount factor on trend components
-    :param delregn: Discount factor on regression components
-    :param delseas: Discount factor on seasonal components
-    :param delVar: Discount factor on stochastic volatility (observation error)
-    :param delhol: Discount factor on holiday components
-    :param n0: Prior 'sample size' for stochastic volatility
-    :param s0: Prior standard deviation of stochastic volatility
-    :param a0: Prior state vector mean
-    :param R0: Prior state vector covariance
-    :param adapt_discount: Optional. Can be 'info' or 'positive_regn'. Ways to adapt discount factors, and prevent exploding variance.
-    :param discount_forecast: Optional, boolean. Should forecasts be discounted? If yes, variance added to state vector with state evolution equation.
-    :param prior_length: Optional, number of rows from Y, X to use. Otherwise all are used
-    :param kwargs:
-    :return: Returns an initialized DGLM
     """
 
     if a0 is None or R0 is None:
@@ -297,33 +264,8 @@ def define_dcmm(Y, X,
                 interpolate=True, adapt_discount=False, prior_length = None,
                 **kwargs):
     """
-    :param Y: Observation array used to define prior
-    :param X: Predictor array used to define prior
-    :param ntrend: Number of trend components. 1 = Intercept only. 2 = Intercept + slope
-    :param nlf: Number of latent factor components
-    :param nhol: Number of holiday components
-    :param rho: Discount factor for random effects extension in poisson DGLM (smaller rho increases variance)
-    :param seasPeriods: List of periods for seasonal components
-    :param seasHarmComponents: List of harmonic components included in each seasonal component
-    :param deltrend_bern: Discount factor on trend components of Bernoulli DGLM
-    :param delregn_bern: Discount factor on regression components of Bernoulli DGLM
-    :param delseas_bern: Discount factor on seasonal components of Bernoulli DGLM
-    :param dellf_bern: Discount factor on latent factor components of Bernoulli DGLM
-    :param delhol_bern: Discount factor on holiday components of Bernoulli DGLM
-    :param deltrend_pois: Discount factor on trend components of Poisson DGLM
-    :param delregn_pois: Discount factor on regression components of Poisson DGLM
-    :param delseas_pois: Discount factor on seasonal components of Poisson DGLM
-    :param dellf_pois: Discount factor on latent factor components of Poisson DGLM
-    :param delhol_pois: Discount factor on holiday components of Poisson DGLM
-    :param a0_bern: Prior state vector mean of Bernoulli DGLM
-    :param R0_bern: Prior state vector covariance of Bernoulli DGLM
-    :param a0_pois: Prior state vector mean of Poisson DGLM
-    :param R0_pois: Prior state vector covariance of Poisson DGLM
-    :param interpolate: Bool. Interpolate in Variational Bayes step for DGLM inference, for computational speedup.
-    :param adapt_discount: Optional. Can be 'info' or 'positive_regn'. Ways to adapt discount factors, and prevent exploding variance.
-    :param prior_length: Optional, number of rows from Y, X to use. Otherwise all are used
-    :param kwargs:
-    :return: An initialized DCMM
+    A helper function to define a DCMM.
+
     """
 
     nonzeros = Y.nonzero()[0]
@@ -376,44 +318,7 @@ def define_dbcm(Y_transaction, X_transaction=None, Y_cascade=None, X_cascade=Non
                 interpolate=True, adapt_discount=False, prior_length=None,
                 **kwargs):
     """
-    :param Y_transaction: Observation array of transactions used to define prior
-    :param X_transaction: Predictor array for transactions used to define prior
-    :param Y_cascade: Observation matrix of basket sizes used to define prior
-    :param X_cascade: Predictor array for basket sizes used to define prior
-    :param excess_baskets: Either excess_baskets or excess_values must be defined. Excess baskets is an array of basket sizes
-    in exactly the same format as the Y_cascade values. Column j indicate number of transactions with more than j items.
-    :param excess_values: List of excess values. Each element gives excess basket sizes observed on that day.
-    Most days should be an empty list. Some days may have multiple transactions with excess basket sizes.
-    :param ntrend: Number of trend components in the DCMM for transactions. 1 = Intercept only. 2 = Intercept + slope
-    :param nlf: Number of latent factor components in the DCMM for transactions
-    :param nhol: Number of holiday components in the DCMM for transactions
-    :param rho: Discount factor for random effects extension in the DCMM for transactions (smaller rho increases variance)
-    :param seasPeriods: List of periods for seasonal components in the DCMM for transactions
-    :param seasHarmComponents: List of harmonic components included in each seasonal component in the DCMM for transactions
-    :param deltrend_bern: Discount factor on trend components of Bernoulli DGLM
-    :param delregn_bern: Discount factor on regression components of Bernoulli DGLM
-    :param delseas_bern: Discount factor on seasonal components of Bernoulli DGLM
-    :param dellf_bern: Discount factor on latent factor components of Bernoulli DGLM
-    :param delhol_bern: Discount factor on holiday components of Bernoulli DGLM
-    :param deltrend_pois: Discount factor on trend components of Poisson DGLM
-    :param delregn_pois: Discount factor on regression components of Poisson DGLM
-    :param delseas_pois: Discount factor on seasonal components of Poisson DGLM
-    :param dellf_pois: Discount factor on latent factor components of Poisson DGLM
-    :param delhol_pois: Discount factor on holiday components of Poisson DGLM
-    :param deltrend_cascade: Discount factor on trend components of cascade binomial DGLMs
-    :param delregn_cascade: Discount factor on regression components of cascade binomial DGLMs
-    :param delseas_cascade: Discount factor on seasonal components of cascade binomial DGLMs
-    :param dellf_cascade: Discount factor on latent factor components of cascade binomial DGLMs (DEPRECATED)
-    :param delhol_cascade: Discount factor on holiday components of cascade binomial DGLMs
-    :param a0_bern: Prior state vector mean of Bernoulli DGLM
-    :param R0_bern: Prior state vector covariance of Bernoulli DGLM
-    :param a0_pois: Prior state vector mean of Poisson DGLM
-    :param R0_pois: Prior state vector covariance of Poisson DGLM
-    :param interpolate: Bool. Interpolate in Variational Bayes step for DGLM inference, for computational speedup.
-    :param adapt_discount: Optional. Can be 'info' or 'positive_regn'. Ways to adapt discount factors, and prevent exploding variance.
-    :param prior_length: Optional, number of rows from Y, X to use. Otherwise all are used
-    :param kwargs:
-    :return: An initialized DBCM
+    A helper function to define a DBCM.
     """
 
     # Define the dcmm

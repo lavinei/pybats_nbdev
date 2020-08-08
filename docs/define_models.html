@@ -5,8 +5,8 @@ title: Define Models
 keywords: fastai
 sidebar: home_sidebar
 
-summary: "This module contains helper functions to define a DGLM. The function accepts the first several observations in a time series, and automatically initialized the model and coefficients based upon those values."
-description: "This module contains helper functions to define a DGLM. The function accepts the first several observations in a time series, and automatically initialized the model and coefficients based upon those values."
+summary: "This module contains helper functions to define a DGLM, DCMM, or DBCM. The functions use the first several observations of a time series and initialize the model and coefficients by treating them as static generalized linear models. These functions are called automatically from the `analysis` functions."
+description: "This module contains helper functions to define a DGLM, DCMM, or DBCM. The functions use the first several observations of a time series and initialize the model and coefficients by treating them as static generalized linear models. These functions are called automatically from the `analysis` functions."
 ---
 <!--
 
@@ -55,39 +55,142 @@ description: "This module contains helper functions to define a DGLM. The functi
 </blockquote>
 <p>A helper function to define a DGLM.</p>
 <p>This function is especially useful if you do not know how to specifify a prior mean and variance (a0, R0) for the state vector.</p>
-<p>.. code::</p>
 
-<pre><code>mod = define_dglm(Y, X, family='poisson',       # Observation vector Y, regression predictors X, and the exponential family.
-                  prior_length=21,              # Number of observations to use in defining prior
-                  ntrend=1,                     # Number of 'trend' or polynomial components. 1=intercept (local level). 2=intercept and local slope.
-                  nhol=0,                       # Number of holiday indicators in the model. These are regression components.
-                  seasPeriods=[7],              # List of the periods of seasonal components. This includes a seasonal component with period 7, which is typical for day-of-week seasonality.
-                  seasHarmComponents=[[1,2,3]]  # List of harmonic components for each seasonal component. These components go up to period/2, rounded down. So we include the 1st, 2nd, and 3rd component for a seasonality with period 7.
-                  )
+</div>
 
-</code></pre>
-<p>This function is called automatically within 'analysis' if a model prior is not specified.</p>
-<p>:param Y: Observation array used to define prior
-:param X: Predictor array used to define prior (includes indicator columns for holidays)
-:param ntrend: Number of trend components. 1 = Intercept only. 2 = Intercept + slope
-:param nhol: Number of holiday components
-:param seasPeriods: List of periods for seasonal components
-:param seasHarmComponents: List of harmonic components included in each seasonal component
-:param deltrend: Discount factor on trend components
-:param delregn: Discount factor on regression components
-:param delseas: Discount factor on seasonal components
-:param delVar: Discount factor on stochastic volatility (observation error)
-:param delhol: Discount factor on holiday components
-:param n0: Prior 'sample size' for stochastic volatility
-:param s0: Prior standard deviation of stochastic volatility
-:param a0: Prior state vector mean
-:param R0: Prior state vector covariance
-:param adapt_discount: Optional. Can be 'info' or 'positive_regn'. Ways to adapt discount factors, and prevent exploding variance.
-:param discount_forecast: Optional, boolean. Should forecasts be discounted? If yes, variance added to state vector with state evolution equation.
-:param prior_length: Optional, number of rows from Y, X to use. Otherwise all are used
-:param kwargs:
-:return: Returns an initialized DGLM</p>
+</div>
 
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="/pybats_nbdev/define_models#define_dglm"><code>define_dglm</code></a> is a simple helper function to initialize a model. The primary arguments to pass in to <a href="/pybats_nbdev/define_models#define_dglm"><code>define_dglm</code></a> are:</p>
+<ul>
+<li><code>Y</code> and <code>X</code>: The observations and predictors</li>
+<li><code>family</code>: The observation family, which can be 'poisson', 'bernoulli', 'normal', or 'binomial'</li>
+<li><code>prior_length</code>: The number of observations to use for defining the model</li>
+</ul>
+<p>You can pass in many other arguments, including anything accepted by <a href="/pybats_nbdev/dglm#dglm.__init__"><code>dglm.__init__</code></a>, such as the number of trend components, the seasonal components, and the number of holidays. The number of regression predictors, <code>nregn</code>, is automatically inferred from the number of columns in <code>X</code>.</p>
+<p>Below is a simple example of using <a href="/pybats_nbdev/define_models#define_dglm"><code>define_dglm</code></a> to initialize a Poisson DGLM. In most of the PyBATS examples this function is called indirectly through <a href="/pybats_nbdev/analysis"><code>analysis</code></a>. However, it can be useful to call directly to gain more control over customizing the model definition.</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">pybats_nbdev.shared</span> <span class="kn">import</span> <span class="n">load_sales_example</span>
+<span class="kn">from</span> <span class="nn">pybats_nbdev.define_models</span> <span class="kn">import</span> <span class="n">define_dglm</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">load_sales_example</span><span class="p">()</span>             
+<span class="n">Y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Sales&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Advertising&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+<span class="n">mod</span> <span class="o">=</span> <span class="n">define_dglm</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> 
+                  <span class="n">family</span><span class="o">=</span><span class="s1">&#39;poisson&#39;</span><span class="p">,</span>             <span class="c1"># Observation vector Y, regression predictors X, and the exponential family.</span>
+                  <span class="n">prior_length</span><span class="o">=</span><span class="mi">21</span><span class="p">,</span>              <span class="c1"># Number of observations to use in defining prior</span>
+                  <span class="n">ntrend</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>                     <span class="c1"># Number of &#39;trend&#39; or polynomial components. 1=intercept (local level). 2=intercept and local slope.</span>
+                  <span class="n">nhol</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>                       <span class="c1"># Number of holiday indicators in the model. These are regression components.</span>
+                  <span class="n">seasPeriods</span><span class="o">=</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span>              <span class="c1"># List of the periods of seasonal components. This includes a seasonal component with period 7, which is typical for day-of-week seasonality.</span>
+                  <span class="n">seasHarmComponents</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]]</span>  <span class="c1"># List of harmonic components for each seasonal component. These components go up to period/2, rounded down. So we include the 1st, 2nd, and 3rd component for a seasonality with period 7.</span>
+                  <span class="p">)</span>
+
+<span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Intercept&#39;</span><span class="p">,</span> <span class="s1">&#39;Regn Coef&#39;</span><span class="p">,</span>
+         <span class="s1">&#39;Seas Coef 1&#39;</span><span class="p">,</span> <span class="s1">&#39;Seas Coef 2&#39;</span><span class="p">,</span> <span class="s1">&#39;Seas Coef 3&#39;</span><span class="p">,</span>
+         <span class="s1">&#39;Seas Coef 4&#39;</span><span class="p">,</span> <span class="s1">&#39;Seas Coef 5&#39;</span><span class="p">,</span> <span class="s1">&#39;Seas Coef 6&#39;</span><span class="p">]</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;State Vector Mean&#39;</span><span class="p">:</span><span class="n">mod</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+              <span class="s1">&#39;State Vector Standard Deviation&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mod</span><span class="o">.</span><span class="n">R</span><span class="o">.</span><span class="n">diagonal</span><span class="p">())},</span>
+             <span class="n">index</span><span class="o">=</span><span class="n">names</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>State Vector Mean</th>
+      <th>State Vector Standard Deviation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Intercept</th>
+      <td>2.10</td>
+      <td>0.15</td>
+    </tr>
+    <tr>
+      <th>Regn Coef</th>
+      <td>0.06</td>
+      <td>0.01</td>
+    </tr>
+    <tr>
+      <th>Seas Coef 1</th>
+      <td>0.00</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <th>Seas Coef 2</th>
+      <td>0.00</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <th>Seas Coef 3</th>
+      <td>0.00</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <th>Seas Coef 4</th>
+      <td>0.00</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <th>Seas Coef 5</th>
+      <td>0.00</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <th>Seas Coef 6</th>
+      <td>0.00</td>
+      <td>1.00</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 </div>
 
 </div>
@@ -116,7 +219,7 @@ description: "This module contains helper functions to define a DGLM. The functi
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="define_dlm_params" class="doc_header"><code>define_dlm_params</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/define_models.py#L195" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>define_dlm_params</code>(<strong><code>Y</code></strong>, <strong><code>X</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="define_dlm_params" class="doc_header"><code>define_dlm_params</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/define_models.py#L162" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>define_dlm_params</code>(<strong><code>Y</code></strong>, <strong><code>X</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 
 </div>
@@ -147,7 +250,7 @@ description: "This module contains helper functions to define a DGLM. The functi
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="define_bern_params" class="doc_header"><code>define_bern_params</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/define_models.py#L208" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>define_bern_params</code>(<strong><code>Y</code></strong>, <strong><code>X</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="define_bern_params" class="doc_header"><code>define_bern_params</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/define_models.py#L175" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>define_bern_params</code>(<strong><code>Y</code></strong>, <strong><code>X</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 
 </div>
@@ -178,7 +281,7 @@ description: "This module contains helper functions to define a DGLM. The functi
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="define_bin_params" class="doc_header"><code>define_bin_params</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/define_models.py#L235" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>define_bin_params</code>(<strong><code>Y</code></strong>, <strong><code>n</code></strong>, <strong><code>X</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="define_bin_params" class="doc_header"><code>define_bin_params</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/define_models.py#L202" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>define_bin_params</code>(<strong><code>Y</code></strong>, <strong><code>n</code></strong>, <strong><code>X</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 
 </div>
@@ -209,7 +312,7 @@ description: "This module contains helper functions to define a DGLM. The functi
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="define_pois_params" class="doc_header"><code>define_pois_params</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/define_models.py#L258" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>define_pois_params</code>(<strong><code>Y</code></strong>, <strong><code>X</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="define_pois_params" class="doc_header"><code>define_pois_params</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/define_models.py#L225" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>define_pois_params</code>(<strong><code>Y</code></strong>, <strong><code>X</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 
 </div>
@@ -222,6 +325,19 @@ description: "This module contains helper functions to define a DGLM. The functi
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>These functions are the core of <a href="/pybats_nbdev/define_models#define_dglm"><code>define_dglm</code></a>. They take the first <code>prior_length</code> data points and fit a static, non-dynamic, generalized linear model (GLM), to initialize the DGLM.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Define-Combinations-of-DGLMs">Define Combinations of DGLMs<a class="anchor-link" href="#Define-Combinations-of-DGLMs"> </a></h2>
+</div>
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -240,35 +356,9 @@ description: "This module contains helper functions to define a DGLM. The functi
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="define_dcmm" class="doc_header"><code>define_dcmm</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/define_models.py#L291" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>define_dcmm</code>(<strong><code>Y</code></strong>, <strong><code>X</code></strong>, <strong><code>ntrend</code></strong>=<em><code>1</code></em>, <strong><code>nlf</code></strong>=<em><code>0</code></em>, <strong><code>nhol</code></strong>=<em><code>0</code></em>, <strong><code>rho</code></strong>=<em><code>1</code></em>, <strong><code>seasPeriods</code></strong>=<em><code>[7]</code></em>, <strong><code>seasHarmComponents</code></strong>=<em><code>[[1, 2, 3]]</code></em>, <strong><code>deltrend_bern</code></strong>=<em><code>0.995</code></em>, <strong><code>delregn_bern</code></strong>=<em><code>0.995</code></em>, <strong><code>delseas_bern</code></strong>=<em><code>0.995</code></em>, <strong><code>dellf_bern</code></strong>=<em><code>0.999</code></em>, <strong><code>delhol_bern</code></strong>=<em><code>1</code></em>, <strong><code>deltrend_pois</code></strong>=<em><code>0.998</code></em>, <strong><code>delregn_pois</code></strong>=<em><code>0.995</code></em>, <strong><code>delseas_pois</code></strong>=<em><code>0.995</code></em>, <strong><code>dellf_pois</code></strong>=<em><code>0.999</code></em>, <strong><code>delhol_pois</code></strong>=<em><code>1</code></em>, <strong><code>a0_bern</code></strong>=<em><code>None</code></em>, <strong><code>R0_bern</code></strong>=<em><code>None</code></em>, <strong><code>a0_pois</code></strong>=<em><code>None</code></em>, <strong><code>R0_pois</code></strong>=<em><code>None</code></em>, <strong><code>interpolate</code></strong>=<em><code>True</code></em>, <strong><code>adapt_discount</code></strong>=<em><code>False</code></em>, <strong><code>prior_length</code></strong>=<em><code>None</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="define_dcmm" class="doc_header"><code>define_dcmm</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/define_models.py#L258" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>define_dcmm</code>(<strong><code>Y</code></strong>, <strong><code>X</code></strong>, <strong><code>ntrend</code></strong>=<em><code>1</code></em>, <strong><code>nlf</code></strong>=<em><code>0</code></em>, <strong><code>nhol</code></strong>=<em><code>0</code></em>, <strong><code>rho</code></strong>=<em><code>1</code></em>, <strong><code>seasPeriods</code></strong>=<em><code>[7]</code></em>, <strong><code>seasHarmComponents</code></strong>=<em><code>[[1, 2, 3]]</code></em>, <strong><code>deltrend_bern</code></strong>=<em><code>0.995</code></em>, <strong><code>delregn_bern</code></strong>=<em><code>0.995</code></em>, <strong><code>delseas_bern</code></strong>=<em><code>0.995</code></em>, <strong><code>dellf_bern</code></strong>=<em><code>0.999</code></em>, <strong><code>delhol_bern</code></strong>=<em><code>1</code></em>, <strong><code>deltrend_pois</code></strong>=<em><code>0.998</code></em>, <strong><code>delregn_pois</code></strong>=<em><code>0.995</code></em>, <strong><code>delseas_pois</code></strong>=<em><code>0.995</code></em>, <strong><code>dellf_pois</code></strong>=<em><code>0.999</code></em>, <strong><code>delhol_pois</code></strong>=<em><code>1</code></em>, <strong><code>a0_bern</code></strong>=<em><code>None</code></em>, <strong><code>R0_bern</code></strong>=<em><code>None</code></em>, <strong><code>a0_pois</code></strong>=<em><code>None</code></em>, <strong><code>R0_pois</code></strong>=<em><code>None</code></em>, <strong><code>interpolate</code></strong>=<em><code>True</code></em>, <strong><code>adapt_discount</code></strong>=<em><code>False</code></em>, <strong><code>prior_length</code></strong>=<em><code>None</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
-<p>:param Y: Observation array used to define prior
-:param X: Predictor array used to define prior
-:param ntrend: Number of trend components. 1 = Intercept only. 2 = Intercept + slope
-:param nlf: Number of latent factor components
-:param nhol: Number of holiday components
-:param rho: Discount factor for random effects extension in poisson DGLM (smaller rho increases variance)
-:param seasPeriods: List of periods for seasonal components
-:param seasHarmComponents: List of harmonic components included in each seasonal component
-:param deltrend_bern: Discount factor on trend components of Bernoulli DGLM
-:param delregn_bern: Discount factor on regression components of Bernoulli DGLM
-:param delseas_bern: Discount factor on seasonal components of Bernoulli DGLM
-:param dellf_bern: Discount factor on latent factor components of Bernoulli DGLM
-:param delhol_bern: Discount factor on holiday components of Bernoulli DGLM
-:param deltrend_pois: Discount factor on trend components of Poisson DGLM
-:param delregn_pois: Discount factor on regression components of Poisson DGLM
-:param delseas_pois: Discount factor on seasonal components of Poisson DGLM
-:param dellf_pois: Discount factor on latent factor components of Poisson DGLM
-:param delhol_pois: Discount factor on holiday components of Poisson DGLM
-:param a0_bern: Prior state vector mean of Bernoulli DGLM
-:param R0_bern: Prior state vector covariance of Bernoulli DGLM
-:param a0_pois: Prior state vector mean of Poisson DGLM
-:param R0_pois: Prior state vector covariance of Poisson DGLM
-:param interpolate: Bool. Interpolate in Variational Bayes step for DGLM inference, for computational speedup.
-:param adapt_discount: Optional. Can be 'info' or 'positive_regn'. Ways to adapt discount factors, and prevent exploding variance.
-:param prior_length: Optional, number of rows from Y, X to use. Otherwise all are used
-:param kwargs:
-:return: An initialized DCMM</p>
+<p>A helper function to define a DCMM.</p>
 
 </div>
 
@@ -280,6 +370,13 @@ description: "This module contains helper functions to define a DGLM. The functi
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Dynamic Count Mixture Models are the combination of a Bernoulli and Poisson DGLM. <a href="/pybats_nbdev/define_models#define_dcmm"><code>define_dcmm</code></a> is a convenient wrapper to help initialize both components of the DCMM together, and is called automatically by <a href="/pybats_nbdev/analysis#analysis_dcmm"><code>analysis_dcmm</code></a>.</p>
+
+</div>
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -298,46 +395,9 @@ description: "This module contains helper functions to define a DGLM. The functi
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="define_dbcm" class="doc_header"><code>define_dbcm</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/define_models.py#L369" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>define_dbcm</code>(<strong><code>Y_transaction</code></strong>, <strong><code>X_transaction</code></strong>=<em><code>None</code></em>, <strong><code>Y_cascade</code></strong>=<em><code>None</code></em>, <strong><code>X_cascade</code></strong>=<em><code>None</code></em>, <strong><code>excess_baskets</code></strong>=<em><code>[]</code></em>, <strong><code>excess_values</code></strong>=<em><code>[]</code></em>, <strong><code>ntrend</code></strong>=<em><code>1</code></em>, <strong><code>nlf</code></strong>=<em><code>0</code></em>, <strong><code>nhol</code></strong>=<em><code>0</code></em>, <strong><code>rho</code></strong>=<em><code>1</code></em>, <strong><code>seasPeriods</code></strong>=<em><code>[7]</code></em>, <strong><code>seasHarmComponents</code></strong>=<em><code>[[1, 2, 3]]</code></em>, <strong><code>deltrend_bern</code></strong>=<em><code>0.995</code></em>, <strong><code>delregn_bern</code></strong>=<em><code>0.995</code></em>, <strong><code>delseas_bern</code></strong>=<em><code>0.995</code></em>, <strong><code>dellf_bern</code></strong>=<em><code>0.999</code></em>, <strong><code>delhol_bern</code></strong>=<em><code>1</code></em>, <strong><code>deltrend_pois</code></strong>=<em><code>0.998</code></em>, <strong><code>delregn_pois</code></strong>=<em><code>0.995</code></em>, <strong><code>delseas_pois</code></strong>=<em><code>0.995</code></em>, <strong><code>dellf_pois</code></strong>=<em><code>0.999</code></em>, <strong><code>delhol_pois</code></strong>=<em><code>1</code></em>, <strong><code>deltrend_cascade</code></strong>=<em><code>0.999</code></em>, <strong><code>delregn_cascade</code></strong>=<em><code>1.0</code></em>, <strong><code>delseas_cascade</code></strong>=<em><code>0.999</code></em>, <strong><code>dellf_cascade</code></strong>=<em><code>0.999</code></em>, <strong><code>delhol_cascade</code></strong>=<em><code>1.0</code></em>, <strong><code>a0_bern</code></strong>=<em><code>None</code></em>, <strong><code>R0_bern</code></strong>=<em><code>None</code></em>, <strong><code>a0_pois</code></strong>=<em><code>None</code></em>, <strong><code>R0_pois</code></strong>=<em><code>None</code></em>, <strong><code>a0_cascade</code></strong>=<em><code>None</code></em>, <strong><code>R0_cascade</code></strong>=<em><code>None</code></em>, <strong><code>interpolate</code></strong>=<em><code>True</code></em>, <strong><code>adapt_discount</code></strong>=<em><code>False</code></em>, <strong><code>prior_length</code></strong>=<em><code>None</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="define_dbcm" class="doc_header"><code>define_dbcm</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/define_models.py#L311" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>define_dbcm</code>(<strong><code>Y_transaction</code></strong>, <strong><code>X_transaction</code></strong>=<em><code>None</code></em>, <strong><code>Y_cascade</code></strong>=<em><code>None</code></em>, <strong><code>X_cascade</code></strong>=<em><code>None</code></em>, <strong><code>excess_baskets</code></strong>=<em><code>[]</code></em>, <strong><code>excess_values</code></strong>=<em><code>[]</code></em>, <strong><code>ntrend</code></strong>=<em><code>1</code></em>, <strong><code>nlf</code></strong>=<em><code>0</code></em>, <strong><code>nhol</code></strong>=<em><code>0</code></em>, <strong><code>rho</code></strong>=<em><code>1</code></em>, <strong><code>seasPeriods</code></strong>=<em><code>[7]</code></em>, <strong><code>seasHarmComponents</code></strong>=<em><code>[[1, 2, 3]]</code></em>, <strong><code>deltrend_bern</code></strong>=<em><code>0.995</code></em>, <strong><code>delregn_bern</code></strong>=<em><code>0.995</code></em>, <strong><code>delseas_bern</code></strong>=<em><code>0.995</code></em>, <strong><code>dellf_bern</code></strong>=<em><code>0.999</code></em>, <strong><code>delhol_bern</code></strong>=<em><code>1</code></em>, <strong><code>deltrend_pois</code></strong>=<em><code>0.998</code></em>, <strong><code>delregn_pois</code></strong>=<em><code>0.995</code></em>, <strong><code>delseas_pois</code></strong>=<em><code>0.995</code></em>, <strong><code>dellf_pois</code></strong>=<em><code>0.999</code></em>, <strong><code>delhol_pois</code></strong>=<em><code>1</code></em>, <strong><code>deltrend_cascade</code></strong>=<em><code>0.999</code></em>, <strong><code>delregn_cascade</code></strong>=<em><code>1.0</code></em>, <strong><code>delseas_cascade</code></strong>=<em><code>0.999</code></em>, <strong><code>dellf_cascade</code></strong>=<em><code>0.999</code></em>, <strong><code>delhol_cascade</code></strong>=<em><code>1.0</code></em>, <strong><code>a0_bern</code></strong>=<em><code>None</code></em>, <strong><code>R0_bern</code></strong>=<em><code>None</code></em>, <strong><code>a0_pois</code></strong>=<em><code>None</code></em>, <strong><code>R0_pois</code></strong>=<em><code>None</code></em>, <strong><code>a0_cascade</code></strong>=<em><code>None</code></em>, <strong><code>R0_cascade</code></strong>=<em><code>None</code></em>, <strong><code>interpolate</code></strong>=<em><code>True</code></em>, <strong><code>adapt_discount</code></strong>=<em><code>False</code></em>, <strong><code>prior_length</code></strong>=<em><code>None</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
-<p>:param Y_transaction: Observation array of transactions used to define prior
-:param X_transaction: Predictor array for transactions used to define prior
-:param Y_cascade: Observation matrix of basket sizes used to define prior
-:param X_cascade: Predictor array for basket sizes used to define prior
-:param excess_baskets: Either excess_baskets or excess_values must be defined. Excess baskets is an array of basket sizes
-in exactly the same format as the Y_cascade values. Column j indicate number of transactions with more than j items.
-:param excess_values: List of excess values. Each element gives excess basket sizes observed on that day.
-Most days should be an empty list. Some days may have multiple transactions with excess basket sizes.
-:param ntrend: Number of trend components in the DCMM for transactions. 1 = Intercept only. 2 = Intercept + slope
-:param nlf: Number of latent factor components in the DCMM for transactions
-:param nhol: Number of holiday components in the DCMM for transactions
-:param rho: Discount factor for random effects extension in the DCMM for transactions (smaller rho increases variance)
-:param seasPeriods: List of periods for seasonal components in the DCMM for transactions
-:param seasHarmComponents: List of harmonic components included in each seasonal component in the DCMM for transactions
-:param deltrend_bern: Discount factor on trend components of Bernoulli DGLM
-:param delregn_bern: Discount factor on regression components of Bernoulli DGLM
-:param delseas_bern: Discount factor on seasonal components of Bernoulli DGLM
-:param dellf_bern: Discount factor on latent factor components of Bernoulli DGLM
-:param delhol_bern: Discount factor on holiday components of Bernoulli DGLM
-:param deltrend_pois: Discount factor on trend components of Poisson DGLM
-:param delregn_pois: Discount factor on regression components of Poisson DGLM
-:param delseas_pois: Discount factor on seasonal components of Poisson DGLM
-:param dellf_pois: Discount factor on latent factor components of Poisson DGLM
-:param delhol_pois: Discount factor on holiday components of Poisson DGLM
-:param deltrend_cascade: Discount factor on trend components of cascade binomial DGLMs
-:param delregn_cascade: Discount factor on regression components of cascade binomial DGLMs
-:param delseas_cascade: Discount factor on seasonal components of cascade binomial DGLMs
-:param dellf_cascade: Discount factor on latent factor components of cascade binomial DGLMs (DEPRECATED)
-:param delhol_cascade: Discount factor on holiday components of cascade binomial DGLMs
-:param a0_bern: Prior state vector mean of Bernoulli DGLM
-:param R0_bern: Prior state vector covariance of Bernoulli DGLM
-:param a0_pois: Prior state vector mean of Poisson DGLM
-:param R0_pois: Prior state vector covariance of Poisson DGLM
-:param interpolate: Bool. Interpolate in Variational Bayes step for DGLM inference, for computational speedup.
-:param adapt_discount: Optional. Can be 'info' or 'positive_regn'. Ways to adapt discount factors, and prevent exploding variance.
-:param prior_length: Optional, number of rows from Y, X to use. Otherwise all are used
-:param kwargs:
-:return: An initialized DBCM</p>
+<p>A helper function to define a DBCM.</p>
 
 </div>
 
@@ -349,6 +409,13 @@ Most days should be an empty list. Some days may have multiple transactions with
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Dynamic Binary Cascade Models are the combination of a DCMM and a cascade of binomial DGLMs. <a href="/pybats_nbdev/define_models#define_dbcm"><code>define_dbcm</code></a> is a convenient wrapper to help initialize all of the components of a DBCM together, and is called automatically by <a href="/pybats_nbdev/analysis#analysis_dbcm"><code>analysis_dbcm</code></a>.</p>
+
+</div>
+</div>
+</div>
 </div>
  
 
