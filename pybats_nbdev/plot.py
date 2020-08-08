@@ -39,7 +39,11 @@ def plot_data_forecast(fig, ax, y, f, samples, dates, linewidth=1, linecolor='b'
 
     if kwargs.get('xlim') is None:
         kwargs.update({'xlim':[dates[0], dates[-1]]})
-    ax = ax_style(ax, **kwargs)
+
+    if kwargs.get('legend') is None:
+        legend = ['Forecast', 'Observations', 'Credible Interval']
+
+    ax = ax_style(ax, legend=legend, **kwargs)
 
     # If dates are actually dates, then format the dates on the x-axis
     if isinstance(dates[0], (datetime, date)):

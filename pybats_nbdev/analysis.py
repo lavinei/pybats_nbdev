@@ -26,42 +26,6 @@ def analysis(Y, X, k, forecast_start, forecast_end,
     1. Automatically initialize a DGLM
     2. Run sequential updating
     3. Forecast at each specified time step
-
-    This function has many arguments to specify the model components. Here's a simple example for a Poisson DGLM:
-
-    .. code::
-
-        mod, samples = analysis(Y, X, family="poisson",
-                                forecast_start=15,      # First time step to forecast on
-                                forecast_end=20,        # Final time step to forecast on
-                                k=1,                    # Forecast horizon. If k>1, default is to forecast 1:k steps ahead, marginally
-                                prior_length=6,         # Number of observations to use in defining prior
-                                rho=.5,                 # Random effect extension, increases variance of Poisson DGLM (see Berry and West, 2019)
-                                deltrend=0.95,          # Discount factor on the trend component (intercept)
-                                delregn=0.95            # Discount factor on the regression component
-                                )
-
-
-    :param Y: Array of observations (n * 1)
-    :param X: Array of covariates (n * p)
-    :param k: forecast horizon (how many days ahead to forecast)
-    :param forecast_start: date or index value to start forecasting (beginning with 0).
-    :param forecast_end: date or index value to end forecasting
-    :param family: Exponential family for Y. Options: 'normal', 'poisson', 'bernoulli', or 'binomial'
-    :param nsamps: Number of forecast samples to draw
-    :param n: If family is 'binomial', this is a (n * 1) array of test size (where Y is the array of successes)
-    :param model_prior: A prespecified model of class DGLM
-    :param prior_length: If model_prior is not given, a DGLM will be defined using the first 'prior_length' observations in Y, X.
-    :param ntrend: Number of trend components in the model. 1 = local intercept , 2 = local intercept + local level
-    :param dates: Array of dates (n * 1). Must be specified if forecast_start and forecast_end are dates.
-    :param holidays: List of Holidays to be given a special indicator (from pandas.tseries.holiday)
-    :param seasPeriods: A list of periods for seasonal effects (e.g. [7] for a weekly effect, where Y is daily data)
-    :param seasHarmComponents: A list of lists of harmonic components for a seasonal period (e.g. [[1,2,3]] if seasPeriods=[7])
-    :param ret: A list of values to return. Options include: ['model', 'forecast, 'model_coef']
-    :param mean_only: True/False - return the mean only when forecasting, instead of samples?
-    :param kwargs: Further key word arguments to define the model prior. Common arguments include discount factors deltrend, delregn, delseas, and delhol.
-
-    :return: Default is a list with [model, forecast_samples]. forecast_samples will have dimension (nsamps by forecast_length by k), where forecast_length is the number of time steps between forecast_start and forecast_end. The output can be customized with the 'ret' parameter, which is a list of objects to return.
     """
 
     # Add the holiday indicator variables to the regression matrix
@@ -116,7 +80,7 @@ def analysis(Y, X, k, forecast_start, forecast_end,
 
     # Create dummy variable if there are no regression covariates
     if X is None:
-        X = np.array([None]*T).reshape(-1,1)
+        X = np.array([None]*(T+k)).reshape(-1,1)
     else:
         if len(X.shape) == 1:
             X = X.reshape(-1,1)
@@ -223,24 +187,7 @@ def analysis_dcmm(Y, X, prior_length, k, forecast_start, forecast_end, nsamps=50
                   mean_only=False, dates=None, holidays=[], seasPeriods=[], seasHarmComponents=[], ret=['forecast'],
                   new_latent_factors=None, **kwargs):
     """
-    Run updating + forecasting using a dcmm. Latent Factor option available
-
-    :param Y: Array of daily sales (n * 1)
-    :param X: Covariate array (n * p)
-    :param prior_length: number of datapoints to use for prior specification
-    :param k: forecast horizon (how many days ahead to forecast)
-    :param forecast_start: day to start forecasting (beginning with 0)
-    :param forecast_end:  day to end forecasting
-    :param nsamps: Number of forecast samples to draw
-    :param rho: Random effect extension to the Poisson DGLM, handles overdispersion
-    :param phi_mu_prior: Mean of latent factors over k-step horizon (if using a Latent Factor DCMM)
-    :param phi_sigma_prior: Variance of latent factors over k-step horizon (if using a Latent Factor DCMM)
-    :param phi_psi_prior: Covariance of latent factors over k-step horizon (if using a Latent Factor DCMM)
-    :param phi_mu_post: Daily mean of latent factors for updating (if using a Latent Factor DCMM)
-    :param phi_sigma_post: Daily variance of latent factors for updating (if using a Latent Factor DCMM)
-    :param holidays: List of holiday dates
-    :param kwargs: Other keyword arguments for initializing the model. e.g. delregn = [.99, .98] discount factors.
-    :return: Array of forecasting samples, dimension (nsamps * (forecast_end - forecast_start) * k)
+    This is a helpful function to run a standard analysis using a DCMM.
     """
 
     if latent_factor is not None:
@@ -387,24 +334,7 @@ def analysis_dbcm(Y_transaction, X_transaction, Y_cascade, X_cascade, excess,
                   holidays = [], seasPeriods = [], seasHarmComponents = [],
                   ret=['forecast'], new_latent_factors = None, **kwargs):
     """
-    # Run updating + forecasting using a dcmm. Latent Factor option available
-    :param Y_transaction: Array of daily transactions (n * 1)
-    :param X_transaction: Covariate array (n * p)
-    :param Y_cascade: Array of daily baskets of size r or greater, for 1 <= r <= ncascade
-    :param X_cascade: Covariate array for the binomial DGLMs of the cascade
-    :param prior_length: number of datapoints to use for prior specification
-    :param k: forecast horizon (how many days ahead to forecast)
-    :param forecast_start: day to start forecasting (beginning with 0)
-    :param forecast_end:  day to end forecasting
-    :param nsamps: Number of forecast samples to draw
-    :param rho: Random effect extension to the Poisson DGLM, handles overdispersion
-    :param phi_mu_prior: Mean of latent factors over k-step horizon (if using a Latent Factor DCMM)
-    :param phi_sigma_prior: Variance of latent factors over k-step horizon (if using a Latent Factor DCMM)
-    :param phi_psi_prior: Covariance of latent factors over k-step horizon (if using a Latent Factor DCMM)
-    :param phi_mu_post: Daily mean of latent factors for updating (if using a Latent Factor DCMM)
-    :param phi_sigma_post: Daily variance of latent factors for updating (if using a Latent Factor DCMM)
-    :param kwargs: Other keyword arguments for initializing the model
-    :return: Array of forecasting samples, dimension (nsamps * (forecast_end - forecast_start) * k)
+    This is a helpful function to run a standard analysis using a DBCM.
     """
 
     if latent_factor is not None:

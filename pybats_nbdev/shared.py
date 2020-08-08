@@ -152,6 +152,15 @@ def load_dbcm_latent_factor_example():
     return data
 
 # Internal Cell
+def load_us_inflation():
+    """
+    Read in quarterly US inflation data
+    """
+    data_dir = os.path.dirname(os.path.abspath(__file__)) + '/pkg_data/'
+    data = pd.read_csv(data_dir + 'us_inflation.csv')
+    return data
+
+# Internal Cell
 def load_standard_holidays():
     holidays = [USMartinLutherKingJr,
                 USMemorialDay,
