@@ -10,7 +10,7 @@
     "Conjugates": "/conjugates",
     "Point Forecasts": "/point_forecast",
     "Loss Functions": "/loss_functions",
-    "Plotting": "/plot",
+    "Plot": "/plot",
     "Shared Functions": "/shared",
     "DCMMs": "/dcmm",
     "DBCMs": "/dbcm",

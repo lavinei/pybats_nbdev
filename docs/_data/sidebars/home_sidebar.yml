@@ -37,7 +37,7 @@ entries:
       title: Loss Functions
       url: /loss_functions
     - output: web,pdf
-      title: Plotting
+      title: Plot
       url: /plot
     - output: web,pdf
       title: Shared Functions
