@@ -213,7 +213,7 @@ def analysis_dcmm(Y, X, prior_length, k, forecast_start, forecast_end, nsamps=50
     # Add the holiday indicator variables to the regression matrix
     nhol = len(holidays)
     if nhol > 0:
-        X_transaction = define_holiday_regressors(X, dates, holidays)
+        X = define_holiday_regressors(X, dates, holidays)
 
     # Initialize the DCMM
     if not kwargs.__contains__('model_prior'):

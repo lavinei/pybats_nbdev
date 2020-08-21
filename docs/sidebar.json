@@ -12,7 +12,7 @@
     "Loss Functions": "/loss_functions",
     "Plot": "/plot",
     "Shared Functions": "/shared",
-    "DCMMs": "/dcmm",
+    "DCMM": "/dcmm",
     "DBCMs": "/dbcm",
     "Latent Factors": "/latent_factor",
     "Latent Factor Functions": "/latent_factor_fxns"

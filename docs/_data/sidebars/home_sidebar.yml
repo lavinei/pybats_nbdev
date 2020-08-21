@@ -43,7 +43,7 @@ entries:
       title: Shared Functions
       url: /shared
     - output: web,pdf
-      title: DCMMs
+      title: DCMM
       url: /dcmm
     - output: web,pdf
       title: DBCMs

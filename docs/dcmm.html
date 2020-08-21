@@ -1,12 +1,12 @@
 ---
 
-title: DCMMs
+title: DCMM
 
 keywords: fastai
 sidebar: home_sidebar
 
-summary: "This module contains the class for the Dynamic Count Mixture Model (DCMM), as described in Berry and West (2019) INSERT LINK."
-description: "This module contains the class for the Dynamic Count Mixture Model (DCMM), as described in Berry and West (2019) INSERT LINK."
+summary: "The class DCMM, for a Dynamic Count Mixture Model, which is the combination of a Bernoulli and Poisson DGLM, as described in <a href='https://arxiv.org/pdf/1805.05232.pdf'>Berry and West (2019)</a>."
+description: "The class DCMM, for a Dynamic Count Mixture Model, which is the combination of a Bernoulli and Poisson DGLM, as described in <a href='https://arxiv.org/pdf/1805.05232.pdf'>Berry and West (2019)</a>."
 ---
 <!--
 
@@ -23,24 +23,6 @@ description: "This module contains the class for the Dynamic Count Mixture Model
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
-<span class="o">%</span><span class="k">autoreload</span> 2
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 </div>
     {% endraw %}
@@ -72,6 +54,263 @@ description: "This module contains the class for the Dynamic Count Mixture Model
 <h2 id="dcmm" class="doc_header"><code>class</code> <code>dcmm</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/dcmm.py#L13" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>dcmm</code>(<strong><code>a0_bern</code></strong>=<em><code>None</code></em>, <strong><code>R0_bern</code></strong>=<em><code>None</code></em>, <strong><code>nregn_bern</code></strong>=<em><code>0</code></em>, <strong><code>ntrend_bern</code></strong>=<em><code>0</code></em>, <strong><code>nlf_bern</code></strong>=<em><code>0</code></em>, <strong><code>nhol_bern</code></strong>=<em><code>0</code></em>, <strong><code>seasPeriods_bern</code></strong>=<em><code>[]</code></em>, <strong><code>seasHarmComponents_bern</code></strong>=<em><code>[]</code></em>, <strong><code>deltrend_bern</code></strong>=<em><code>1</code></em>, <strong><code>delregn_bern</code></strong>=<em><code>1</code></em>, <strong><code>delhol_bern</code></strong>=<em><code>1</code></em>, <strong><code>delseas_bern</code></strong>=<em><code>1</code></em>, <strong><code>dellf_bern</code></strong>=<em><code>1</code></em>, <strong><code>a0_pois</code></strong>=<em><code>None</code></em>, <strong><code>R0_pois</code></strong>=<em><code>None</code></em>, <strong><code>nregn_pois</code></strong>=<em><code>0</code></em>, <strong><code>ntrend_pois</code></strong>=<em><code>0</code></em>, <strong><code>nlf_pois</code></strong>=<em><code>0</code></em>, <strong><code>nhol_pois</code></strong>=<em><code>0</code></em>, <strong><code>seasPeriods_pois</code></strong>=<em><code>[]</code></em>, <strong><code>seasHarmComponents_pois</code></strong>=<em><code>[]</code></em>, <strong><code>deltrend_pois</code></strong>=<em><code>1</code></em>, <strong><code>delregn_pois</code></strong>=<em><code>1</code></em>, <strong><code>delhol_pois</code></strong>=<em><code>1</code></em>, <strong><code>delseas_pois</code></strong>=<em><code>1</code></em>, <strong><code>dellf_pois</code></strong>=<em><code>1</code></em>, <strong><code>rho</code></strong>=<em><code>1</code></em>, <strong><code>interpolate</code></strong>=<em><code>True</code></em>, <strong><code>adapt_discount</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
 
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>A DCMM can be used in the same way as a DGLM, with the standard methods <a href="/pybats_nbdev/dcmm#dcmm.update"><code>dcmm.update</code></a>, <a href="/pybats_nbdev/dcmm#dcmm.forecast_marginal"><code>dcmm.forecast_marginal</code></a>, and <a href="/pybats_nbdev/dcmm#dcmm.forecast_path"><code>dcmm.forecast_path</code></a>. The primary difference is in the predictors <code>X</code> passed in to these functions. By default, the same predictors will be used in the Bernoulli and Poisson DGLMs. To use different predictors for the Bernoulli and Poisson DGLMs, pass in a list or tuple of length 2. The first element will be used for the Bernoulli, and second for the Poisson.</p>
+<p>There are equivalent helper functions as well. A full analysis can be run with <a href="/pybats_nbdev/analysis#analysis_dcmm"><code>analysis_dcmm</code></a>, and <a href="/pybats_nbdev/define_models#define_dcmm"><code>define_dcmm</code></a> helps to initialize a DCMM. These functions assume that the same predictors <code>X</code> are used for the Bernoulli and Poisson DGLMs.</p>
+<p>A quick example of using <code>analysis_dglm</code> is below, to demonstrate the structure of a DCMM:</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">pybats_nbdev.shared</span> <span class="kn">import</span> <span class="n">load_sales_example2</span>
+<span class="kn">from</span> <span class="nn">pybats_nbdev.analysis</span> <span class="kn">import</span> <span class="n">analysis_dcmm</span>
+<span class="kn">from</span> <span class="nn">pandas.tseries.holiday</span> <span class="kn">import</span> <span class="n">USFederalHolidayCalendar</span>
+
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">load_sales_example2</span><span class="p">()</span>
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Sales</th>
+      <th>Price</th>
+      <th>Promotion</th>
+    </tr>
+    <tr>
+      <th>Date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2014-06-01</th>
+      <td>15.0</td>
+      <td>1.11</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2014-06-02</th>
+      <td>13.0</td>
+      <td>2.19</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2014-06-03</th>
+      <td>6.0</td>
+      <td>0.23</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2014-06-04</th>
+      <td>2.0</td>
+      <td>-0.05</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2014-06-05</th>
+      <td>6.0</td>
+      <td>-0.14</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">prior_length</span> <span class="o">=</span> <span class="mi">35</span>   <span class="c1"># Number of days of data used to set prior</span>
+<span class="n">k</span> <span class="o">=</span> <span class="mi">7</span>               <span class="c1"># Forecast horizon</span>
+<span class="n">rho</span> <span class="o">=</span> <span class="mf">0.5</span>           <span class="c1"># Random effect discount factor to increase variance of forecast distribution</span>
+<span class="n">forecast_samps</span> <span class="o">=</span> <span class="mi">1000</span>  <span class="c1"># Number of forecast samples to draw</span>
+<span class="n">forecast_start</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="s1">&#39;2018-01-01&#39;</span><span class="p">)</span> <span class="c1"># Date to start forecasting</span>
+<span class="n">forecast_end</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="s1">&#39;2018-05-01&#39;</span><span class="p">)</span>   <span class="c1"># Date to stop forecasting</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mod</span><span class="p">,</span> <span class="n">samples</span> <span class="o">=</span> <span class="n">analysis_dcmm</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;Sales&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">data</span><span class="p">[[</span><span class="s1">&#39;Price&#39;</span><span class="p">,</span> <span class="s1">&#39;Promotion&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+                             <span class="n">prior_length</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">forecast_start</span><span class="p">,</span> <span class="n">forecast_end</span><span class="p">,</span>
+                             <span class="n">nsamps</span><span class="o">=</span><span class="n">forecast_samps</span><span class="p">,</span>
+                             <span class="n">seasPeriods</span><span class="o">=</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="n">seasHarmComponents</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]],</span>
+                             <span class="n">dates</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">holidays</span><span class="o">=</span><span class="n">USFederalHolidayCalendar</span><span class="o">.</span><span class="n">rules</span><span class="p">,</span>
+                             <span class="n">rho</span><span class="o">=</span><span class="n">rho</span><span class="p">,</span>
+                             <span class="n">ret</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">,</span> <span class="s1">&#39;forecast&#39;</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/Users/isaaclavine/Documents/pybats_nbdev/pybats_nbdev/dcmm.py:116: RuntimeWarning: overflow encountered in exp
+  if 1 / (1 + np.exp(-fcast_logit_lb)) &lt; 0.975:
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>beginning forecasting
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The Poisson and Bernoulli DGLMs within the DCMM can be accessed. We'll take a look at the regression coefficients associated with the Price and Promotion information on this product. We're only selecting the first two coefficients in the regression component in order to exclude the holiday effects, which are included in the regression component.</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mod</span><span class="o">.</span><span class="n">pois_mod</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="n">mod</span><span class="o">.</span><span class="n">pois_mod</span><span class="o">.</span><span class="n">iregn</span><span class="p">[:</span><span class="mi">2</span><span class="p">]],</span> <span class="n">mod</span><span class="o">.</span><span class="n">pois_mod</span><span class="o">.</span><span class="n">R</span><span class="o">.</span><span class="n">diagonal</span><span class="p">()[</span><span class="n">mod</span><span class="o">.</span><span class="n">pois_mod</span><span class="o">.</span><span class="n">iregn</span><span class="p">[:</span><span class="mi">2</span><span class="p">]]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(array([[0.01356624],
+        [0.07443098]]),
+ array([0.00055634, 0.00224769]))</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mod</span><span class="o">.</span><span class="n">bern_mod</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="n">mod</span><span class="o">.</span><span class="n">bern_mod</span><span class="o">.</span><span class="n">iregn</span><span class="p">[:</span><span class="mi">2</span><span class="p">]],</span> <span class="n">mod</span><span class="o">.</span><span class="n">bern_mod</span><span class="o">.</span><span class="n">R</span><span class="o">.</span><span class="n">diagonal</span><span class="p">()[</span><span class="n">mod</span><span class="o">.</span><span class="n">pois_mod</span><span class="o">.</span><span class="n">iregn</span><span class="p">[:</span><span class="mi">2</span><span class="p">]]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(array([[0.07176381],
+        [0.43106367]]),
+ array([0.45235003, 9.70062509]))</pre>
 </div>
 
 </div>
