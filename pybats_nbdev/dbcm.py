@@ -8,6 +8,7 @@ from .dglm import bin_dglm
 from .dcmm import dcmm
 from functools import partial
 import numpy as np
+import pandas as pd
 
 # Cell
 class dbcm:

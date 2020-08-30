@@ -27,12 +27,6 @@ description: "The class DCMM, for a Dynamic Count Mixture Model, which is the co
 </div>
     {% endraw %}
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Class-DCMM">Class DCMM<a class="anchor-link" href="#Class-DCMM"> </a></h2>
-</div>
-</div>
-</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -66,9 +60,8 @@ description: "The class DCMM, for a Dynamic Count Mixture Model, which is the co
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>A DCMM can be used in the same way as a DGLM, with the standard methods <a href="/pybats_nbdev/dcmm#dcmm.update"><code>dcmm.update</code></a>, <a href="/pybats_nbdev/dcmm#dcmm.forecast_marginal"><code>dcmm.forecast_marginal</code></a>, and <a href="/pybats_nbdev/dcmm#dcmm.forecast_path"><code>dcmm.forecast_path</code></a>. The primary difference is in the predictors <code>X</code> passed in to these functions. By default, the same predictors will be used in the Bernoulli and Poisson DGLMs. To use different predictors for the Bernoulli and Poisson DGLMs, pass in a list or tuple of length 2. The first element will be used for the Bernoulli, and second for the Poisson.</p>
-<p>There are equivalent helper functions as well. A full analysis can be run with <a href="/pybats_nbdev/analysis#analysis_dcmm"><code>analysis_dcmm</code></a>, and <a href="/pybats_nbdev/define_models#define_dcmm"><code>define_dcmm</code></a> helps to initialize a DCMM. These functions assume that the same predictors <code>X</code> are used for the Bernoulli and Poisson DGLMs.</p>
-<p>A quick example of using <code>analysis_dglm</code> is below, to demonstrate the structure of a DCMM:</p>
+<p>A DCMM can be used in the same way as a DGLM, with the standard methods <a href="/pybats_nbdev/dcmm#dcmm.update"><code>dcmm.update</code></a>, <a href="/pybats_nbdev/dcmm#dcmm.forecast_marginal"><code>dcmm.forecast_marginal</code></a>, and <a href="/pybats_nbdev/dcmm#dcmm.forecast_path"><code>dcmm.forecast_path</code></a>. There are equivalent helper functions as well. A full analysis can be run with <a href="/pybats_nbdev/analysis#analysis_dcmm"><code>analysis_dcmm</code></a>, and <a href="/pybats_nbdev/define_models#define_dcmm"><code>define_dcmm</code></a> helps to initialize a DCMM. These helper functions assume that the same predictors <code>X</code> are used for the Bernoulli and Poisson DGLMs.</p>
+<p>A quick example of using <code>analysis_dglm</code> follows:</p>
 
 </div>
 </div>
@@ -247,7 +240,7 @@ description: "The class DCMM, for a Dynamic Count Mixture Model, which is the co
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The DCMM contains both the Poisson and Bernoulli DGLMs, and we can access the coefficients for both. To illustrate, we'll take a look at the holiday coefficients in both DGLMs.</p>
+<p>Because the DCMM is effectively a container for a Poisson and a Bernoulli DGLM, we can access each of them individually. The coefficients in the Bernoulli DGLM affect the probability of a non-zero observation, and the coefficient in the Poisson DGLM impact the size of any non-zero observations. To illustrate, we'll take a look at the holiday coefficients in both DGLMs.</p>
 
 </div>
 </div>
@@ -399,7 +392,7 @@ description: "The class DCMM, for a Dynamic Count Mixture Model, which is the co
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The largest negative coefficients are for Christmas and New Years Day, which means that both have very low sales, and are more likely to be $0$ sales. The largest positive coefficients are for July 4th and Memorial day, which means that they are likely to have increased sales.</p>
+<p>The largest negative coefficients are for Christmas and New Years Day, which means that both are more likely to have $0$ sales, or very low sales. The largest positive coefficients are for July 4th and Memorial day, which means that they are likely to have increased sales.</p>
 
 </div>
 </div>
