@@ -349,17 +349,97 @@ y_t =
                       <span class="n">mean_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                       <span class="n">return_separate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="n">out</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;transaction_mean&#39;</span><span class="p">:</span><span class="n">transaction_mean</span><span class="p">,</span> <span class="s1">&#39;mt1&#39;</span><span class="p">:</span><span class="n">cascade_mean</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-      <span class="s1">&#39;mt2&#39;</span><span class="p">:</span><span class="n">cascade_mean</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">}</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;sales&#39;</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">transaction_mean</span> <span class="o">+</span> <span class="n">cascade_mean</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">+</span> <span class="n">excess_mean</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+                    <span class="s1">&#39;transactions&#39;</span><span class="p">:</span><span class="n">transaction_mean</span><span class="p">,</span>
+                    <span class="s1">&#39;mt1&#39;</span><span class="p">:</span><span class="n">cascade_mean</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;mt2&#39;</span><span class="p">:</span><span class="n">cascade_mean</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="s1">&#39;mt3&#39;</span><span class="p">:</span><span class="n">cascade_mean</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;mt4&#39;</span><span class="p">:</span><span class="n">cascade_mean</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+                    <span class="s1">&#39;excess&#39;</span><span class="p">:</span><span class="n">excess_mean</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)})</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+<span class="n">out</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Forecast Mean&#39;</span><span class="p">]</span>
+<span class="n">out</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Forecast Mean</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>sales</th>
+      <td>7.53</td>
+    </tr>
+    <tr>
+      <th>transactions</th>
+      <td>5.73</td>
+    </tr>
+    <tr>
+      <th>mt1</th>
+      <td>1.40</td>
+    </tr>
+    <tr>
+      <th>mt2</th>
+      <td>0.23</td>
+    </tr>
+    <tr>
+      <th>mt3</th>
+      <td>0.09</td>
+    </tr>
+    <tr>
+      <th>mt4</th>
+      <td>0.02</td>
+    </tr>
+    <tr>
+      <th>excess</th>
+      <td>0.05</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The forecast mean for item sales is $7.53$ units on $5.73$ separate transactions. On average, $1.4$ people will have more than 1 unit of the item in their basket, $0.23$ will have more than 2, and so on. Finally, the average prediction is for $0.05$ 'excess' units, which are any sales above $4$ units in a single basket.</p>
+
+</div>
+</div>
+</div>
 </div>
  
 
