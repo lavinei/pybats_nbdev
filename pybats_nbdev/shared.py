@@ -161,6 +161,33 @@ def load_us_inflation():
     return data
 
 # Internal Cell
+def load_us_inflation_forecasts():
+    """
+    Read in quarterly US inflation data
+    """
+    data_dir = os.path.dirname(os.path.abspath(__file__)) + '/pkg_data/'
+
+    data = pd.read_csv(data_dir + 'bps_inflation.csv')
+    dates = data.values[:,0]
+    agent_mean = pd.read_csv(data_dir + 'bps_agent_mean.csv')
+    agent_mean.columns = ['Dates', '1', '2', '3', '4']
+    agent_mean.set_index('Dates', inplace=True)
+
+    agent_var = pd.read_csv(data_dir + 'bps_agent_var.csv').values
+    agent_dof = pd.read_csv(data_dir + 'bps_agent_dof.csv').values
+    agent_var[:,1:] = agent_var[:,1:] * agent_dof[:,1:] / (agent_dof[:,1:]-2) # Adjust the agent variance for d.o.f. b/c they're t-distributed
+    agent_var = pd.DataFrame(agent_var)
+    agent_var.columns = ['Dates', '1', '2', '3', '4']
+    agent_var.set_index('Dates', inplace=True)
+
+    dates = pd.date_range('1977-09-01', '2014-12-31', freq='3M')
+    Y = data['Inflation'].values
+
+    data = {'Inflation':Y, 'model_mean':agent_mean, 'model_var':agent_var, 'Dates':dates}
+
+    return data
+
+# Internal Cell
 def load_standard_holidays():
     holidays = [USMartinLutherKingJr,
                 USMemorialDay,

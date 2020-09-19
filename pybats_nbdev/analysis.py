@@ -169,9 +169,9 @@ def analysis(Y, X, k, forecast_start, forecast_end,
 
             out.append(mod_coef)
         if obj == 'new_latent_factors':
-            for lf in new_latent_factors:
-                lf.append_lf()
-                lf.append_lf_forecast()
+            #for lf in new_latent_factors:
+            #    lf.append_lf()
+            #    lf.append_lf_forecast()
             if len(new_latent_factors) == 1:
                 out.append(new_latent_factors[0])
             else:
@@ -183,9 +183,15 @@ def analysis(Y, X, k, forecast_start, forecast_end,
         return out
 
 # Cell
-def analysis_dcmm(Y, X, prior_length, k, forecast_start, forecast_end, nsamps=500, rho=.6, latent_factor=None,
-                  mean_only=False, dates=None, holidays=[], seasPeriods=[], seasHarmComponents=[], ret=['forecast'],
-                  new_latent_factors=None, **kwargs):
+def analysis_dcmm(Y, X, k, forecast_start, forecast_end,
+                  nsamps=500, rho=.6,
+                  model_prior=None, prior_length=20, ntrend=1,
+                  dates=None, holidays=[],
+                  seasPeriods=[], seasHarmComponents=[],
+                  latent_factor=None, new_latent_factors=None,
+                  mean_only=False,
+                  ret=['model', 'forecast'],
+                   **kwargs):
     """
     This is a helpful function to run a standard analysis using a DCMM.
     """
@@ -313,9 +319,9 @@ def analysis_dcmm(Y, X, prior_length, k, forecast_start, forecast_end, nsamps=50
         if obj == 'forecast': out.append(forecast)
         if obj == 'model': out.append(mod)
         if obj == 'new_latent_factors':
-            for lf in new_latent_factors:
-                lf.append_lf()
-                lf.append_lf_forecast()
+            #for lf in new_latent_factors:
+            #    lf.append_lf()
+            #    lf.append_lf_forecast()
             if len(new_latent_factors) == 1:
                 out.append(new_latent_factors[0])
             else:
@@ -328,11 +334,14 @@ def analysis_dcmm(Y, X, prior_length, k, forecast_start, forecast_end, nsamps=50
 
 # Cell
 def analysis_dbcm(Y_transaction, X_transaction, Y_cascade, X_cascade, excess,
-                  prior_length, k, forecast_start, forecast_end, nsamps = 500, rho = .6,
-                  latent_factor = None,
-                  mean_only=False, dates=None,
-                  holidays = [], seasPeriods = [], seasHarmComponents = [],
-                  ret=['forecast'], new_latent_factors = None, **kwargs):
+                  k, forecast_start, forecast_end, nsamps = 500, rho = .6,
+                  model_prior=None, prior_length=20, ntrend=1,
+                  dates=None, holidays = [],
+                  latent_factor = None, new_latent_factors = None,
+                  seasPeriods = [], seasHarmComponents = [],
+                  mean_only=False,
+                  ret=['model', 'forecast'],
+                   **kwargs):
     """
     This is a helpful function to run a standard analysis using a DBCM.
     """
@@ -472,9 +481,9 @@ def analysis_dbcm(Y_transaction, X_transaction, Y_cascade, X_cascade, excess,
         if obj == 'forecast': out.append(forecast)
         if obj == 'model': out.append(mod)
         if obj == 'new_latent_factors':
-            for lf in new_latent_factors:
-                lf.append_lf()
-                lf.append_lf_forecast()
+            #for lf in new_latent_factors:
+            #    lf.append_lf()
+            #    lf.append_lf_forecast()
             if len(new_latent_factors) == 1:
                 out.append(new_latent_factors[0])
             else:

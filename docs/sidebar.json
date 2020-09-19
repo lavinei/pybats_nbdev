@@ -13,7 +13,7 @@
     "Plot": "/plot",
     "Shared Functions": "/shared",
     "DCMM": "/dcmm",
-    "DBCMs": "/dbcm",
+    "DBCM": "/dbcm",
     "Latent Factors": "/latent_factor",
     "Latent Factor Functions": "/latent_factor_fxns"
   }

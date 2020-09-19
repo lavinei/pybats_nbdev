@@ -46,7 +46,7 @@ entries:
       title: DCMM
       url: /dcmm
     - output: web,pdf
-      title: DBCMs
+      title: DBCM
       url: /dbcm
     - output: web,pdf
       title: Latent Factors
