@@ -8,6 +8,7 @@ from nbdev.showdoc import *
 
 import numpy as np
 import scipy as sc
+import pandas as pd
 from collections.abc import Iterable
 
 from .latent_factor_fxns import update_lf_analytic, update_lf_sample, forecast_marginal_lf_analytic, \
@@ -339,6 +340,55 @@ class dglm:
         else:
             Discount = self.Discount
         return self.R / Discount - self.R
+
+    def get_coef(self, component=None):
+        trend_names = ['Intercept', 'Local Slope'][:self.ntrend]
+        regn_names = ['Regn ' + str(i) for i in range(1, self.nregn+1)]
+        seas_names = ['Seas ' + str(i) for i in range(1, self.nseas+1)]
+        hol_names = ['Hol ' + str(i) for i in range(1, self.nhol+1)]
+        lf_names = ['LF ' + str(i) for i in range(1, self.nlf+1)]
+
+        if component is None:
+
+            names = [*trend_names, *regn_names, *seas_names, *hol_names, *lf_names]
+
+            return pd.DataFrame({'State Vector Mean':self.a.reshape(-1),
+                                 'State Vector Standard Deviation': np.sqrt(self.R.diagonal())},
+                                 index=names).round(2)
+        elif component == 'trend':
+            names = trend_names
+
+            return pd.DataFrame({'State Vector Mean':self.a.reshape(-1)[self.itrend],
+                                 'State Vector Standard Deviation': np.sqrt(self.R.diagonal())[self.itrend]},
+                                 index=names).round(2)
+
+        elif component == 'regn':
+            names = regn_names
+
+            return pd.DataFrame({'State Vector Mean':self.a.reshape(-1)[self.iregn],
+                                 'State Vector Standard Deviation': np.sqrt(self.R.diagonal())[self.iregn]},
+                                 index=names).round(2)
+
+        elif component == 'seas':
+            names = seas_names
+
+            return pd.DataFrame({'State Vector Mean':self.a.reshape(-1)[self.iseas],
+                                 'State Vector Standard Deviation': np.sqrt(self.R.diagonal())[self.iseas]},
+                                 index=names).round(2)
+
+        elif component == 'hol':
+            names = hol_names
+
+            return pd.DataFrame({'State Vector Mean':self.a.reshape(-1)[self.ihol],
+                                 'State Vector Standard Deviation': np.sqrt(self.R.diagonal())[self.ihol]},
+                                 index=names).round(2)
+
+        elif component == 'lf':
+            names = lf_names
+
+            return pd.DataFrame({'State Vector Mean':self.a.reshape(-1)[self.ilf],
+                                 'State Vector Standard Deviation': np.sqrt(self.R.diagonal())[self.ilf]},
+                                 index=names).round(2)
 
 # Cell
 class bern_dglm(dglm):
