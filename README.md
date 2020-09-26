@@ -1,5 +1,5 @@
 # PyBATS
-> PyBATS is a package for Bayesian time series modeling and forecasting. It is designed to be flexible, offering many options to customize the model form, prior, and forecast period. The focus of the package is the class Dynamic Generalized Linear Model ('dglm'). The supported DGLMs are Poisson, Bernoulli, Normal (a DLM), and Binomial. These models are primarily based on <a href='http://www2.stat.duke.edu/~mw/West&HarrisonBook/), by West and Harrison (1997'>*Bayesian Forecasting and Dynamic Models*</a>.
+> PyBATS is a package for Bayesian time series modeling and forecasting. It is designed to be flexible, offering many options to customize the model form, prior, and forecast period. The focus of the package is the class Dynamic Generalized Linear Model ('dglm'). The supported DGLMs are Poisson, Bernoulli, Normal (a DLM), and Binomial. These models are primarily based on <a href='http://www2.stat.duke.edu/~mw/West&HarrisonBook/), by West and Harrison (1997'>Bayesian Forecasting and Dynamic Models</a>.
 
 
 ## Install
@@ -96,7 +96,7 @@ forecast_start = 15                                 # Start forecast at time ste
 forecast_end = 35                                   # End forecast at time step 35 (final time step)
 ```
 
-We use the _analysis_ function as a helper to a) define the model b) Run sequential updating (forward filtering) and c) forecasting. By default, it will return samples from the forecast distribution as well as the model after the final observation.
+We use the _analysis_ function as a helper to a) define the model, b) run sequential updating (forward filtering), and c) forecast. By default, it will return samples from the forecast distribution as well as the model after the final observation.
 
 ```python
 mod, samples = analysis(Y, X, family="poisson",
@@ -141,7 +141,7 @@ All models in PyBATS are based on DGLMs, which are well described by their name:
 2. **Generalized**: We can choose the distribution of the observations (Normal, Poisson, Bernoulli, or Binomial)
 3. **Linear**: Forecasts are made by a standard linear combination of coefficients multiplied by predictors
 
-The correct model type depends upon your time series, $y_t$. The most common type of observations are continuous real numbers, which can be modeled using a normal Dynamic Linear Model (`dlm`).
+The correct model type depends upon your time series, $y_t$. The most common type of observations are continuous real numbers, which can often be modeled using a normal Dynamic Linear Model (`dlm`).
 
 PyBATS is unique in the current Python ecosystem because it provides dynamic models for non-normally distribution observations:
 
@@ -167,9 +167,9 @@ The coefficients in a DGLM are all stored in the state vector, $\theta_t$. The s
 
 ### Trend Component
 
-PyBATS supports $0$, $1$, and $2$ trend coefficients in a DGLM. $1$ trend term is simply an intercept in the model. If there are $2$ trend terms, then the model contains and intercept *and* a local slope, which increments (is added to) the intercept at each time step. Because all coefficients are dynamic, both the intercept and local slope will change over time.
+PyBATS supports $0$, $1$, and $2$ trend coefficients in a DGLM. $1$ trend term is simply an intercept in the model. If there are $2$ trend terms, then the model contains and intercept *and* a local slope, which is the rate that the intercept changes over time. Because all coefficients are dynamic, both the intercept and local slope will change over time.
 
-The default setting is to only have an intercept term, which we can see from the model defined in the example above:
+The default setting is to have only an intercept term, which we can see from the model defined in the example above:
 
 ```python
 mod.ntrend
@@ -182,20 +182,20 @@ mod.ntrend
 
 
 
-We can access the mean $E\left[ \theta_t \right]$ and variance $V\left[ \theta_t \right]$ of the state vector by the attribute names **a** and **R**:
+We can access the mean $E\left[ \theta_t \right]$ and variance $V\left[ \theta_t \right]$ of the state vector by the attribute names **a** and **R**. We use the trend indices, given by `mod.itrend`, to view the trend component of the state vector.
 
 ```python
-mod.a[mod.itrend], mod.R.diagonal()[mod.itrend]
+mod.a[mod.itrend].round(2), mod.R.diagonal()[mod.itrend].round(2)
 ```
 
 
 
 
-    (array([[0.63431615]]), array([0.128739]))
+    (array([[0.63]]), array([0.13]))
 
 
 
-So the intercept term has a mean of $0.63$ and a variance of $0.13$.
+So the intercept term has a mean of $0.63$ and a variance of $0.13$ at time T, at the end of the analysis. The analysis is over either at time `forecast_end`, or when we hit the final observation in `Y`, whichever comes first.
 
 To add in a local slope, we can re-run the analysis from above, while specifying that `ntrend=2`.
 
@@ -272,16 +272,16 @@ mod.nregn
 
 
 
-To understand the impact of advertising on sales, we can look at the regression coefficients:
+To understand the impact of advertising on sales, we can look at the regression coefficients at the final time step. Similar to the trend component, the indices for the regression component are stored in `mod.iregn`.
 
 ```python
-mod.a[mod.iregn], mod.R.diagonal()[mod.iregn]
+mod.a[mod.iregn].round(4), mod.R.diagonal()[mod.iregn].round(4)
 ```
 
 
 
 
-    (array([[0.09542123]]), array([0.00048791]))
+    (array([[0.0954]]), array([0.0005]))
 
 
 
@@ -290,19 +290,19 @@ The coefficient mean is $0.095$, with a very small variance. Because the mean of
 To quantify the uncertainty of the parameter, many people like to use the standard deviation (or standard error) of the coefficient, which is simply the square root of the variance. A good rule of thumb to get a pseudo-confidence interval is to add $\pm$ 2*sd(coefficient).
 
 ```python
-np.sqrt(mod.R.diagonal()[mod.iregn])
+np.sqrt(mod.R.diagonal()[mod.iregn]).round(2)
 ```
 
 
 
 
-    array([0.0220886])
+    array([0.02])
 
 
 
 ### Seasonal Component
 
-Seasonal components represent cyclical or periodic behavior in the time series  - e.g. daily, weekly, or annual patterns. In PyBATS, seasonal components are defined by their period (e.g. $p = 7$ for a weekly trend on daily observation), and their harmonic components. The seasonal trends are defined through sine and cosine functions. Each harmonic component involves $2$ parameters, so there should never be more than $p/2$ harmonic components.
+Seasonal components represent cyclic or periodic behavior in the time series  - e.g. daily, weekly, or annual patterns. In PyBATS, seasonal components are defined by their period (e.g. $p = 7$ for a weekly trend on daily observation), and their harmonic components. Each harmonic component involves a sine and a cosine function with $2$ parameters, so there should never be more than $p/2$ harmonic components, or the model is over-parameterized.
 
 For example, if the period is $p=7$ (defined by setting `seasPeriods=[7]`) then a fully parameterized seasonal component has harmonic components `seasHarmComponents = [1,2,3]`.
 
@@ -448,7 +448,7 @@ ax = plot_data_forecast(fig, ax,
 
 PyBATS provides a method to specify known holidays, special events, and other outliers in the data. This will automatically add in a special indicator (dummy) variable to the regression component in order to account for this special behavior.
 
-This can be useful for two purposes. Primarily, adding in a known, repeated, special event can improve forecasts. A secondary effect is that the indicator variable will help 'protect' the other coefficients in the model from overreacting to outliers in the data.
+This can be useful for two purposes. Primarily, adding in a known, repeated, special event can improve forecasts. A secondary effect is that the indicator variable will help protect the other coefficients in the model from overreacting to outliers in the data.
 
 To demonstrate, let's repeat the analysis of simulated retail sales from above, while including a holiday effect:
 
@@ -513,11 +513,11 @@ By adding in these holidays, the indicator variable changed both the point forec
 
 ## Discount Factors
 
-Discount factors are model hyperparameters that have to be specified before an analysis begins. They control the rate that coefficients are allowed to change, and have a very simple interpretation. If the discount factor $\delta=0.98$, then we *discount* the old information about a coefficient by adding $100\% - 98\% = 2\%$ more uncertainty (variance). This enables the coefficient to learn more quickly from *new* observations in the time series. If all discount factors are set to $\delta=1$, then there is no discounting, and the models become standard generalized linear models.
+Discount factors are model hyperparameters that have to be specified before an analysis begins. They control the rate at which coefficients are allowed to change, and have a very simple interpretation. If the discount factor $\delta=0.98$, then we *discount* the old information about a coefficient by adding $100\% - 98\% = 2\%$ more uncertainty (variance). This enables the coefficient to learn more quickly from *new* observations in the time series. If all discount factors are set to $\delta=1$, then there is no discounting, and the models become standard generalized linear models.
 
 There is a trade-off to lowering the discount factors. While it allows the coefficients to change more over time, it will increase the uncertainty in the forecasts, and can make the coefficients too sensitive to noise in the data.
 
-PyBATS has built-in some safety measures that prevents the variance from growing too large. This makes the models significantly more robust to poorly specified, and too low, discount factors. Even so, most discount factors should be between $0.9$ and $1$. For rarely observed predictors - like holidays - it's typically best to leave the discount factor at $1$.
+PyBATS has built-in some safety measures that prevent the variance from growing too large. This makes the models significantly more robust to poorly specified, and too low, discount factors. Even so, most discount factors should be between $0.9$ and $1$. For rarely observed predictors - like holidays - it's typically best to leave the discount factor at $1$.
 
 PyBATS allows discount factors to be set separately for each component, and even for each individual coefficient if desired.
 
