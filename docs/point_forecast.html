@@ -2,11 +2,13 @@
 
 title: Point Forecasts
 
+
 keywords: fastai
 sidebar: home_sidebar
 
 summary: "Functions to find point forecasts using a random sample of simulated values from the forecast distribution."
 description: "Functions to find point forecasts using a random sample of simulated values from the forecast distribution."
+nb_path: "nbs/07_point_forecast.ipynb"
 ---
 <!--
 
@@ -32,7 +34,7 @@ description: "Functions to find point forecasts using a random sample of simulat
 <p>Forecast samples are one element of the output from an analysis. They are created by sequentially simulating from the forecast distribution at each time step. The forecast samples are placed in a 3 dimensional array, whose axes are <em>nsamps</em> by <em>forecast length</em> by <em>k</em>, where:</p>
 <ul>
 <li><strong>nsamps</strong> is the number of samples drawn from the forecast distribution</li>
-<li><strong>forecast length</strong> is the number of time steps between <code>forecast_start</code> and <code>forecast_end</code> in <a href="/pybats_nbdev/analysis"><code>analysis</code></a></li>
+<li><strong>forecast length</strong> is the number of time steps between <code>forecast_start</code> and <code>forecast_end</code> in <a href="/pybats_nbdev/analysis.html#analysis"><code>analysis</code></a></li>
 <li><strong>k</strong> is the forecast horizon, or the number of steps that were forecast ahead</li>
 </ul>
 <p>The point forecast will be calculated over <em>nsamps</em>, meaning that the output will be a 2 dimensional array of size <em>forecast length</em> by <em>k</em>.</p>

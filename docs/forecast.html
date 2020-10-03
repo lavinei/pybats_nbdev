@@ -2,11 +2,13 @@
 
 title: Forecast
 
+
 keywords: fastai
 sidebar: home_sidebar
 
 summary: "This module contains the forecast algorithm for a DGLM. Given predictors, these functions return a random sample from the forecast distribution. Using this sample, you can calculate point estimates (means, medians), and measures of uncertainty such as credible intervals. For any model `mod`, the correct method usage is `mod.forecast_marginal(k, X)` and `mod.forecast_path(k, X)`, so they do not need to be called separately from the model."
 description: "This module contains the forecast algorithm for a DGLM. Given predictors, these functions return a random sample from the forecast distribution. Using this sample, you can calculate point estimates (means, medians), and measures of uncertainty such as credible intervals. For any model `mod`, the correct method usage is `mod.forecast_marginal(k, X)` and `mod.forecast_path(k, X)`, so they do not need to be called separately from the model."
+nb_path: "nbs/02_forecast.ipynb"
 ---
 <!--
 
@@ -121,8 +123,7 @@ description: "This module contains the forecast algorithm for a DGLM. Given pred
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Forecast using the Poisson DGLM, i.e. simulate from the forecast distribution</span>
-<span class="n">forecast_samples</span> <span class="o">=</span> <span class="n">mod_p</span><span class="o">.</span><span class="n">forecast_marginal</span><span class="p">(</span><span class="n">k</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">nsamps</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">forecast_samples</span> <span class="o">=</span> <span class="n">mod_p</span><span class="o">.</span><span class="n">forecast_marginal</span><span class="p">(</span><span class="n">k</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">nsamps</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 
 <span class="c1"># Get the 95% credible intervals</span>
 <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">forecast_samples</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">97.5</span><span class="p">])</span>
@@ -165,8 +166,7 @@ description: "This module contains the forecast algorithm for a DGLM. Given pred
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Forecast using the normal DLM, i.e. simulate from the forecast distribution</span>
-<span class="n">forecast_samples</span> <span class="o">=</span> <span class="n">mod_n</span><span class="o">.</span><span class="n">forecast_marginal</span><span class="p">(</span><span class="n">k</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">nsamps</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">forecast_samples</span> <span class="o">=</span> <span class="n">mod_n</span><span class="o">.</span><span class="n">forecast_marginal</span><span class="p">(</span><span class="n">k</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">nsamps</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 
 <span class="c1"># Get the 95% credible intervals</span>
 <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">forecast_samples</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">97.5</span><span class="p">])</span>
@@ -210,8 +210,7 @@ description: "This module contains the forecast algorithm for a DGLM. Given pred
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Test the Poisson DGLM forecast mean is correct</span>
-<span class="c1"># Setting the flag mean_only=True returns the exact mean, without simulation</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Setting the flag mean_only=True returns the exact mean, without simulation</span>
 
 <span class="n">m_p</span> <span class="o">=</span> <span class="n">mod_p</span><span class="o">.</span><span class="n">forecast_marginal</span><span class="p">(</span><span class="n">k</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">mean_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">ans</span> <span class="o">=</span> <span class="p">[</span><span class="mf">232.15794803433968</span><span class="p">]</span>
@@ -417,7 +416,7 @@ description: "This module contains the forecast algorithm for a DGLM. Given pred
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>There are two functions for path forecasting with DGLMs. <a href="/pybats_nbdev/forecast#forecast_path_copula"><code>forecast_path_copula</code></a> is the default method, and is part of my new <a href="https://arxiv.org/pdf/2007.04956.pdf">research</a>. It dramatically speeds up path forecasting in DGLMs. The traditional <a href="/pybats_nbdev/forecast#forecast_path"><code>forecast_path</code></a> function is only used when <code>mod.forecast_path</code> is called with the flag <code>copula=FALSE</code>.</p>
+<p>There are two functions for path forecasting with DGLMs. <a href="/pybats_nbdev/forecast.html#forecast_path_copula"><code>forecast_path_copula</code></a> is the default method, and is part of my new <a href="https://arxiv.org/pdf/2007.04956.pdf">research</a>. It dramatically speeds up path forecasting in DGLMs. The traditional <a href="/pybats_nbdev/forecast.html#forecast_path"><code>forecast_path</code></a> function is only used when <code>mod.forecast_path</code> is called with the flag <code>copula=FALSE</code>.</p>
 <p>Below we'll test path forecasting - with a copula, as is the default - for $k=2$ steps into the future. The Poisson model will have $2$ trend terms - an intercept and a slope - and 1 regression term. This test will confirm that marginal forecasting and path forecasting lead to identical forecast means for $k=1$ and $k=2$ steps ahead.</p>
 
 </div>
@@ -458,7 +457,7 @@ description: "This module contains the forecast algorithm for a DGLM. Given pred
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Finally, <code>mod.forecast_path</code> has two special features beyond returning just a random sample from the forecast distribution. These only work when using <a href="/pybats_nbdev/forecast#forecast_path_copula"><code>forecast_path_copula</code></a>, which is not called for a normal DLM.</p>
+<p>Finally, <code>mod.forecast_path</code> has two special features beyond returning just a random sample from the forecast distribution. These only work when using <a href="/pybats_nbdev/forecast.html#forecast_path_copula"><code>forecast_path_copula</code></a>, which is not called for a normal DLM.</p>
 <ol>
 <li>Passing in a value (a vector of length $k$) for <code>y</code> makes the function return the <em>log</em> probability density of <code>y</code> under the forecast distribution, $p(y)$.</li>
 <li>Setting <code>return_cov = True</code> makes the function return the covariance in the copula distribution. This is slightly different than the covariance in the forecast distribution, which can be calculated directly from a random sample.</li>

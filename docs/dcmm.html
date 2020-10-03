@@ -2,11 +2,13 @@
 
 title: DCMM
 
+
 keywords: fastai
 sidebar: home_sidebar
 
 summary: "The class DCMM, for a Dynamic Count Mixture Model, which is the combination of a Bernoulli and Poisson DGLM, as described in <a href='https://arxiv.org/pdf/1805.05232.pdf'>Berry and West (2019)</a>."
 description: "The class DCMM, for a Dynamic Count Mixture Model, which is the combination of a Bernoulli and Poisson DGLM, as described in <a href='https://arxiv.org/pdf/1805.05232.pdf'>Berry and West (2019)</a>."
+nb_path: "nbs/11_dcmm.ipynb"
 ---
 <!--
 
@@ -60,7 +62,7 @@ description: "The class DCMM, for a Dynamic Count Mixture Model, which is the co
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>A DCMM can be used in the same way as a DGLM, with the standard methods <a href="/pybats_nbdev/dcmm#dcmm.update"><code>dcmm.update</code></a>, <a href="/pybats_nbdev/dcmm#dcmm.forecast_marginal"><code>dcmm.forecast_marginal</code></a>, and <a href="/pybats_nbdev/dcmm#dcmm.forecast_path"><code>dcmm.forecast_path</code></a>. There are equivalent helper functions as well. A full analysis can be run with <a href="/pybats_nbdev/analysis#analysis_dcmm"><code>analysis_dcmm</code></a>, and <a href="/pybats_nbdev/define_models#define_dcmm"><code>define_dcmm</code></a> helps to initialize a DCMM. These helper functions assume that the same predictors <code>X</code> are used for the Bernoulli and Poisson DGLMs.</p>
+<p>A DCMM can be used in the same way as a DGLM, with the standard methods <a href="/pybats_nbdev/dcmm.html#dcmm.update"><code>dcmm.update</code></a>, <a href="/pybats_nbdev/dcmm.html#dcmm.forecast_marginal"><code>dcmm.forecast_marginal</code></a>, and <a href="/pybats_nbdev/dcmm.html#dcmm.forecast_path"><code>dcmm.forecast_path</code></a>. There are equivalent helper functions as well. A full analysis can be run with <a href="/pybats_nbdev/analysis.html#analysis_dcmm"><code>analysis_dcmm</code></a>, and <a href="/pybats_nbdev/define_models.html#define_dcmm"><code>define_dcmm</code></a> helps to initialize a DCMM. These helper functions assume that the same predictors <code>X</code> are used for the Bernoulli and Poisson DGLMs.</p>
 <p>A quick example of using <code>analysis_dglm</code> follows:</p>
 
 </div>

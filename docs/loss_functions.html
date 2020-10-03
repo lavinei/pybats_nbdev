@@ -2,11 +2,13 @@
 
 title: Loss Functions
 
+
 keywords: fastai
 sidebar: home_sidebar
 
 summary: "Functions to find the loss (or error) given a set of observations and point forecasts."
 description: "Functions to find the loss (or error) given a set of observations and point forecasts."
+nb_path: "nbs/08_loss_functions.ipynb"
 ---
 <!--
 
@@ -117,8 +119,8 @@ $$\frac{1}{n} \sum_{i=1:n} (y_i - f_i)^2$$
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>beginning forecasting
 1-Step Ahead MSE: 1.08
-2-Step Ahead MSE: 1.02
-3-Step Ahead MSE: 1.07
+2-Step Ahead MSE: 1.0
+3-Step Ahead MSE: 1.08
 4-Step Ahead MSE: 1.13
 </pre>
 </div>
@@ -180,8 +182,7 @@ $$\frac{1}{n} \sum_{i=1:n} |y_i - f_i|$$
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Use the median, because it is optimal for minimizing the MAD</span>
-<span class="n">forecast</span> <span class="o">=</span> <span class="n">median</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">forecast</span> <span class="o">=</span> <span class="n">median</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
     <span class="n">start</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">Date</span> <span class="o">==</span> <span class="n">forecast_start</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">h</span>
@@ -264,8 +265,7 @@ $$\frac{1}{n} \sum_{i=1:n} \frac{|y_i - f_i|}{y_i}$$
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Use the (-1)-median, because it is optimal for minimizing the MAPE</span>
-<span class="n">forecast</span> <span class="o">=</span> <span class="n">m_one_median</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">forecast</span> <span class="o">=</span> <span class="n">m_one_median</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
     <span class="n">start</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">Date</span> <span class="o">==</span> <span class="n">forecast_start</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">h</span>

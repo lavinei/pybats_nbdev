@@ -492,7 +492,7 @@ nb_path: "nbs/05_analysis.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>This function works identically to the standard <a href="/pybats_nbdev/analysis.html"><code>analysis</code></a>, but is specialized for a DCMM.</p>
+<p>This function works identically to the standard <a href="/pybats_nbdev/analysis.html#analysis"><code>analysis</code></a>, but is specialized for a DCMM.</p>
 <p>The observations must be integer counts, which can be modeled as a combination of a Poisson and Bernoulli DGLM. Typically a DCMM is equally good as a Poisson DGLM for modeling large integers, but significantly better for series of smaller integers with many zeros.</p>
 <p>Note that by default, all simulated forecasts made with <a href="/pybats_nbdev/analysis.html#analysis_dcmm"><code>analysis_dcmm</code></a> are <em>path</em> forecasts, meaning that they account for the dependence across forecast horizons.</p>
 
@@ -539,7 +539,7 @@ nb_path: "nbs/05_analysis.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>This function works identically to the standard <a href="/pybats_nbdev/analysis.html"><code>analysis</code></a>, but is specialized for a DBCM.</p>
+<p>This function works identically to the standard <a href="/pybats_nbdev/analysis.html#analysis"><code>analysis</code></a>, but is specialized for a DBCM.</p>
 <p>Separate data must be specified for the DCMM on transactions, <code>y_transaction</code> and <code>X_transaction</code>, the binomial cascade,<code>y_cascade</code>, <code>X_cascade</code>, and any excess counts, <code>excess</code>.</p>
 <p>Note that by default, all simulated forecasts made with <a href="/pybats_nbdev/analysis.html#analysis_dbcm"><code>analysis_dbcm</code></a> are <em>path</em> forecasts, meaning that they account for the dependence across forecast horizons.</p>
 
