@@ -11,49 +11,49 @@ entries:
       url: /
     - output: web,pdf
       title: DGLM
-      url: dglm.html
+      url: /dglm
     - output: web,pdf
       title: Update
-      url: update.html
+      url: /update
     - output: web,pdf
       title: Forecast
-      url: forecast.html
+      url: /forecast
     - output: web,pdf
       title: Define Models
-      url: define_models.html
+      url: /define_models
     - output: web,pdf
       title: Seasonal Components
-      url: seasonal.html
+      url: /seasonal
     - output: web,pdf
       title: Analysis
-      url: analysis.html
+      url: /analysis
     - output: web,pdf
       title: Conjugates
-      url: conjugates.html
+      url: /conjugates
     - output: web,pdf
       title: Point Forecasts
-      url: point_forecast.html
+      url: /point_forecast
     - output: web,pdf
       title: Loss Functions
-      url: loss_functions.html
+      url: /loss_functions
     - output: web,pdf
       title: Plot
-      url: plot.html
+      url: /plot
     - output: web,pdf
       title: Shared Functions
-      url: shared.html
+      url: /shared
     - output: web,pdf
       title: DCMM
-      url: dcmm.html
+      url: /dcmm
     - output: web,pdf
       title: DBCM
-      url: dbcm.html
+      url: /dbcm
     - output: web,pdf
       title: Latent Factors
-      url: latent_factor.html
+      url: /latent_factor
     - output: web,pdf
       title: Latent Factor Functions
-      url: latent_factor_fxns.html
+      url: /latent_factor_fxns
     output: web
     title: pybats_nbdev
   output: web
