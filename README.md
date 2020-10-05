@@ -1,5 +1,5 @@
 # PyBATS
-> PyBATS is a package for Bayesian time series modeling and forecasting. It is designed to be flexible, offering many options to customize the model form, prior, and forecast period. The focus of the package is the class Dynamic Generalized Linear Model ('dglm'). The supported DGLMs are Poisson, Bernoulli, Normal (a DLM), and Binomial. These models are primarily based on <a href='http://www2.stat.duke.edu/~mw/West&HarrisonBook/), by West and Harrison (1997'>Bayesian Forecasting and Dynamic Models</a>.
+> PyBATS is a package for Bayesian time series modeling and forecasting. It is designed to be flexible, offering many options to customize the model form, prior, and forecast period. The focus of the package is the class Dynamic Generalized Linear Model ('dglm'). The supported DGLMs are Poisson, Bernoulli, Normal (a DLM), and Binomial. These models are primarily based on <a href='http://www2.stat.duke.edu/~mw/West&HarrisonBook/'>Bayesian Forecasting and Dynamic Models</a>.
 
 
 ## Install
@@ -477,16 +477,16 @@ holidays
 
 
 
-    [Holiday: New Years Day (month=1, day=1, observance=<function nearest_workday at 0x7fc3616cf320>),
+    [Holiday: New Years Day (month=1, day=1, observance=<function nearest_workday at 0x7fcf31ecf3b0>),
      Holiday: Martin Luther King Jr. Day (month=1, day=1, offset=<DateOffset: weekday=MO(+3)>),
      Holiday: Presidents Day (month=2, day=1, offset=<DateOffset: weekday=MO(+3)>),
      Holiday: Memorial Day (month=5, day=31, offset=<DateOffset: weekday=MO(-1)>),
-     Holiday: July 4th (month=7, day=4, observance=<function nearest_workday at 0x7fc3616cf320>),
+     Holiday: July 4th (month=7, day=4, observance=<function nearest_workday at 0x7fcf31ecf3b0>),
      Holiday: Labor Day (month=9, day=1, offset=<DateOffset: weekday=MO(+1)>),
      Holiday: Columbus Day (month=10, day=1, offset=<DateOffset: weekday=MO(+2)>),
-     Holiday: Veterans Day (month=11, day=11, observance=<function nearest_workday at 0x7fc3616cf320>),
+     Holiday: Veterans Day (month=11, day=11, observance=<function nearest_workday at 0x7fcf31ecf3b0>),
      Holiday: Thanksgiving (month=11, day=1, offset=<DateOffset: weekday=TH(+4)>),
-     Holiday: Christmas (month=12, day=25, observance=<function nearest_workday at 0x7fc3616cf320>)]
+     Holiday: Christmas (month=12, day=25, observance=<function nearest_workday at 0x7fcf31ecf3b0>)]
 
 
 
