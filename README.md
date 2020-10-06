@@ -610,7 +610,7 @@ mod, samples = analysis(Y, X,
     beginning forecasting
 
 
-We've just used the standard holidays in the US Federal Calendar, but you can specify your own list of holidays using the class [pandas.tseries.holiday](https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#holidays-holiday-calendars).
+We've just used the standard holidays in the US Federal Calendar, but you can specify your own list of holidays using [pandas.tseries.holiday](https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#holidays-holiday-calendars).
 
 ```python
 holidays
