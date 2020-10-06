@@ -27,12 +27,6 @@ from scipy import stats
 
 # Cell
 class dglm:
-    """
-    Core class of dynamic generalized linear models (DGLMs).
-
-    Children include Poisson, Bernoulli, and Binomial DGLMs, as well as the Normal DLM.
-    """
-
 
     def __init__(self,
                  a0=None,
@@ -283,7 +277,7 @@ class dglm:
                       phi_mu=None, phi_sigma=None, phi_psi=None, analytic=True, phi_samps=None,
                       **kwargs):
         """
-        Simulate from the path forecast (the joint forecast) distribution from *1* to *k* steps ahead.
+        Simulate from the path (joint) forecast distribution from *1* to *k* steps ahead.
         """
         if self.latent_factor:
             if analytic:
