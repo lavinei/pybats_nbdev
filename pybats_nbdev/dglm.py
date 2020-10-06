@@ -342,6 +342,14 @@ class dglm:
         return self.R / Discount - self.R
 
     def get_coef(self, component=None):
+        """Return the coefficient (state vector) means and standard deviations.
+
+        If component=None, then the full state vector is returned.
+
+        Otherwise, specify a single component from 'trend', 'regn', 'seas', 'hol', and 'lf'.
+        """
+
+
         trend_names = ['Intercept', 'Local Slope'][:self.ntrend]
         regn_names = ['Regn ' + str(i) for i in range(1, self.nregn+1)]
         seas_names = ['Seas ' + str(i) for i in range(1, self.nseas+1)]
@@ -352,42 +360,42 @@ class dglm:
 
             names = [*trend_names, *regn_names, *seas_names, *hol_names, *lf_names]
 
-            return pd.DataFrame({'State Vector Mean':self.a.reshape(-1),
-                                 'State Vector Standard Deviation': np.sqrt(self.R.diagonal())},
+            return pd.DataFrame({'Mean':self.a.reshape(-1),
+                                 'Standard Deviation': np.sqrt(self.R.diagonal())},
                                  index=names).round(2)
         elif component == 'trend':
             names = trend_names
 
-            return pd.DataFrame({'State Vector Mean':self.a.reshape(-1)[self.itrend],
-                                 'State Vector Standard Deviation': np.sqrt(self.R.diagonal())[self.itrend]},
+            return pd.DataFrame({'Mean':self.a.reshape(-1)[self.itrend],
+                                 'Standard Deviation': np.sqrt(self.R.diagonal())[self.itrend]},
                                  index=names).round(2)
 
         elif component == 'regn':
             names = regn_names
 
-            return pd.DataFrame({'State Vector Mean':self.a.reshape(-1)[self.iregn],
-                                 'State Vector Standard Deviation': np.sqrt(self.R.diagonal())[self.iregn]},
+            return pd.DataFrame({'Mean':self.a.reshape(-1)[self.iregn],
+                                 'Standard Deviation': np.sqrt(self.R.diagonal())[self.iregn]},
                                  index=names).round(2)
 
         elif component == 'seas':
             names = seas_names
 
-            return pd.DataFrame({'State Vector Mean':self.a.reshape(-1)[self.iseas],
-                                 'State Vector Standard Deviation': np.sqrt(self.R.diagonal())[self.iseas]},
+            return pd.DataFrame({'Mean':self.a.reshape(-1)[self.iseas],
+                                 'Standard Deviation': np.sqrt(self.R.diagonal())[self.iseas]},
                                  index=names).round(2)
 
         elif component == 'hol':
             names = hol_names
 
-            return pd.DataFrame({'State Vector Mean':self.a.reshape(-1)[self.ihol],
-                                 'State Vector Standard Deviation': np.sqrt(self.R.diagonal())[self.ihol]},
+            return pd.DataFrame({'Mean':self.a.reshape(-1)[self.ihol],
+                                 'Standard Deviation': np.sqrt(self.R.diagonal())[self.ihol]},
                                  index=names).round(2)
 
         elif component == 'lf':
             names = lf_names
 
-            return pd.DataFrame({'State Vector Mean':self.a.reshape(-1)[self.ilf],
-                                 'State Vector Standard Deviation': np.sqrt(self.R.diagonal())[self.ilf]},
+            return pd.DataFrame({'Mean':self.a.reshape(-1)[self.ilf],
+                                 'Standard Deviation': np.sqrt(self.R.diagonal())[self.ilf]},
                                  index=names).round(2)
 
 # Cell

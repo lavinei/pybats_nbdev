@@ -89,7 +89,7 @@ $$<p>Where:</p>
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Below is a very simple example of manually defining a DGLM. However, in most situations, DGLMs will be defined automatically through <a href="/pybats_nbdev/analysis.html#analysis"><code>analysis</code></a> or through <code>define_models</code>.</p>
+<p>Below is a very simple example of manually defining a DGLM. However, in most situations, DGLMs will be defined automatically through <a href="/pybats_nbdev/analysis.html"><code>analysis</code></a> or through <a href="/pybats_nbdev/define_models.html"><code>define_models</code></a>.</p>
 <p>This model has 1 trend coefficent and 2 regression coefficients. The trend is simply an intercept. The 2 regression coefficients mean that we have 2 predictor variables.</p>
 
 </div>
@@ -156,8 +156,8 @@ $$<p>Where:</p>
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>State Vector Mean</th>
-      <th>State Vector Standard Deviation</th>
+      <th>Mean</th>
+      <th>Standard Deviation</th>
     </tr>
   </thead>
   <tbody>
@@ -296,25 +296,25 @@ $$<p>Where:</p>
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>State Vector Mean</th>
-      <th>State Vector Standard Deviation</th>
+      <th>Mean</th>
+      <th>Standard Deviation</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>Intercept</th>
-      <td>0.6</td>
-      <td>0.92</td>
+      <td>1</td>
+      <td>1.0</td>
     </tr>
     <tr>
       <th>Regn 1</th>
-      <td>0.6</td>
-      <td>0.97</td>
+      <td>1</td>
+      <td>1.0</td>
     </tr>
     <tr>
       <th>Regn 2</th>
-      <td>0.2</td>
-      <td>0.63</td>
+      <td>1</td>
+      <td>1.0</td>
     </tr>
   </tbody>
 </table>
@@ -385,7 +385,7 @@ $$<p>Where:</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([ 7, 12, 37, 31,  2,  0,  2,  6,  2, 35])</pre>
+<pre>array([ 42, 156,   8, 203, 634,   1,   0,  25, 270, 224])</pre>
 </div>
 
 </div>
@@ -490,7 +490,7 @@ $$<p>Where:</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="bern_dglm" class="doc_header"><code>class</code> <code>bern_dglm</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/dglm.py#L394" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>bern_dglm</code>(<strong><code>a0</code></strong>=<em><code>None</code></em>, <strong><code>R0</code></strong>=<em><code>None</code></em>, <strong><code>nregn</code></strong>=<em><code>0</code></em>, <strong><code>ntrend</code></strong>=<em><code>0</code></em>, <strong><code>nlf</code></strong>=<em><code>0</code></em>, <strong><code>nhol</code></strong>=<em><code>0</code></em>, <strong><code>seasPeriods</code></strong>=<em><code>[]</code></em>, <strong><code>seasHarmComponents</code></strong>=<em><code>[]</code></em>, <strong><code>deltrend</code></strong>=<em><code>1</code></em>, <strong><code>delregn</code></strong>=<em><code>1</code></em>, <strong><code>dellf</code></strong>=<em><code>1</code></em>, <strong><code>delhol</code></strong>=<em><code>1</code></em>, <strong><code>delseas</code></strong>=<em><code>1</code></em>, <strong><code>rho</code></strong>=<em><code>1</code></em>, <strong><code>interpolate</code></strong>=<em><code>True</code></em>, <strong><code>adapt_discount</code></strong>=<em><code>False</code></em>, <strong><code>adapt_factor</code></strong>=<em><code>0.5</code></em>, <strong><code>discount_forecast</code></strong>=<em><code>False</code></em>) :: <a href="/pybats_nbdev/dglm.html"><code>dglm</code></a></p>
+<h2 id="bern_dglm" class="doc_header"><code>class</code> <code>bern_dglm</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/dglm.py#L402" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>bern_dglm</code>(<strong><code>a0</code></strong>=<em><code>None</code></em>, <strong><code>R0</code></strong>=<em><code>None</code></em>, <strong><code>nregn</code></strong>=<em><code>0</code></em>, <strong><code>ntrend</code></strong>=<em><code>0</code></em>, <strong><code>nlf</code></strong>=<em><code>0</code></em>, <strong><code>nhol</code></strong>=<em><code>0</code></em>, <strong><code>seasPeriods</code></strong>=<em><code>[]</code></em>, <strong><code>seasHarmComponents</code></strong>=<em><code>[]</code></em>, <strong><code>deltrend</code></strong>=<em><code>1</code></em>, <strong><code>delregn</code></strong>=<em><code>1</code></em>, <strong><code>dellf</code></strong>=<em><code>1</code></em>, <strong><code>delhol</code></strong>=<em><code>1</code></em>, <strong><code>delseas</code></strong>=<em><code>1</code></em>, <strong><code>rho</code></strong>=<em><code>1</code></em>, <strong><code>interpolate</code></strong>=<em><code>True</code></em>, <strong><code>adapt_discount</code></strong>=<em><code>False</code></em>, <strong><code>adapt_factor</code></strong>=<em><code>0.5</code></em>, <strong><code>discount_forecast</code></strong>=<em><code>False</code></em>) :: <a href="/pybats_nbdev/dglm.html"><code>dglm</code></a></p>
 </blockquote>
 <p>Core class of dynamic generalized linear models (DGLMs).</p>
 <p>Children include Poisson, Bernoulli, and Binomial DGLMs, as well as the Normal DLM.</p>
@@ -541,7 +541,7 @@ $$<p>Where</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="pois_dglm" class="doc_header"><code>class</code> <code>pois_dglm</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/dglm.py#L447" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>pois_dglm</code>(<strong><code>a0</code></strong>=<em><code>None</code></em>, <strong><code>R0</code></strong>=<em><code>None</code></em>, <strong><code>nregn</code></strong>=<em><code>0</code></em>, <strong><code>ntrend</code></strong>=<em><code>0</code></em>, <strong><code>nlf</code></strong>=<em><code>0</code></em>, <strong><code>nhol</code></strong>=<em><code>0</code></em>, <strong><code>seasPeriods</code></strong>=<em><code>[]</code></em>, <strong><code>seasHarmComponents</code></strong>=<em><code>[]</code></em>, <strong><code>deltrend</code></strong>=<em><code>1</code></em>, <strong><code>delregn</code></strong>=<em><code>1</code></em>, <strong><code>dellf</code></strong>=<em><code>1</code></em>, <strong><code>delhol</code></strong>=<em><code>1</code></em>, <strong><code>delseas</code></strong>=<em><code>1</code></em>, <strong><code>rho</code></strong>=<em><code>1</code></em>, <strong><code>interpolate</code></strong>=<em><code>True</code></em>, <strong><code>adapt_discount</code></strong>=<em><code>False</code></em>, <strong><code>adapt_factor</code></strong>=<em><code>0.5</code></em>, <strong><code>discount_forecast</code></strong>=<em><code>False</code></em>) :: <a href="/pybats_nbdev/dglm.html"><code>dglm</code></a></p>
+<h2 id="pois_dglm" class="doc_header"><code>class</code> <code>pois_dglm</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/dglm.py#L455" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>pois_dglm</code>(<strong><code>a0</code></strong>=<em><code>None</code></em>, <strong><code>R0</code></strong>=<em><code>None</code></em>, <strong><code>nregn</code></strong>=<em><code>0</code></em>, <strong><code>ntrend</code></strong>=<em><code>0</code></em>, <strong><code>nlf</code></strong>=<em><code>0</code></em>, <strong><code>nhol</code></strong>=<em><code>0</code></em>, <strong><code>seasPeriods</code></strong>=<em><code>[]</code></em>, <strong><code>seasHarmComponents</code></strong>=<em><code>[]</code></em>, <strong><code>deltrend</code></strong>=<em><code>1</code></em>, <strong><code>delregn</code></strong>=<em><code>1</code></em>, <strong><code>dellf</code></strong>=<em><code>1</code></em>, <strong><code>delhol</code></strong>=<em><code>1</code></em>, <strong><code>delseas</code></strong>=<em><code>1</code></em>, <strong><code>rho</code></strong>=<em><code>1</code></em>, <strong><code>interpolate</code></strong>=<em><code>True</code></em>, <strong><code>adapt_discount</code></strong>=<em><code>False</code></em>, <strong><code>adapt_factor</code></strong>=<em><code>0.5</code></em>, <strong><code>discount_forecast</code></strong>=<em><code>False</code></em>) :: <a href="/pybats_nbdev/dglm.html"><code>dglm</code></a></p>
 </blockquote>
 <p>Core class of dynamic generalized linear models (DGLMs).</p>
 <p>Children include Poisson, Bernoulli, and Binomial DGLMs, as well as the Normal DLM.</p>
@@ -592,7 +592,7 @@ $$<p>Where</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="dlm" class="doc_header"><code>class</code> <code>dlm</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/dglm.py#L498" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>dlm</code>(<strong>*<code>args</code></strong>, <strong><code>n0</code></strong>=<em><code>1</code></em>, <strong><code>s0</code></strong>=<em><code>1</code></em>, <strong><code>delVar</code></strong>=<em><code>1</code></em>, <strong>**<code>kwargs</code></strong>) :: <a href="/pybats_nbdev/dglm.html"><code>dglm</code></a></p>
+<h2 id="dlm" class="doc_header"><code>class</code> <code>dlm</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/dglm.py#L506" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>dlm</code>(<strong>*<code>args</code></strong>, <strong><code>n0</code></strong>=<em><code>1</code></em>, <strong><code>s0</code></strong>=<em><code>1</code></em>, <strong><code>delVar</code></strong>=<em><code>1</code></em>, <strong>**<code>kwargs</code></strong>) :: <a href="/pybats_nbdev/dglm.html"><code>dglm</code></a></p>
 </blockquote>
 <p>Core class of dynamic generalized linear models (DGLMs).</p>
 <p>Children include Poisson, Bernoulli, and Binomial DGLMs, as well as the Normal DLM.</p>
@@ -643,7 +643,7 @@ $$<p>Where</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="bin_dglm" class="doc_header"><code>class</code> <code>bin_dglm</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/dglm.py#L549" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>bin_dglm</code>(<strong><code>a0</code></strong>=<em><code>None</code></em>, <strong><code>R0</code></strong>=<em><code>None</code></em>, <strong><code>nregn</code></strong>=<em><code>0</code></em>, <strong><code>ntrend</code></strong>=<em><code>0</code></em>, <strong><code>nlf</code></strong>=<em><code>0</code></em>, <strong><code>nhol</code></strong>=<em><code>0</code></em>, <strong><code>seasPeriods</code></strong>=<em><code>[]</code></em>, <strong><code>seasHarmComponents</code></strong>=<em><code>[]</code></em>, <strong><code>deltrend</code></strong>=<em><code>1</code></em>, <strong><code>delregn</code></strong>=<em><code>1</code></em>, <strong><code>dellf</code></strong>=<em><code>1</code></em>, <strong><code>delhol</code></strong>=<em><code>1</code></em>, <strong><code>delseas</code></strong>=<em><code>1</code></em>, <strong><code>rho</code></strong>=<em><code>1</code></em>, <strong><code>interpolate</code></strong>=<em><code>True</code></em>, <strong><code>adapt_discount</code></strong>=<em><code>False</code></em>, <strong><code>adapt_factor</code></strong>=<em><code>0.5</code></em>, <strong><code>discount_forecast</code></strong>=<em><code>False</code></em>) :: <a href="/pybats_nbdev/dglm.html"><code>dglm</code></a></p>
+<h2 id="bin_dglm" class="doc_header"><code>class</code> <code>bin_dglm</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/dglm.py#L557" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>bin_dglm</code>(<strong><code>a0</code></strong>=<em><code>None</code></em>, <strong><code>R0</code></strong>=<em><code>None</code></em>, <strong><code>nregn</code></strong>=<em><code>0</code></em>, <strong><code>ntrend</code></strong>=<em><code>0</code></em>, <strong><code>nlf</code></strong>=<em><code>0</code></em>, <strong><code>nhol</code></strong>=<em><code>0</code></em>, <strong><code>seasPeriods</code></strong>=<em><code>[]</code></em>, <strong><code>seasHarmComponents</code></strong>=<em><code>[]</code></em>, <strong><code>deltrend</code></strong>=<em><code>1</code></em>, <strong><code>delregn</code></strong>=<em><code>1</code></em>, <strong><code>dellf</code></strong>=<em><code>1</code></em>, <strong><code>delhol</code></strong>=<em><code>1</code></em>, <strong><code>delseas</code></strong>=<em><code>1</code></em>, <strong><code>rho</code></strong>=<em><code>1</code></em>, <strong><code>interpolate</code></strong>=<em><code>True</code></em>, <strong><code>adapt_discount</code></strong>=<em><code>False</code></em>, <strong><code>adapt_factor</code></strong>=<em><code>0.5</code></em>, <strong><code>discount_forecast</code></strong>=<em><code>False</code></em>) :: <a href="/pybats_nbdev/dglm.html"><code>dglm</code></a></p>
 </blockquote>
 <p>Core class of dynamic generalized linear models (DGLMs).</p>
 <p>Children include Poisson, Bernoulli, and Binomial DGLMs, as well as the Normal DLM.</p>
