@@ -6,8 +6,8 @@ title: Update
 keywords: fastai
 sidebar: home_sidebar
 
-summary: "This module contains the update algorithm for a DGLM. After observing a new value $y_t$, updating incorporates the new information into the DGLM coefficients. It also applies the discount factors to reduce the impact of older information. For any model `mod`, the correct method usage is `mod.update(y, X)` so they do not need to be called separately from the model."
-description: "This module contains the update algorithm for a DGLM. After observing a new value $y_t$, updating incorporates the new information into the DGLM coefficients. It also applies the discount factors to reduce the impact of older information. For any model `mod`, the correct method usage is `mod.update(y, X)` so they do not need to be called separately from the model."
+summary: "This module contains the update algorithm for a DGLM. After observing a new value $y_t$, updating incorporates the new information into the DGLM coefficients. It also applies the discount factors to reduce the impact of older information. For any model `mod`, the correct method usage is `mod.update(y, X)`."
+description: "This module contains the update algorithm for a DGLM. After observing a new value $y_t$, updating incorporates the new information into the DGLM coefficients. It also applies the discount factors to reduce the impact of older information. For any model `mod`, the correct method usage is `mod.update(y, X)`."
 nb_path: "nbs/01_update.ipynb"
 ---
 <!--
@@ -31,8 +31,8 @@ nb_path: "nbs/01_update.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Updating occurs after observing a new value, $y_t$. The update function accepts $y_t$ and the predictors $X_t$.  It will update the state vector from $\theta_t$ into $\theta_{t+1}$, producing the new mean $a_{t+1}$ and variance matrix $R_{t+1}$. In a normal DLM, the updating also impacts the mean of the observation variance, $s_{t+1}$. These quantities can be access as <code>mod.a</code>, <code>mod.R</code>, and for a normal DLM, <code>mod.s</code>.</p>
-<p>To give the slightly more formal Bayesian interpretation of these steps:</p>
+<p>Updating occurs after observing a new value, $y_t$. The update function accepts $y_t$ and the predictors $X_t$.  It will update the state vector from $\theta_t$ into $\theta_{t+1}$, producing the new mean $a_{t+1}$ and variance matrix $R_{t+1}$. In a normal DLM, the updating also impacts the mean of the observation variance, $s_{t+1}$. The coefficients can be accessed with <code>mod.get_coef</code>, or more directly as <code>mod.a</code>, <code>mod.R</code>, and for a normal DLM, <code>mod.s</code>.</p>
+<p>To give the more formal Bayesian interpretation of these steps:</p>
 <ul>
 <li>At time $t$, we know the prior moments of the state vector $\theta_t | \mathcal{D_t} \sim [a_t, R_t]$, where $\mathcal{D_t}$ is all of the observations up to time $t$. </li>
 <li>We then observe $y_t$, and incorporate the new information to give the posterior: $\theta_t | \mathcal{D_t}, y_t \sim [m_t, C_t]$. </li>
@@ -83,10 +83,10 @@ nb_path: "nbs/01_update.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>This update method works for Poisson and Bernoulli DGLMs. Below are very simple tests:</p>
+<p>This update method works for Poisson and Bernoulli DGLMs. Below are very simple tests which:</p>
 <ul>
-<li>Manually define a simple DGLM with an intercept and 2 regression predictors</li>
-<li>Define new $y_t, X_t$</li>
+<li>Manually define a DGLM with an intercept and 2 regression predictors</li>
+<li>Define a new $y_t, X_t$</li>
 <li>Update the model, given $y_t, X_t$</li>
 <li>Check that the posterior mean $a_t$ and variance $R_t$ of the state vector is correct</li>
 </ul>
