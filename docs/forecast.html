@@ -6,8 +6,8 @@ title: Forecast
 keywords: fastai
 sidebar: home_sidebar
 
-summary: "This module contains the forecast algorithm for a DGLM. Given predictors, these functions return a random sample from the forecast distribution. Using this sample, you can calculate point estimates (means, medians), and measures of uncertainty such as credible intervals. For any model `mod`, the correct method usage is `mod.forecast_marginal(k, X)` and `mod.forecast_path(k, X)`, so they do not need to be called separately from the model."
-description: "This module contains the forecast algorithm for a DGLM. Given predictors, these functions return a random sample from the forecast distribution. Using this sample, you can calculate point estimates (means, medians), and measures of uncertainty such as credible intervals. For any model `mod`, the correct method usage is `mod.forecast_marginal(k, X)` and `mod.forecast_path(k, X)`, so they do not need to be called separately from the model."
+summary: "This module contains the forecast algorithms for a DGLM. These functions return a set of sampled values from the forecast distribution. Using this sample, PyBATS functions calculate point estimates (means, medians), and uncertainty measures such as credible intervals. For any model, `mod`, the correct method usage is `mod.forecast_marginal(k, X)` and `mod.forecast_path(k, X)`."
+description: "This module contains the forecast algorithms for a DGLM. These functions return a set of sampled values from the forecast distribution. Using this sample, PyBATS functions calculate point estimates (means, medians), and uncertainty measures such as credible intervals. For any model, `mod`, the correct method usage is `mod.forecast_marginal(k, X)` and `mod.forecast_path(k, X)`."
 nb_path: "nbs/02_forecast.ipynb"
 ---
 <!--
@@ -29,6 +29,20 @@ nb_path: "nbs/02_forecast.ipynb"
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Forecasting occurs at time $t$ before a new value $y_t$ has been observed. There are two types of forecasts:</p>
+<ol>
+<li><strong>Marginal</strong> - A forecast made at <em>k</em> time steps into the future only. For example, marginal forecasting with $k=1$ will simulate from the forecast distribution for $y_t$. Marginal forecasting with $k=2$ will simulate from the forecast distribution for $y_{t+1}$, and so on.</li>
+</ol>
+<ol>
+<li><strong>Path</strong> - A joint forecast made from <em>1</em> to <em>k</em> steps into the future. Path forecasting with $k=3$ will simulate <em>dependent</em> observations $y_t, y_{t+1}, y_{t+2}$. Path forecasting is important when computing functions across multiple forecast horizons. The most common example is forecasting the <em>sum</em> $\sum_{h=1:k} y_{t+k-1}$. This is accomplished by path forecasting $k$ steps ahead, and then summing each path to get a random sample from the forecast distribution for the sum.</li>
+</ol>
+<p>Naturally, forecasting $k-$steps ahead requires knowing all predictors $X$ that far into the future as well. Marginal forecasting $k-$steps ahead accepts $X_{t+k-1}$ as an argument. Path forecasting accepts the predictors in an array. Each row contains the predictors at one time step, starting with $X_t$ in the first row, down to $X_{t+k-1}$ in the last row.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Marginal-Forecasting">Marginal Forecasting<a class="anchor-link" href="#Marginal-Forecasting"> </a></h2>
@@ -69,12 +83,12 @@ nb_path: "nbs/02_forecast.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>This forecast method works for Poisson and Bernoulli DGLMs. Below are very simple tests:</p>
+<p>This marginal forecast method works for Poisson and Bernoulli DGLMs. Below are very simple steps:</p>
 <ul>
 <li>Manually define a simple DGLM with an intercept and 2 regression predictors</li>
-<li>Define new $X_t$</li>
+<li>Define the future predictors, $X_{t+k-1}$</li>
 <li>Forecast by drawing a random sample at $k=5$, and getting a $95\%$ credible interval</li>
-<li>Forecast the mean only using a special flag, to test the function</li>
+<li>Forecast the mean only, without drawing a random sample</li>
 </ul>
 
 </div>
@@ -141,7 +155,7 @@ nb_path: "nbs/02_forecast.ipynb"
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([   0. , 1317.2])</pre>
+<pre>array([   0. , 1124.4])</pre>
 </div>
 
 </div>
@@ -184,7 +198,7 @@ nb_path: "nbs/02_forecast.ipynb"
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([-41.2778695 ,  39.14389697])</pre>
+<pre>array([-37.25399098,  36.31850602])</pre>
 </div>
 
 </div>
@@ -197,7 +211,7 @@ nb_path: "nbs/02_forecast.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Next we'll test the models using the special flag <code>mean_only=True</code>. This will return only the mean value, without simulation from the forecast distribution. It is much faster if the mean is the only value of interest.</p>
+<p>Next we'll test the models by setting <code>mean_only=True</code>. This will return only the mean value, without simulation from the forecast distribution. It is much faster if the mean is the only value of interest.</p>
 <p>Notice that we skipped simulating from the Bernoulli DGLM, because Bernoulli outcomes are only $0$ or $1$ anyway. The mean of the forecast distribution in a Bernoulli DGLM is equal to the probability of the outcome being $1$.</p>
 
 </div>
@@ -241,7 +255,7 @@ nb_path: "nbs/02_forecast.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Finally, <code>mod.forecast_marginal</code> has three special features beyond returning just a random sample from the forecast distribution:</p>
+<p><a href="/pybats_nbdev/dglm.html#dglm.forecast_marginal"><code>dglm.forecast_marginal</code></a> has three special features beyond returning just a random sample from the forecast distribution:</p>
 <ol>
 <li>Setting <code>mean_only = True</code> makes the function return the mean of the forecast distribution, instead of a random sample.</li>
 <li>Setting <code>state_mean_and_var = True</code> makes the function return the mean and variance of the linear predictor, $\lambda_t = F_t^{'} \theta_t$.</li>
@@ -285,7 +299,7 @@ nb_path: "nbs/02_forecast.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Finally, we'll repeat the same tests from above on a binomial DGLM by specifying both the predictors <code>X</code> and the number of trials <code>n</code>.</p>
+<p>We'll repeat the same tests from above on a binomial DGLM by specifying both the predictors <code>X</code> and the number of trials <code>n</code>.</p>
 
 </div>
 </div>
@@ -416,7 +430,7 @@ nb_path: "nbs/02_forecast.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>There are two functions for path forecasting with DGLMs. <a href="/pybats_nbdev/forecast.html#forecast_path_copula"><code>forecast_path_copula</code></a> is the default method, and is part of my new <a href="https://arxiv.org/pdf/2007.04956.pdf">research</a>. It dramatically speeds up path forecasting in DGLMs. The traditional <a href="/pybats_nbdev/forecast.html#forecast_path"><code>forecast_path</code></a> function is only used when <code>mod.forecast_path</code> is called with the flag <code>copula=FALSE</code>.</p>
+<p>There are two functions for path forecasting with DGLMs. <a href="/pybats_nbdev/forecast.html#forecast_path_copula"><code>forecast_path_copula</code></a> is the default method, and is part of my new <a href="https://arxiv.org/pdf/2007.04956.pdf">research</a>. It dramatically speeds up path forecasting in DGLMs. The traditional <a href="/pybats_nbdev/forecast.html#forecast_path"><code>forecast_path</code></a> function is only used when <a href="/pybats_nbdev/dglm.html#dglm.forecast_path"><code>dglm.forecast_path</code></a> is called with the flag <code>copula=FALSE</code>.</p>
 <p>Below we'll test path forecasting - with a copula, as is the default - for $k=2$ steps into the future. The Poisson model will have $2$ trend terms - an intercept and a slope - and 1 regression term. This test will confirm that marginal forecasting and path forecasting lead to identical forecast means for $k=1$ and $k=2$ steps ahead.</p>
 
 </div>
@@ -457,57 +471,11 @@ nb_path: "nbs/02_forecast.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Finally, <code>mod.forecast_path</code> has two special features beyond returning just a random sample from the forecast distribution. These only work when using <a href="/pybats_nbdev/forecast.html#forecast_path_copula"><code>forecast_path_copula</code></a>, which is not called for a normal DLM.</p>
+<p><a href="/pybats_nbdev/dglm.html#dglm.forecast_path"><code>dglm.forecast_path</code></a> has two special features beyond returning just a random sample from the forecast distribution. These only work when using <a href="/pybats_nbdev/forecast.html#forecast_path_copula"><code>forecast_path_copula</code></a>, and are not yet available for a normal DLM.</p>
 <ol>
 <li>Passing in a value (a vector of length $k$) for <code>y</code> makes the function return the <em>log</em> probability density of <code>y</code> under the forecast distribution, $p(y)$.</li>
-<li>Setting <code>return_cov = True</code> makes the function return the covariance in the copula distribution. This is slightly different than the covariance in the forecast distribution, which can be calculated directly from a random sample.</li>
+<li>Setting <code>return_cov = True</code> makes the function return the covariance in the copula distribution. This will be different than the covariance in the forecast distribution, which can be calculated directly from a random sample.</li>
 </ol>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Multivariate-forecasting-with-a-copula-(Recoupling)">Multivariate forecasting with a copula (Recoupling)<a class="anchor-link" href="#Multivariate-forecasting-with-a-copula-(Recoupling)"> </a></h2>
-</div>
-</div>
-</div>
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="forecast_joint_copula_sim" class="doc_header"><code>forecast_joint_copula_sim</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/forecast.py#L374" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_joint_copula_sim</code>(<strong><code>mod_list</code></strong>, <strong><code>lambda_mu</code></strong>, <strong><code>lambda_cov</code></strong>, <strong><code>nsamps</code></strong>, <strong><code>t_dist</code></strong>=<em><code>False</code></em>, <strong><code>nu</code></strong>=<em><code>9</code></em>)</p>
-</blockquote>
-<p>Jointly forecast from multiple DGLMs which share a latent factor</p>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>This function is used to jointly forecast from separately DGLMs which share a common latent factor. The uncertainty in the forecast of the latent factor induces dependence among the models. Just as with path forecasting, the dependence is important when calculating joint functions of the model forecasts. The most common example is forecasting the <em>sum</em> across models, $\sum_{i=1:m} y_{i,t}$.</p>
-<p><strong>COME BACK TO THIS, SEE IF IT SHOULD BE HIDDEN WHEN I DO THE LATENT FACTOR DOCUMENTATION</strong></p>
 
 </div>
 </div>
