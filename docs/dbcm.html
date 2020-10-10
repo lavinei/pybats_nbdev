@@ -276,7 +276,6 @@ y_t =
 <span class="n">dates</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">index</span>
 <span class="n">forecast_start_date</span> <span class="o">=</span> <span class="n">dates</span><span class="p">[</span><span class="o">-</span><span class="mi">100</span><span class="p">]</span>
 <span class="n">forecast_end_date</span> <span class="o">=</span> <span class="n">dates</span><span class="p">[</span><span class="o">-</span><span class="mi">50</span><span class="p">]</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:</span><span class="n">forecast_end_date</span><span class="p">]</span>
 </pre></div>
 
     </div>
@@ -346,8 +345,8 @@ y_t =
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">transaction_mean</span><span class="p">,</span> <span class="n">cascade_mean</span><span class="p">,</span> <span class="n">excess_mean</span> <span class="o">=</span> \
 <span class="n">mod</span><span class="o">.</span><span class="n">forecast_marginal</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                      <span class="n">X_transaction</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;X_transaction&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
-                      <span class="n">X_cascade</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;X_cascade&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                      <span class="n">X_transaction</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">forecast_end_date</span><span class="p">][</span><span class="s1">&#39;X_transaction&#39;</span><span class="p">],</span>
+                      <span class="n">X_cascade</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">forecast_end_date</span><span class="p">][</span><span class="s1">&#39;X_cascade&#39;</span><span class="p">],</span>
                       <span class="n">mean_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                       <span class="n">return_separate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -396,23 +395,23 @@ y_t =
   <tbody>
     <tr>
       <th>sales</th>
-      <td>7.53</td>
+      <td>7.42</td>
     </tr>
     <tr>
       <th>transactions</th>
-      <td>5.73</td>
+      <td>5.66</td>
     </tr>
     <tr>
       <th>mt1</th>
-      <td>1.40</td>
+      <td>1.38</td>
     </tr>
     <tr>
       <th>mt2</th>
-      <td>0.23</td>
+      <td>0.22</td>
     </tr>
     <tr>
       <th>mt3</th>
-      <td>0.09</td>
+      <td>0.08</td>
     </tr>
     <tr>
       <th>mt4</th>

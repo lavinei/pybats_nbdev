@@ -12,7 +12,7 @@ from .shared import define_holiday_regressors
 from collections.abc import Iterable
 
 # Cell
-def analysis(Y, X, k, forecast_start, forecast_end,
+def analysis(Y, X=None, k=1, forecast_start=0, forecast_end=0,
              nsamps=500, family = 'normal', n = None,
              model_prior = None, prior_length=20, ntrend=1,
              dates = None, holidays = [],
@@ -57,11 +57,11 @@ def analysis(Y, X, k, forecast_start, forecast_end,
             forecast_end = np.where(dates == forecast_end)[0][0]
 
     # Define the run length
-    T = np.min([len(Y), forecast_end]) + 1
+    T = len(Y) + 1 #np.min([len(Y), forecast_end]) + 1
 
     if ret.__contains__('model_coef'):
-        m = np.zeros([T, mod.a.shape[0]])
-        C = np.zeros([T, mod.a.shape[0], mod.a.shape[0]])
+        m = np.zeros([T-1, mod.a.shape[0]])
+        C = np.zeros([T-1, mod.a.shape[0], mod.a.shape[0]])
         if family == 'normal':
             n = np.zeros(T)
             s = np.zeros(T)
@@ -183,7 +183,7 @@ def analysis(Y, X, k, forecast_start, forecast_end,
         return out
 
 # Cell
-def analysis_dcmm(Y, X, k, forecast_start, forecast_end,
+def analysis_dcmm(Y, X, k=1, forecast_start=0, forecast_end=0,
                   nsamps=500, rho=.6,
                   model_prior=None, prior_length=20, ntrend=1,
                   dates=None, holidays=[],
@@ -245,7 +245,7 @@ def analysis_dcmm(Y, X, k, forecast_start, forecast_end,
     else:
         forecast = np.zeros([nsamps, forecast_end - forecast_start + 1, k])
 
-    T = np.min([len(Y), forecast_end]) + 1
+    T = len(Y) + 1 # np.min([len(Y), forecast_end]) + 1
     nu = 9
 
     # Run updating + forecasting
@@ -295,24 +295,25 @@ def analysis_dcmm(Y, X, k, forecast_start, forecast_end,
                                                 k=k, nsamps=nsamps, horizons=horizons)
 
         # Update the DCMM
-        if is_lf:
-            if isinstance(latent_factor, (list, tuple)):
-                pm_bern, ps_bern = latent_factor[0].get_lf(dates.iloc[t])
-                pm_pois, ps_pois = latent_factor[1].get_lf(dates.iloc[t])
-                pm = (pm_bern, pm_pois)
-                ps = (ps_bern, ps_pois)
+        if t < len(Y):
+            if is_lf:
+                if isinstance(latent_factor, (list, tuple)):
+                    pm_bern, ps_bern = latent_factor[0].get_lf(dates.iloc[t])
+                    pm_pois, ps_pois = latent_factor[1].get_lf(dates.iloc[t])
+                    pm = (pm_bern, pm_pois)
+                    ps = (ps_bern, ps_pois)
+                else:
+                    pm, ps = latent_factor.get_lf(dates.iloc[t])
+
+                mod.update_lf_analytic(y=Y[t], X=(X[t], X[t]),
+                                       phi_mu=(pm, pm), phi_sigma=(ps, ps))
             else:
-                pm, ps = latent_factor.get_lf(dates.iloc[t])
+                mod.update(y = Y[t], X=(X[t], X[t]))
 
-            mod.update_lf_analytic(y=Y[t], X=(X[t], X[t]),
-                                   phi_mu=(pm, pm), phi_sigma=(ps, ps))
-        else:
-            mod.update(y = Y[t], X=(X[t], X[t]))
-
-        if ret.__contains__('new_latent_factors'):
-            for lf in new_latent_factors:
-                lf.generate_lf(date=dates.iloc[t], mod=mod, X=X[t + horizons - 1, :],
-                                   k=k, nsamps=nsamps, horizons=horizons)
+            if ret.__contains__('new_latent_factors'):
+                for lf in new_latent_factors:
+                    lf.generate_lf(date=dates.iloc[t], mod=mod, X=X[t + horizons - 1, :],
+                                       k=k, nsamps=nsamps, horizons=horizons)
 
     out = []
     for obj in ret:
@@ -397,7 +398,7 @@ def analysis_dbcm(Y_transaction, X_transaction, Y_cascade, X_cascade, excess,
     else:
         forecast = np.zeros([nsamps, forecast_end - forecast_start + 1, k])
 
-    T = np.min([len(Y_transaction)- k, forecast_end]) + 1
+    T = len(Y_transaction) + 1 #np.min([len(Y_transaction)- k, forecast_end]) + 1
     nu = 9
 
     # Run updating + forecasting
@@ -454,27 +455,28 @@ def analysis_dbcm(Y_transaction, X_transaction, Y_cascade, X_cascade, excess,
                                                 X_cascade = X_cascade[t + horizons - 1, :],
                                                 k=k, nsamps=nsamps, horizons=horizons)
         # Update the DBCM
-        if is_lf:
-            if isinstance(latent_factor, (list, tuple)):
-                pm_bern, ps_bern = latent_factor[0].get_lf(dates.iloc[t])
-                pm_pois, ps_pois = latent_factor[1].get_lf(dates.iloc[t])
-                pm = (pm_bern, pm_pois)
-                ps = (ps_bern, ps_pois)
+        if t < len(Y_transaction):
+            if is_lf:
+                if isinstance(latent_factor, (list, tuple)):
+                    pm_bern, ps_bern = latent_factor[0].get_lf(dates.iloc[t])
+                    pm_pois, ps_pois = latent_factor[1].get_lf(dates.iloc[t])
+                    pm = (pm_bern, pm_pois)
+                    ps = (ps_bern, ps_pois)
+                else:
+                    pm, ps = latent_factor.get_lf(dates.iloc[t])
+
+                mod.update_lf_analytic(y_transaction=Y_transaction[t], X_transaction=X_transaction[t, :],
+                                       y_cascade=Y_cascade[t,:], X_cascade=X_cascade[t, :],
+                                       phi_mu=pm, phi_sigma=ps, excess=excess[t])
             else:
-                pm, ps = latent_factor.get_lf(dates.iloc[t])
+                mod.update(y_transaction=Y_transaction[t], X_transaction=X_transaction[t, :],
+                           y_cascade=Y_cascade[t,:], X_cascade=X_cascade[t, :], excess=excess[t])
 
-            mod.update_lf_analytic(y_transaction=Y_transaction[t], X_transaction=X_transaction[t, :],
-                                   y_cascade=Y_cascade[t,:], X_cascade=X_cascade[t, :],
-                                   phi_mu=pm, phi_sigma=ps, excess=excess[t])
-        else:
-            mod.update(y_transaction=Y_transaction[t], X_transaction=X_transaction[t, :],
-                       y_cascade=Y_cascade[t,:], X_cascade=X_cascade[t, :], excess=excess[t])
-
-        if ret.__contains__('new_latent_factors'):
-            for lf in new_latent_factors:
-                lf.generate_lf(date=dates.iloc[t], mod=mod, X_transaction=X_transaction[t + horizons - 1, :],
-                                   X_cascade = X_cascade[t + horizons - 1, :],
-                                   k=k, nsamps=nsamps, horizons=horizons)
+            if ret.__contains__('new_latent_factors'):
+                for lf in new_latent_factors:
+                    lf.generate_lf(date=dates.iloc[t], mod=mod, X_transaction=X_transaction[t + horizons - 1, :],
+                                       X_cascade = X_cascade[t + horizons - 1, :],
+                                       k=k, nsamps=nsamps, horizons=horizons)
 
     out = []
     for obj in ret:

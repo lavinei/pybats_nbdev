@@ -619,16 +619,16 @@ holidays
 
 
 
-    [Holiday: New Years Day (month=1, day=1, observance=<function nearest_workday at 0x7f8cec6d13b0>),
+    [Holiday: New Years Day (month=1, day=1, observance=<function nearest_workday at 0x7fe8fd5cb3b0>),
      Holiday: Martin Luther King Jr. Day (month=1, day=1, offset=<DateOffset: weekday=MO(+3)>),
      Holiday: Presidents Day (month=2, day=1, offset=<DateOffset: weekday=MO(+3)>),
      Holiday: Memorial Day (month=5, day=31, offset=<DateOffset: weekday=MO(-1)>),
-     Holiday: July 4th (month=7, day=4, observance=<function nearest_workday at 0x7f8cec6d13b0>),
+     Holiday: July 4th (month=7, day=4, observance=<function nearest_workday at 0x7fe8fd5cb3b0>),
      Holiday: Labor Day (month=9, day=1, offset=<DateOffset: weekday=MO(+1)>),
      Holiday: Columbus Day (month=10, day=1, offset=<DateOffset: weekday=MO(+2)>),
-     Holiday: Veterans Day (month=11, day=11, observance=<function nearest_workday at 0x7f8cec6d13b0>),
+     Holiday: Veterans Day (month=11, day=11, observance=<function nearest_workday at 0x7fe8fd5cb3b0>),
      Holiday: Thanksgiving (month=11, day=1, offset=<DateOffset: weekday=TH(+4)>),
-     Holiday: Christmas (month=12, day=25, observance=<function nearest_workday at 0x7f8cec6d13b0>)]
+     Holiday: Christmas (month=12, day=25, observance=<function nearest_workday at 0x7fe8fd5cb3b0>)]
 
 
 

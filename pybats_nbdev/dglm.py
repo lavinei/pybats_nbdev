@@ -374,8 +374,12 @@ class dglm:
         elif component == 'seas':
             names = seas_names
 
-            return pd.DataFrame({'Mean':self.a.reshape(-1)[self.iseas],
-                                 'Standard Deviation': np.sqrt(self.R.diagonal())[self.iseas]},
+            seas_idx = []
+            for idx in self.iseas:
+                seas_idx.extend(idx)
+
+            return pd.DataFrame({'Mean':self.a.reshape(-1)[seas_idx],
+                                 'Standard Deviation': np.sqrt(self.R.diagonal())[seas_idx]},
                                  index=names).round(2)
 
         elif component == 'hol':

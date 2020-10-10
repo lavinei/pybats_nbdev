@@ -34,9 +34,9 @@ def createFourierToSeasonalL(period, harmComponents, Fseas, Gseas):
     return L
 
 # Cell
-def fourierToSeasonal(mod):
-    phi = mod.L @ mod.m[mod.iseas]
-    var = mod.L @ mod.C[np.ix_(mod.iseas, mod.iseas)] @ mod.L.T
+def fourierToSeasonal(mod, comp=0):
+    phi = mod.L[comp] @ mod.m[mod.iseas[comp]]
+    var = mod.L[comp] @ mod.C[np.ix_(mod.iseas[comp], mod.iseas[comp])] @ mod.L[comp].T
     return phi, var
 
 # Internal Cell
