@@ -31,6 +31,29 @@ nb_path: "nbs/05_analysis.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>An analysis consists of:</p>
+<ol>
+<li>Initializing a DGLM, using <a href="/pybats_nbdev/define_models.html#define_dglm"><code>define_dglm</code></a>.</li>
+<li>Sequentially updating the model's state vector after seeing each observation in <code>Y</code>.</li>
+<li>Forecasting at each time step between <code>forecast_start</code> and <code>forecast_end</code>.</li>
+<li>Returning the desired output, specified in the argument <code>ret</code>. The default is to return the model and forecast samples.</li>
+</ol>
+<p>The analysis starts by defining a new DGLM with <a href="/pybats_nbdev/define_models.html#define_dglm"><code>define_dglm</code></a>. The default number of observations to use is set at <code>prior_length=20</code>. Any arguments that are used to define a model in <a href="/pybats_nbdev/define_models.html#define_dglm"><code>define_dglm</code></a> can be specified as keyword arguments. Alternatively, you may define the model before using analysis, and pass the pre-initialized DGLM into analysis as the argument <code>model_prior</code>.</p>
+<p>After the model has been initialized, the analysis loop begins. If the time step is between <code>forecast_start</code> and <code>forecast_end</code>, then the model will forecast ahead. The forecast horizon <code>k</code> must be specified. The default is to simulate <code>nsamps=500</code> times from the forecast distribution using <a href="/pybats_nbdev/forecast.html#forecast_marginal"><code>forecast_marginal</code></a>, from $1$ to <code>k</code> steps into the future. To simulate from the joint forecast distribution over the next <code>k</code> steps, set the flag <code>forecast_path=True</code>. Note that all forecasts are <em>out-of-sample</em>, i.e. they are made before the model has seen the observation. This is to ensure than the forecast accuracy is a fair representation of future model performance.</p>
+<p>After the forecast has been made, the model "sees" the observation $y_t$, and updates the state vector accordingly.</p>
+<p>The analysis ends at the last observation in <code>Y</code>. The output is a list specified by the argument <code>ret</code>, which may contain:</p>
+<ul>
+<li><code>mod</code>: The final model</li>
+<li><a href="/pybats_nbdev/forecast.html"><code>forecast</code></a>: The forecast samples</li>
+<li><code>model_coef</code>: A time series of the state vector mean vector and variance matrix</li>
+</ul>
+<p>Please note that <a href="/pybats_nbdev/analysis.html"><code>analysis</code></a> is used on a historic dataset that already exists. This means that a typical sequence of events is to run an analysis on the data you current have, and return the model. Then, you can use <code>mod.forecast_marginal</code> and <code>mod.forecast_path</code> to forecast into the future.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Analysis-for-a-DGLM">Analysis for a DGLM<a class="anchor-link" href="#Analysis-for-a-DGLM"> </a></h2>
 </div>
 </div>
@@ -97,8 +120,6 @@ nb_path: "nbs/05_analysis.ipynb"
 
 
 <span class="n">data</span> <span class="o">=</span> <span class="n">load_us_inflation</span><span class="p">()</span>
-<span class="c1">#data.Date = pd.DatetimeIndex(data.Date)</span>
-<span class="c1">#data.set_index(&#39;Date&#39;)</span>
 <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
 </pre></div>
 
@@ -231,14 +252,14 @@ nb_path: "nbs/05_analysis.ipynb"
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>A couple of things to note here:</p>
 <ul>
-<li><p><code>forecast_start</code> and <code>forecast_end</code> were specified by using the <code>dates</code> argument. You can also specify forecast_start and forecast_end simply by row numbers in the dataframe, and not specify any dates.</p>
+<li><p><code>forecast_start</code> and <code>forecast_end</code> were specified by using the <code>dates</code> argument. You can also specify forecast_start and forecast_end by row numbers in the dataframe, and avoid specifying the dates argument.</p>
 </li>
-<li><p><code>ntrend=2</code> implies that the model has an intercept and a local slope term, and <code>deltrend=.98</code> decreases the impact of older observations on the trend component by $2\%$ at each time step.</p>
+<li><p><code>ntrend=2</code> implies that the model has an intercept and a local slope term, and <code>deltrend=.98</code> discounts the impact of older observations on the trend component by $2\%$ at each time step.</p>
 </li>
 <li><p>The seasonal component was set as <code>seasPeriods=[4]</code>, because we think the seasonal effect has a cycle of length $4$ in this quarterly inflation data.</p>
 </li>
 </ul>
-<p>Let's examine the output. Here is the mean and variance of the state vector:</p>
+<p>Let's examine the output. Here is the mean and standard deviation of the state vector (aka the coefficients) after the model has seen the last observation in <code>Y</code>:</p>
 
 </div>
 </div>
@@ -337,10 +358,9 @@ nb_path: "nbs/05_analysis.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Finally, the lag-1 regression term is dominant, with a mean of $0.91$.</p>
-<p>The seasonal coefficients turned out to be very small. Most likely this is because the publicly available federal reserve dataset is pre-adjusted for seasonality.</p>
-<p>The trend terms are significant, especially the intercept with a mean of $.13$.</p>
-<p>We can plot the forecasts using <a href="/pybats_nbdev/plot.html#plot_data_forecast"><code>plot_data_forecast</code></a>. We'll plot the 1-quarter ahead forecasts.</p>
+<p>It's clear that the lag-1 regression term is dominant, with a mean of $0.90$. The only other large coefficient is the intercept, with a mean of $0.10$.</p>
+<p>The seasonal coefficients turned out to be very small. Most likely this is because the publicly available dataset for US inflation is pre-adjusted for seasonality.</p>
+<p>We can plot the forecasts using <a href="/pybats_nbdev/plot.html#plot_data_forecast"><code>plot_data_forecast</code></a>. We'll plot the 1-quarter ahead forecasts, using the median as our point estimate.</p>
 
 </div>
 </div>
@@ -396,8 +416,8 @@ nb_path: "nbs/05_analysis.ipynb"
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can see that the forecasts are quite good, and nearly all of the observations fall within the $95\%$ credible interval.</p>
-<p>There's also a clear pattern - they look 'shifted' from the data by 1 step. This is because the lag-1 predictor is very strong, with a coefficient mean of $0.92$. In effect, the model is using the previous month's value as its forecast, with some small modifications.</p>
-<p>Finally, we can put a number on the quality of the forecast by using a loss function, the Mean Absolute Percent Error (MAPE):</p>
+<p>There's also a clear pattern - the forecasts look as if they're shifted forward from the data by 1 step. This is because the lag-1 predictor is very strong, with a coefficient mean of $0.92$. So the model is primarily using the previous month's value as its forecast, with some small modifications. Having the previous value as our best forecast is common in many time series.</p>
+<p>Finally, we can put a number on the quality of the forecast by using a loss function, the Mean Absolute Percent Error (MAPE). We see that on average, our forecasts of quarterly inflation have an error of <code>14.4%</code>.</p>
 
 </div>
 </div>
@@ -492,8 +512,8 @@ nb_path: "nbs/05_analysis.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>This function works identically to the standard <a href="/pybats_nbdev/analysis.html"><code>analysis</code></a>, but is specialized for a DCMM.</p>
-<p>The observations must be integer counts, which can be modeled as a combination of a Poisson and Bernoulli DGLM. Typically a DCMM is equally good as a Poisson DGLM for modeling large integers, but significantly better for series of smaller integers with many zeros.</p>
+<p><a href="/pybats_nbdev/analysis.html#analysis_dcmm"><code>analysis_dcmm</code></a> works identically to the standard <a href="/pybats_nbdev/analysis.html"><code>analysis</code></a>, but is specialized for a DCMM.</p>
+<p>The observations must be integer counts, which are modeled as a combination of a Poisson and Bernoulli DGLM. Typically a DCMM is equally good as a Poisson DGLM for modeling series with consistently large integers, while being significantly better at modeling series with many zeros.</p>
 <p>Note that by default, all simulated forecasts made with <a href="/pybats_nbdev/analysis.html#analysis_dcmm"><code>analysis_dcmm</code></a> are <em>path</em> forecasts, meaning that they account for the dependence across forecast horizons.</p>
 
 </div>
@@ -539,7 +559,7 @@ nb_path: "nbs/05_analysis.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>This function works identically to the standard <a href="/pybats_nbdev/analysis.html"><code>analysis</code></a>, but is specialized for a DBCM.</p>
+<p><a href="/pybats_nbdev/analysis.html#analysis_dbcm"><code>analysis_dbcm</code></a> works identically to the standard <a href="/pybats_nbdev/analysis.html"><code>analysis</code></a>, but is specialized for a DBCM.</p>
 <p>Separate data must be specified for the DCMM on transactions, <code>y_transaction</code> and <code>X_transaction</code>, the binomial cascade,<code>y_cascade</code>, <code>X_cascade</code>, and any excess counts, <code>excess</code>.</p>
 <p>Note that by default, all simulated forecasts made with <a href="/pybats_nbdev/analysis.html#analysis_dbcm"><code>analysis_dbcm</code></a> are <em>path</em> forecasts, meaning that they account for the dependence across forecast horizons.</p>
 
