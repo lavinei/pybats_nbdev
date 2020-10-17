@@ -6,8 +6,8 @@ title: DCMM
 keywords: fastai
 sidebar: home_sidebar
 
-summary: "The class DCMM, for a Dynamic Count Mixture Model, which is the combination of a Bernoulli and Poisson DGLM, as described in <a href='https://arxiv.org/pdf/1805.05232.pdf'>Berry and West (2019)</a>."
-description: "The class DCMM, for a Dynamic Count Mixture Model, which is the combination of a Bernoulli and Poisson DGLM, as described in <a href='https://arxiv.org/pdf/1805.05232.pdf'>Berry and West (2019)</a>."
+summary: "A Dynamic Count Mixture Model, or DCMM, is the combination of a Bernoulli and Poisson DGLM as described in <a href='https://arxiv.org/pdf/1805.05232.pdf'>Berry and West (2019)</a>."
+description: "A Dynamic Count Mixture Model, or DCMM, is the combination of a Bernoulli and Poisson DGLM as described in <a href='https://arxiv.org/pdf/1805.05232.pdf'>Berry and West (2019)</a>."
 nb_path: "nbs/11_dcmm.ipynb"
 ---
 <!--
@@ -29,6 +29,21 @@ nb_path: "nbs/11_dcmm.ipynb"
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The DCMM is a combination of a Bernoulli and Poisson DGLM. The Bernoulli DGLM models whether the observation is zero or non-zero. Conditional on a non-zero outcome, then the observation follows a Poisson distribution. This is very useful for a time series with a greater number of $0$'s than is expected under a Poisson distribution, which is frequently the case for low-valued count time series.</p>
+<p>In more formal terms, a DCMM models observations $y_t$ as:
+\begin{equation} \label{eqn-dcmm}
+\quad z_{t} \sim Ber(\pi_{t}) \quad \textrm{and}\quad y_{t} | z_{t}  = 
+\begin{cases}
+0, &amp; \text{if } z_{t} = 0,\\
+1 + x_{t}, \quad x_{t} \sim Po(\mu_{t}), &amp; \textrm{if}\ z_{t} = 1.
+\end{cases}
+\end{equation}</p>
+
+</div>
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
