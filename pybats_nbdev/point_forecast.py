@@ -11,7 +11,7 @@ import numpy as np
 # Optimal for MSE or mean squared error
 def mean(samps):
     """
-    Return the mean point forecasts, given samples from the analysis function.
+    Find the mean point forecasts.
     """
     return np.mean(samps, axis=0)
 
@@ -20,7 +20,7 @@ def mean(samps):
 # Optimal for MAD or absolute deviation
 def median(samps):
     """
-    Return the median point forecasts, given samples from the analysis function.
+    Find the median point forecasts.
     """
     return np.median(samps, axis=0)
 
@@ -40,7 +40,7 @@ def weighted_quantile(samp, weights, quantile=0.5):
 # Optimal for APE. Always less than the median. Ignores samples that are 0.
 def m_one_median(samps):
     """
-    Return the (-1)-median point forecasts, given samples from the analysis function.
+    Find the (-1)-median point forecasts.
     """
     def m_one_median(samp):
         nz = samp.nonzero()[0]
