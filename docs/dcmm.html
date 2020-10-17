@@ -31,13 +31,13 @@ nb_path: "nbs/11_dcmm.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The DCMM is a combination of a Bernoulli and Poisson DGLM. The Bernoulli DGLM models whether the observation is zero or non-zero. Conditional on a non-zero outcome, then the observation follows a Poisson distribution. This is very useful for a time series with a greater number of $0$'s than is expected under a Poisson distribution, which is frequently the case for low-valued count time series.</p>
+<p>The DCMM is a combination of a Bernoulli and Poisson DGLM. The Bernoulli DGLM models the probability of the observation being zero. Conditional on a non-zero outcome, then the observation follows a Poisson distribution. This is useful for modeling time series with a greater number of zeros than expected under a Poisson distribution, which is frequently the case for low-valued count time series.</p>
 <p>In more formal terms, a DCMM models observations $y_t$ as:
 \begin{equation} \label{eqn-dcmm}
-\quad z_{t} \sim Ber(\pi_{t}) \quad \textrm{and}\quad y_{t} | z_{t}  = 
+\quad z_{t} \sim Bern(\pi_{t}) \quad \textrm{and}\quad y_{t} | z_{t}  = 
 \begin{cases}
 0, &amp; \text{if } z_{t} = 0,\\
-1 + x_{t}, \quad x_{t} \sim Po(\mu_{t}), &amp; \textrm{if}\ z_{t} = 1.
+1 + x_{t}, \quad x_{t} \sim Pois(\mu_{t}), &amp; \textrm{if}\ z_{t} = 1.
 \end{cases}
 \end{equation}</p>
 
@@ -78,7 +78,8 @@ nb_path: "nbs/11_dcmm.ipynb"
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>A DCMM can be used in the same way as a DGLM, with the standard methods <a href="/pybats_nbdev/dcmm.html#dcmm.update"><code>dcmm.update</code></a>, <a href="/pybats_nbdev/dcmm.html#dcmm.forecast_marginal"><code>dcmm.forecast_marginal</code></a>, and <a href="/pybats_nbdev/dcmm.html#dcmm.forecast_path"><code>dcmm.forecast_path</code></a>. There are equivalent helper functions as well. A full analysis can be run with <a href="/pybats_nbdev/analysis.html#analysis_dcmm"><code>analysis_dcmm</code></a>, and <a href="/pybats_nbdev/define_models.html#define_dcmm"><code>define_dcmm</code></a> helps to initialize a DCMM. These helper functions assume that the same predictors <code>X</code> are used for the Bernoulli and Poisson DGLMs.</p>
-<p>A quick example of using <code>analysis_dglm</code> follows:</p>
+<p>The only difference from using a standard <a href="/pybats_nbdev/dglm.html"><code>dglm</code></a> is that the update and forecast functions do not automatically recognize whether the DCMM includes latent factors, and do not automatically use a copula for path forecasting. This means that outside of <a href="/pybats_nbdev/analysis.html#analysis_dcmm"><code>analysis_dcmm</code></a>, the modeler needs to be more explicit in calling the correct method, such as <a href="/pybats_nbdev/dcmm.html#dcmm.forecast_path_copula"><code>dcmm.forecast_path_copula</code></a> for path forecasting with a copula.</p>
+<p>A quick example of using <a href="/pybats_nbdev/analysis.html#analysis_dcmm"><code>analysis_dcmm</code></a> to model simulated sales data follows. Another example with a DCMM can also be found <a href="https://github.com/lavinei/pybats_nbdev/blob/master/examples/DCMM%20Latent%20Factor%20Example.ipynb">here</a>.</p>
 
 </div>
 </div>
@@ -249,7 +250,7 @@ nb_path: "nbs/11_dcmm.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Because the DCMM is effectively a container for a Poisson and a Bernoulli DGLM, we can access each of them individually. The coefficients in the Bernoulli DGLM affect the probability of a non-zero observation, and the coefficient in the Poisson DGLM impact the size of any non-zero observations. To illustrate, we'll take a look at the holiday coefficients in both DGLMs.</p>
+<p>Because the DCMM is effectively a container for a Poisson and a Bernoulli DGLM, we can access each of them individually. The coefficients in the Bernoulli DGLM affect the probability of a non-zero observation, and the coefficients in the Poisson DGLM impact the size of any non-zero observations. To illustrate, we'll take a look at the holiday coefficients in both DGLMs.</p>
 
 </div>
 </div>
@@ -261,11 +262,14 @@ nb_path: "nbs/11_dcmm.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">coef</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Holidays&#39;</span><span class="p">:[</span><span class="n">h</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">holidays</span><span class="p">],</span>
-                     <span class="s1">&#39;Pois Mean&#39;</span><span class="p">:</span> <span class="n">mod</span><span class="o">.</span><span class="n">pois_mod</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="n">mod</span><span class="o">.</span><span class="n">pois_mod</span><span class="o">.</span><span class="n">ihol</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span>
-                     <span class="s1">&#39;Pois Std Dev&#39;</span><span class="p">:</span> <span class="n">mod</span><span class="o">.</span><span class="n">pois_mod</span><span class="o">.</span><span class="n">R</span><span class="o">.</span><span class="n">diagonal</span><span class="p">()[</span><span class="n">mod</span><span class="o">.</span><span class="n">pois_mod</span><span class="o">.</span><span class="n">ihol</span><span class="p">],</span>
-                     <span class="s1">&#39;Bern Mean&#39;</span><span class="p">:</span> <span class="n">mod</span><span class="o">.</span><span class="n">bern_mod</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="n">mod</span><span class="o">.</span><span class="n">bern_mod</span><span class="o">.</span><span class="n">ihol</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span>
-                     <span class="s1">&#39;Bern Std Dev&#39;</span><span class="p">:</span> <span class="n">mod</span><span class="o">.</span><span class="n">bern_mod</span><span class="o">.</span><span class="n">R</span><span class="o">.</span><span class="n">diagonal</span><span class="p">()[</span><span class="n">mod</span><span class="o">.</span><span class="n">bern_mod</span><span class="o">.</span><span class="n">ihol</span><span class="p">]})</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pois_hol</span> <span class="o">=</span> <span class="n">mod</span><span class="o">.</span><span class="n">pois_mod</span><span class="o">.</span><span class="n">get_coef</span><span class="p">(</span><span class="s1">&#39;hol&#39;</span><span class="p">)</span>
+<span class="n">bern_hol</span> <span class="o">=</span> <span class="n">mod</span><span class="o">.</span><span class="n">bern_mod</span><span class="o">.</span><span class="n">get_coef</span><span class="p">(</span><span class="s1">&#39;hol&#39;</span><span class="p">)</span>
+
+<span class="n">coef</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Holidays&#39;</span><span class="p">:[</span><span class="n">h</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">holidays</span><span class="p">],</span>
+                     <span class="s1">&#39;Pois Mean&#39;</span><span class="p">:</span> <span class="n">pois_hol</span><span class="p">[</span><span class="s1">&#39;Mean&#39;</span><span class="p">],</span>
+                     <span class="s1">&#39;Pois Std Dev&#39;</span><span class="p">:</span> <span class="n">pois_hol</span><span class="p">[</span><span class="s1">&#39;Standard Deviation&#39;</span><span class="p">],</span>
+                     <span class="s1">&#39;Bern Mean&#39;</span><span class="p">:</span> <span class="n">bern_hol</span><span class="p">[</span><span class="s1">&#39;Mean&#39;</span><span class="p">],</span>
+                     <span class="s1">&#39;Bern Std Dev&#39;</span><span class="p">:</span> <span class="n">bern_hol</span><span class="p">[</span><span class="s1">&#39;Standard Deviation&#39;</span><span class="p">]})</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">coef</span>
 </pre></div>
 
@@ -307,84 +311,84 @@ nb_path: "nbs/11_dcmm.ipynb"
   </thead>
   <tbody>
     <tr>
-      <th>0</th>
+      <th>Hol 1</th>
       <td>New Years Day</td>
       <td>-0.94</td>
-      <td>0.44</td>
+      <td>0.66</td>
       <td>-0.78</td>
-      <td>1.65</td>
+      <td>1.29</td>
     </tr>
     <tr>
-      <th>1</th>
+      <th>Hol 2</th>
       <td>Martin Luther King Jr. Day</td>
       <td>0.20</td>
-      <td>0.18</td>
+      <td>0.43</td>
       <td>0.08</td>
-      <td>2.00</td>
+      <td>1.41</td>
     </tr>
     <tr>
-      <th>2</th>
+      <th>Hol 3</th>
       <td>Presidents Day</td>
       <td>-0.27</td>
-      <td>0.21</td>
+      <td>0.46</td>
       <td>0.27</td>
-      <td>1.94</td>
+      <td>1.39</td>
     </tr>
     <tr>
-      <th>3</th>
+      <th>Hol 4</th>
       <td>Memorial Day</td>
       <td>0.62</td>
-      <td>0.16</td>
+      <td>0.40</td>
       <td>0.04</td>
-      <td>1.99</td>
+      <td>1.41</td>
     </tr>
     <tr>
-      <th>4</th>
+      <th>Hol 5</th>
       <td>July 4th</td>
       <td>1.10</td>
-      <td>0.19</td>
+      <td>0.43</td>
       <td>0.04</td>
-      <td>2.00</td>
+      <td>1.41</td>
     </tr>
     <tr>
-      <th>5</th>
+      <th>Hol 6</th>
       <td>Labor Day</td>
       <td>0.21</td>
-      <td>0.18</td>
+      <td>0.43</td>
       <td>0.03</td>
-      <td>2.00</td>
+      <td>1.41</td>
     </tr>
     <tr>
-      <th>6</th>
+      <th>Hol 7</th>
       <td>Columbus Day</td>
       <td>-0.04</td>
+      <td>0.45</td>
       <td>0.21</td>
-      <td>0.21</td>
-      <td>1.95</td>
+      <td>1.39</td>
     </tr>
     <tr>
-      <th>7</th>
+      <th>Hol 8</th>
       <td>Veterans Day</td>
       <td>-0.15</td>
-      <td>0.23</td>
+      <td>0.48</td>
       <td>0.03</td>
-      <td>2.00</td>
+      <td>1.41</td>
     </tr>
     <tr>
-      <th>8</th>
+      <th>Hol 9</th>
       <td>Thanksgiving</td>
       <td>0.14</td>
-      <td>0.19</td>
+      <td>0.43</td>
       <td>0.16</td>
-      <td>1.94</td>
+      <td>1.39</td>
     </tr>
     <tr>
-      <th>9</th>
+      <th>Hol 10</th>
       <td>Christmas</td>
       <td>-1.97</td>
-      <td>1.22</td>
+      <td>1.11</td>
       <td>-1.10</td>
-      <td>1.50</td>
+      <td>1.23</td>
     </tr>
   </tbody>
 </table>
@@ -401,7 +405,8 @@ nb_path: "nbs/11_dcmm.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The largest negative coefficients are for Christmas and New Years Day, which means that both are more likely to have $0$ sales, or very low sales. The largest positive coefficients are for July 4th and Memorial day, which means that they are likely to have increased sales.</p>
+<p>The largest negative coefficients are for Christmas and New Years Day, which means that they are more likely to have very low or $0$ sales.</p>
+<p>The largest positive coefficients are for July 4th and Memorial day, which means that they are likely to have increased sales.</p>
 
 </div>
 </div>
