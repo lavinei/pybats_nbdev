@@ -345,7 +345,7 @@ class dglm:
 
 
         trend_names = ['Intercept', 'Local Slope'][:self.ntrend]
-        regn_names = ['Regn ' + str(i) for i in range(1, self.nregn+1)]
+        regn_names = ['Regn ' + str(i) for i in range(1, self.nregn_exhol+1)]
         seas_names = ['Seas ' + str(i) for i in range(1, self.nseas+1)]
         hol_names = ['Hol ' + str(i) for i in range(1, self.nhol+1)]
         lf_names = ['LF ' + str(i) for i in range(1, self.nlf+1)]
