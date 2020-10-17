@@ -29,6 +29,18 @@ nb_path: "nbs/08_loss_functions.ipynb"
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The loss functions in this module are commonly used to complete a time series analysis, with the following steps:</p>
+<ol>
+<li>Run an <a href="/pybats_nbdev/analysis.html"><code>analysis</code></a>, returning an array of forecast samples</li>
+<li>Use a function from <a href="/pybats_nbdev/point_forecast.html"><code>point_forecast</code></a> to find the forecast mean, median, or $(-1)-$median</li>
+<li>Evaluate the point forecast error using a loss function from this module</li>
+</ol>
+
+</div>
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -65,9 +77,9 @@ nb_path: "nbs/08_loss_functions.ipynb"
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The mean squared error loss is:</p>
 <p>{% raw %}
-$$\frac{1}{n} \sum_{i=1:n} (y_i - f_i)^2$$
+$$L = \frac{1}{n} \sum_{i=1:n} (y_i - f_i)^2$$
 {% endraw %}</p>
-<p>An example below demonstrates how to use the function:</p>
+<p>The mean is the optimal point forecast for minimizing the MSE. An example below demonstrates how to use the function:</p>
 
 </div>
 </div>
@@ -119,7 +131,7 @@ $$\frac{1}{n} \sum_{i=1:n} (y_i - f_i)^2$$
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>beginning forecasting
 1-Step Ahead MSE: 1.08
-2-Step Ahead MSE: 1.0
+2-Step Ahead MSE: 1.01
 3-Step Ahead MSE: 1.08
 4-Step Ahead MSE: 1.13
 </pre>
@@ -168,9 +180,9 @@ $$\frac{1}{n} \sum_{i=1:n} (y_i - f_i)^2$$
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The mean absolute deviation is:</p>
 <p>{% raw %}
-$$\frac{1}{n} \sum_{i=1:n} |y_i - f_i|$$
+$$L = \frac{1}{n} \sum_{i=1:n} |y_i - f_i|$$
 {% endraw %}</p>
-<p>An example below demonstrates how to use the function:</p>
+<p>The median is the optimal point forecast for minimizing the MAD. An example below demonstrates how to use the function:</p>
 
 </div>
 </div>
@@ -251,9 +263,9 @@ $$\frac{1}{n} \sum_{i=1:n} |y_i - f_i|$$
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The mean absolute percent error is:</p>
 <p>{% raw %}
-$$\frac{1}{n} \sum_{i=1:n} \frac{|y_i - f_i|}{y_i}$$
+$$L = \frac{1}{n} \sum_{i=1:n} \frac{|y_i - f_i|}{y_i}$$
 {% endraw %}</p>
-<p>An example below demonstrates how to use the function:</p>
+<p>The $(-1)-$median is the optimal point forecast for minimizing the MAPE. An example below demonstrates how to use the function:</p>
 
 </div>
 </div>
@@ -271,7 +283,7 @@ $$\frac{1}{n} \sum_{i=1:n} \frac{|y_i - f_i|}{y_i}$$
     <span class="n">start</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">Date</span> <span class="o">==</span> <span class="n">forecast_start</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">h</span>
     <span class="n">end</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">Date</span> <span class="o">==</span> <span class="n">forecast_end</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">h</span> <span class="o">+</span> <span class="mi">1</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">h</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;-Step Ahead MAPE: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">MAPE</span><span class="p">(</span><span class="n">Y</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">],</span> <span class="n">forecast</span><span class="p">[:,</span><span class="n">h</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">h</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;-Step Ahead MAPE: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">MAPE</span><span class="p">(</span><span class="n">Y</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">],</span> <span class="n">forecast</span><span class="p">[:,</span><span class="n">h</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;%&quot;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -284,10 +296,10 @@ $$\frac{1}{n} \sum_{i=1:n} \frac{|y_i - f_i|}{y_i}$$
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>1-Step Ahead MAPE: 75.44
-2-Step Ahead MAPE: 77.99
-3-Step Ahead MAPE: 80.74
-4-Step Ahead MAPE: 71.56
+<pre>1-Step Ahead MAPE: 73.37%
+2-Step Ahead MAPE: 90.54%
+3-Step Ahead MAPE: 66.98%
+4-Step Ahead MAPE: 80.82%
 </pre>
 </div>
 </div>
