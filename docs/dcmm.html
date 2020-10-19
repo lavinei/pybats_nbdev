@@ -33,13 +33,13 @@ nb_path: "nbs/11_dcmm.ipynb"
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The DCMM is a combination of a Bernoulli and Poisson DGLM. The Bernoulli DGLM models the probability of the observation being zero. Conditional on a non-zero outcome, then the observation follows a Poisson distribution. This is useful for modeling time series with a greater number of zeros than expected under a Poisson distribution, which is frequently the case for low-valued count time series.</p>
 <p>In more formal terms, a DCMM models observations $y_t$ as:
-\begin{equation} \label{eqn-dcmm}
+$$
 \quad z_{t} \sim Bern(\pi_{t}) \quad \textrm{and}\quad y_{t} | z_{t}  = 
 \begin{cases}
 0, &amp; \text{if } z_{t} = 0,\\
 1 + x_{t}, \quad x_{t} \sim Pois(\mu_{t}), &amp; \textrm{if}\ z_{t} = 1.
 \end{cases}
-\end{equation}</p>
+$$</p>
 
 </div>
 </div>
