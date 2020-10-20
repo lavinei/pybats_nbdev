@@ -6,8 +6,8 @@ title: DBCM
 keywords: fastai
 sidebar: home_sidebar
 
-summary: "A Dynamic Binary Cascade Model, or DBCM, is the combination of a DCMM and a cascade of binomial DGLMs as described in <a href='https://arxiv.org/pdf/1808.04698.pdf'>Berry, Helman, and West (2020)</a>."
-description: "A Dynamic Binary Cascade Model, or DBCM, is the combination of a DCMM and a cascade of binomial DGLMs as described in <a href='https://arxiv.org/pdf/1808.04698.pdf'>Berry, Helman, and West (2020)</a>."
+summary: "A Dynamic Binary Cascade Model, or DBCM, is the combination of a DCMM and a binary cascade as described in <a href='https://arxiv.org/pdf/1808.04698.pdf'>Berry, Helman, and West (2020)</a>."
+description: "A Dynamic Binary Cascade Model, or DBCM, is the combination of a DCMM and a binary cascade as described in <a href='https://arxiv.org/pdf/1808.04698.pdf'>Berry, Helman, and West (2020)</a>."
 nb_path: "nbs/12_dbcm.ipynb"
 ---
 <!--
@@ -31,15 +31,15 @@ nb_path: "nbs/12_dbcm.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The DBCM is a combination of a Dynamic Count Mixture Model (DCMM) and a binary cascade of Bernoulli DGLMs. The original use case came from a retail sales settings. Consider a time series of both total transactions and sales for a single item. The DCMM is used to model the number of transactions that will involve an item. The binary cascade models the number of units that each shopper will purchase. The cascade is a sequence of probabilities for whether a shopper will purchase $r+1$ items, conditional on them having purchased $r$ items.</p>
+<p>The DBCM is a combination of a Dynamic Count Mixture Model (DCMM) and a binary cascade of Bernoulli DGLMs. The original use case came from a retail sales settings. Consider two time series, one of the transactions and the other of sales for a single item. A DCMM is used to model the number of transactions that involve an item. The binary cascade models the number of units that each shopper will purchase. The cascade is a sequence of probabilities for whether a shopper will purchase $r+1$ items, conditional on them having purchased $r$ items.</p>
 <p>The first component of a DBCM is the DCMM, used to model the total number of daily transactions containing the item of interest, $b_t$. We repeat the form of a DCMM for clarity:</p>
-\begin{equation} \label{eqn-dcmm}
+$$
 z_t \sim Ber(\pi_t) \text{ and } b_t \mid z_t =
 \begin{cases}
 0, &amp; \text{if } z_t = 0,\\
 1 + x_t, \quad x_t \sim Po(\mu_t), &amp; \text{if }z_t = 1
 \end{cases}
-\end{equation}<p>where $\pi_t$ and $\mu_t$ vary according to the dynamics of independent Bernoulli and Poisson DGLMs respectively.</p>
+$$<p>where $\pi_t$ and $\mu_t$ vary according to the dynamics of independent Bernoulli and Poisson DGLMs respectively.</p>
 
 </div>
 </div>
@@ -47,13 +47,13 @@ z_t \sim Ber(\pi_t) \text{ and } b_t \mid z_t =
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Transactions $b_t$ are related to sales by modeling the number of units sold in each transaction. Recognizing that sales outliers often occur due to shoppers buying many units of an item, the probability of each quantity is modeled with a binary cascade. Let $n_{r,t}$ be the number of transactions with more than $r$ units. Then $n_{r,t} | n_{r-1, t} \sim Bin(n_{r-1,t}, \pi_{r,t})$ is defined by a binomial DGLM. This cascade of binomial DGLMs represents the sequence of conditional probabilities for purchasing $r$ units or greater, given that the shopper has bought $r-1$. The sales $y_t$ are then:</p>
-\begin{equation}\label{eqn-dbcm}
+$$
 y_t =
 \begin{cases}
 0, &amp; \text{if } z_t = 0,\\
 \sum_{r=1:d} r(n_{r-1, t} - n_{r,t}) + e_t, &amp; \text{if }z_t = 1,
 \end{cases}
-\end{equation}<p>where $d$ is the predefined length of the cascade and $e_t$ represents excess units greater than $d$. The cascade enables modeling of very small probabilities, in the rare cases when shoppers purchase large quantities of an item on a single grocery store trip.</p>
+$$<p>where $d$ is the predefined length of the cascade and $e_t$ represents excess units greater than $d$. The cascade enables modeling of very small probabilities, in the rare cases when shoppers purchase large quantities of an item on a single grocery store trip.</p>
 <p>To model transactions with a quantity greater than $d$, we follow the "Bayesian bootstrap" strategy of <a href="https://arxiv.org/pdf/1808.04698.pdf">Berry, Helman, and West (2020)</a>, which is to record the observed outlier quantities purchased, and to forecast by sampling from the empirical distribution for the excess, $e_t$.</p>
 
 </div>
@@ -93,6 +93,7 @@ y_t =
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>A DBCM can be used in the same way as a DGLM, with the standard methods <a href="/pybats_nbdev/dbcm.html#dbcm.update"><code>dbcm.update</code></a>, <a href="/pybats_nbdev/dbcm.html#dbcm.forecast_marginal"><code>dbcm.forecast_marginal</code></a>, and <a href="/pybats_nbdev/dbcm.html#dbcm.forecast_path"><code>dbcm.forecast_path</code></a>. There are equivalent helper functions as well. A full analysis can be run with <a href="/pybats_nbdev/analysis.html#analysis_dbcm"><code>analysis_dbcm</code></a>, and <a href="/pybats_nbdev/define_models.html#define_dbcm"><code>define_dbcm</code></a> helps to initialize a DBCM.</p>
+<p>The only difference from using a standard <a href="/pybats_nbdev/dglm.html"><code>dglm</code></a> is that outside of <a href="/pybats_nbdev/analysis.html#analysis_dbcm"><code>analysis_dbcm</code></a>, the update and forecast functions do not automatically recognize whether the DBCM includes latent factors or call a copula for path forecasting. This means that the modeler needs to be more explicit in calling the correct method, such as <a href="/pybats_nbdev/dbcm.html#dbcm.forecast_path_copula"><code>dbcm.forecast_path_copula</code></a> for path forecasting with a copula.</p>
 <p>A quick example of using <a href="/pybats_nbdev/analysis.html#analysis_dbcm"><code>analysis_dbcm</code></a> follows:</p>
 
 </div>
@@ -298,10 +299,12 @@ y_t =
                                  <span class="n">data</span><span class="p">[</span><span class="s1">&#39;X_cascade&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span>
                                  <span class="n">data</span><span class="p">[</span><span class="s1">&#39;excess&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
                                  <span class="n">prior_length</span><span class="o">=</span><span class="n">prior_length</span><span class="p">,</span>
-                                 <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">forecast_start</span><span class="o">=</span><span class="n">forecast_start_date</span><span class="p">,</span> <span class="n">forecast_end</span><span class="o">=</span><span class="n">forecast_end_date</span><span class="p">,</span>
+                                 <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span>
+                                 <span class="n">forecast_start</span><span class="o">=</span><span class="n">forecast_start_date</span><span class="p">,</span>
+                                 <span class="n">forecast_end</span><span class="o">=</span><span class="n">forecast_end_date</span><span class="p">,</span>
                                  <span class="n">nsamps</span><span class="o">=</span><span class="n">nsamps</span><span class="p">,</span> <span class="n">rho</span><span class="o">=</span><span class="n">rho</span><span class="p">,</span>
                                  <span class="n">dates</span> <span class="o">=</span> <span class="n">dates</span><span class="p">,</span> <span class="n">delregn_pois</span><span class="o">=.</span><span class="mi">98</span><span class="p">,</span>
-                                     <span class="n">ret</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">,</span> <span class="s1">&#39;forecast&#39;</span><span class="p">])</span>
+                                 <span class="n">ret</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">,</span> <span class="s1">&#39;forecast&#39;</span><span class="p">])</span>
 </pre></div>
 
     </div>
@@ -327,10 +330,10 @@ y_t =
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The DBCM is a wrapper for the DCMM and the binary cascade. To illustrate, we can use the mod.forecast_marginal, with two flags activated:</p>
+<p>The DBCM is a wrapper for the DCMM and the binary cascade. To illustrate, we can call <code>mod.forecast_marginal</code>, with two flags activated:</p>
 <ul>
-<li><code>mean_only=True</code>, which is available for all models in PyBATS. Returns the mean of the forecast distribution, instead of samples.</li>
-<li><code>return_separate=True</code>, available only for DBCMs. This divides the forecast into the transaction, binary cascade, and excess, returning each separately.</li>
+<li><code>mean_only=True</code>, which is available for all models in PyBATS. This returns the mean of the forecast distribution, instead of samples.</li>
+<li><code>return_separate=True</code>, available only for DBCMs. This divides the forecast into the transaction, binary cascade, and excess components, returning each separately.</li>
 </ul>
 
 </div>
