@@ -3,8 +3,8 @@
 __all__ = ['latent_factor', 'multi_latent_factor', 'Y_fxn', 'Y_forecast_fxn', 'Y_lf', 'seas_weekly_fxn',
            'seas_weekly_forecast_fxn', 'seas_weekly_lf', 'hol_fxn', 'hol_forecast_fxn', 'hol_lf', 'pois_coef_fxn',
            'pois_coef_forecast_fxn', 'pois_coef_lf', 'bern_coef_fxn', 'bern_coef_forecast_fxn', 'bern_coef_lf',
-           'dlm_coef_fxn', 'dlm_coef_forecast_fxn', 'dlm_coef_lf', 'dlm_dof_fxn', 'dlm_dof_forecast_fxn', 'dlm_dof_lf',
-           'merge_fxn', 'merge_forecast_fxn', 'merge_latent_factors', 'merge_lf_with_predictor']
+           'dlm_coef_fxn', 'dlm_coef_forecast_fxn', 'dlm_coef_lf', 'dlm_dof_lf', 'merge_fxn', 'merge_forecast_fxn',
+           'merge_latent_factors', 'merge_lf_with_predictor']
 
 # Internal Cell
 #exporti
@@ -523,11 +523,11 @@ def dlm_coef_forecast_fxn(date, mod, k, idx=None, forecast_path=False, **kwargs)
 # Cell
 dlm_coef_lf = latent_factor(gen_fxn = dlm_coef_fxn, gen_forecast_fxn=dlm_coef_forecast_fxn)
 
-# Cell
+# Internal Cell
 def dlm_dof_fxn(date, mod, **kwargs):
     return mod.n, 0
 
-# Cell
+# Internal Cell
 def dlm_dof_forecast_fxn(date, mod, k, **kwargs):
     return [mod.n for x in range(k)], [0 for x in range(k)]
 
@@ -592,10 +592,7 @@ def merge_forecast_fxn(date, latent_factors, **kwargs):
 
 # Cell
 def merge_latent_factors(latent_factors):
-    """
-    :param latent_factors: list of the same latent factor from different sources to be combined into 1 using precision weighted averaging
-    :return: A single latent factor
-    """
+
     # Set the start and end dates
     start_date = np.min([lf.start_date for lf in latent_factors])
     end_date = np.max([lf.end_date for lf in latent_factors])
@@ -623,14 +620,6 @@ def merge_latent_factors(latent_factors):
 
 # Cell
 def merge_lf_with_predictor(latent_factor, X, X_dates):
-    """
-    Function to modify a latent factor by multiplying it by a known predictor. Example of latent factor is
-     the coefficient on effect of price from an external model, while the price itself is a known predictor.
-
-    :param X: A known predictor
-    :param X_dates: Dates associated with the known predictor
-    :return:
-    """
 
     newlf = latent_factor.copy()
 
