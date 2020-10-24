@@ -28,11 +28,12 @@ def update_F_lf(mod, phi, F=None):
 # Cell
 def update_lf_analytic(mod, y = None, X = None, phi_mu = None, phi_sigma = None):
     """
-    phi_mu: mean vector of the latent factor
-    phi_sigma: variance matrix of the latent factor
+    Test: $\phi_mu$ = latent factor mean.
 
-    Implementing approximation: Assume the latent factor is independent of the state vector
+    Update function with a latent factor.
     """
+
+
 
     # If data is missing then skip discounting and updating, posterior = prior
     if y is None or np.isnan(y):
@@ -199,20 +200,6 @@ def forecast_marginal_lf_analytic(mod, k, X = None, phi_mu = None, phi_sigma = N
 
 # Cell
 def forecast_path_lf_copula(mod, k, X = None, phi_mu = None, phi_sigma = None, phi_psi = None, nsamps = 1, t_dist=False, y = None, nu=9, return_mu_cov=False):
-    """
-
-    :param mod: Model of class DGLM
-    :param k: steps ahead to forecast
-    :param X: array with k rows for the future regression components
-    :param phi_mu: length k list of mean vectors of the latent factors
-    :param phi_sigma: length k list of variance matrices of the latent factors
-    :param phi_psi: length k-1 list of covariance matrices of phi_t+k and phi_t+j. Each element is a numpy array.
-    :param nsamps: Number of samples to draw from forecast distribution
-    :param t_dist: Use t-copula? If false, Gaussian is assumed.
-    :param y: Future path of observations y. If provided, output will be the forecast density of y.
-    :param nu: Degrees of freedom for t-copula.
-    :return:
-    """
 
     lambda_mu = np.zeros([k])
     lambda_cov = np.zeros([k, k])
