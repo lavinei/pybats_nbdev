@@ -27,14 +27,6 @@ def update_F_lf(mod, phi, F=None):
 
 # Cell
 def update_lf_analytic(mod, y = None, X = None, phi_mu = None, phi_sigma = None):
-    """
-    DGLM update function with a latent factor.
-
-    $\phi_{mu}$ = latent factor mean.
-
-    $\phi_{sigma}$ = latent factor variance.
-    """
-
 
 
     # If data is missing then skip discounting and updating, posterior = prior
@@ -169,19 +161,12 @@ def get_mean_and_var_lf_dlm(F, a, R, phi_mu, phi_sigma, ilf, ct):
 
 # Cell
 def forecast_marginal_lf_analytic(mod, k, X = None, phi_mu = None, phi_sigma = None, nsamps = 1, mean_only = False, state_mean_var = False):
-    """
-    Forecast function k steps ahead (marginal)
-    """
+
     # Plug in the correct F values
     F = update_F(mod, X, F=mod.F.copy())
-    # F = np.copy(mod.F)
-    # if mod.nregn > 0:
-    #     F[mod.iregn] = X.reshape(mod.nregn,1)
 
     # Put the mean of the latent factor phi_mu into the F vector
     F = update_F_lf(mod, phi_mu, F=F)
-    # if mod.nlf > 0:
-    #     F[mod.ilf] = phi_mu.reshape(mod.nlf,1)
 
     a, R = forecast_aR(mod, k)
 
