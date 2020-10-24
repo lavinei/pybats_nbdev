@@ -63,8 +63,9 @@ nb_path: "nbs/14_latent_factor_fxns.ipynb"
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="update_lf_analytic" class="doc_header"><code>update_lf_analytic</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor_fxns.py#L29" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>update_lf_analytic</code>(<strong><code>mod</code></strong>, <strong><code>y</code></strong>=<em><code>None</code></em>, <strong><code>X</code></strong>=<em><code>None</code></em>, <strong><code>phi_mu</code></strong>=<em><code>None</code></em>, <strong><code>phi_sigma</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
-<p>Test: $\phi_mu$ = latent factor mean.</p>
-<p>Update function with a latent factor.</p>
+<p>DGLM update function with a latent factor.</p>
+<p>$\phi_{mu}$ = latent factor mean.</p>
+<p>$\phi_{sigma}$ = latent factor variance.</p>
 
 </div>
 
@@ -94,7 +95,7 @@ nb_path: "nbs/14_latent_factor_fxns.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="update_lf_analytic_dlm" class="doc_header"><code>update_lf_analytic_dlm</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor_fxns.py#L93" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>update_lf_analytic_dlm</code>(<strong><code>mod</code></strong>, <strong><code>y</code></strong>=<em><code>None</code></em>, <strong><code>X</code></strong>=<em><code>None</code></em>, <strong><code>phi_mu</code></strong>=<em><code>None</code></em>, <strong><code>phi_sigma</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="update_lf_analytic_dlm" class="doc_header"><code>update_lf_analytic_dlm</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor_fxns.py#L95" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>update_lf_analytic_dlm</code>(<strong><code>mod</code></strong>, <strong><code>y</code></strong>=<em><code>None</code></em>, <strong><code>X</code></strong>=<em><code>None</code></em>, <strong><code>phi_mu</code></strong>=<em><code>None</code></em>, <strong><code>phi_sigma</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 
 </div>
@@ -125,7 +126,7 @@ nb_path: "nbs/14_latent_factor_fxns.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="forecast_marginal_lf_analytic" class="doc_header"><code>forecast_marginal_lf_analytic</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor_fxns.py#L169" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_marginal_lf_analytic</code>(<strong><code>mod</code></strong>, <strong><code>k</code></strong>, <strong><code>X</code></strong>=<em><code>None</code></em>, <strong><code>phi_mu</code></strong>=<em><code>None</code></em>, <strong><code>phi_sigma</code></strong>=<em><code>None</code></em>, <strong><code>nsamps</code></strong>=<em><code>1</code></em>, <strong><code>mean_only</code></strong>=<em><code>False</code></em>, <strong><code>state_mean_var</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="forecast_marginal_lf_analytic" class="doc_header"><code>forecast_marginal_lf_analytic</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor_fxns.py#L171" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_marginal_lf_analytic</code>(<strong><code>mod</code></strong>, <strong><code>k</code></strong>, <strong><code>X</code></strong>=<em><code>None</code></em>, <strong><code>phi_mu</code></strong>=<em><code>None</code></em>, <strong><code>phi_sigma</code></strong>=<em><code>None</code></em>, <strong><code>nsamps</code></strong>=<em><code>1</code></em>, <strong><code>mean_only</code></strong>=<em><code>False</code></em>, <strong><code>state_mean_var</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
 <p>Forecast function k steps ahead (marginal)</p>
 
@@ -157,7 +158,7 @@ nb_path: "nbs/14_latent_factor_fxns.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="forecast_path_lf_copula" class="doc_header"><code>forecast_path_lf_copula</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor_fxns.py#L202" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_path_lf_copula</code>(<strong><code>mod</code></strong>, <strong><code>k</code></strong>, <strong><code>X</code></strong>=<em><code>None</code></em>, <strong><code>phi_mu</code></strong>=<em><code>None</code></em>, <strong><code>phi_sigma</code></strong>=<em><code>None</code></em>, <strong><code>phi_psi</code></strong>=<em><code>None</code></em>, <strong><code>nsamps</code></strong>=<em><code>1</code></em>, <strong><code>t_dist</code></strong>=<em><code>False</code></em>, <strong><code>y</code></strong>=<em><code>None</code></em>, <strong><code>nu</code></strong>=<em><code>9</code></em>, <strong><code>return_mu_cov</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="forecast_path_lf_copula" class="doc_header"><code>forecast_path_lf_copula</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor_fxns.py#L204" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_path_lf_copula</code>(<strong><code>mod</code></strong>, <strong><code>k</code></strong>, <strong><code>X</code></strong>=<em><code>None</code></em>, <strong><code>phi_mu</code></strong>=<em><code>None</code></em>, <strong><code>phi_sigma</code></strong>=<em><code>None</code></em>, <strong><code>phi_psi</code></strong>=<em><code>None</code></em>, <strong><code>nsamps</code></strong>=<em><code>1</code></em>, <strong><code>t_dist</code></strong>=<em><code>False</code></em>, <strong><code>y</code></strong>=<em><code>None</code></em>, <strong><code>nu</code></strong>=<em><code>9</code></em>, <strong><code>return_mu_cov</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
 
 </div>
@@ -212,9 +213,10 @@ nb_path: "nbs/14_latent_factor_fxns.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="update_lf_sample" class="doc_header"><code>update_lf_sample</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor_fxns.py#L262" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>update_lf_sample</code>(<strong><code>mod</code></strong>, <strong><code>y</code></strong>=<em><code>None</code></em>, <strong><code>X</code></strong>=<em><code>None</code></em>, <strong><code>phi_samps</code></strong>=<em><code>None</code></em>, <strong><code>parallel</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="update_lf_sample" class="doc_header"><code>update_lf_sample</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor_fxns.py#L264" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>update_lf_sample</code>(<strong><code>mod</code></strong>, <strong><code>y</code></strong>=<em><code>None</code></em>, <strong><code>X</code></strong>=<em><code>None</code></em>, <strong><code>phi_samps</code></strong>=<em><code>None</code></em>, <strong><code>parallel</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
-<p>phi_samps: array of samples of the latent factor vector</p>
+<p>DGLM update function with samples of a latent factor.</p>
+<p>$\phi_{samps}$ = Array of simulated values of a latent factor.</p>
 
 </div>
 
@@ -244,7 +246,7 @@ nb_path: "nbs/14_latent_factor_fxns.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="update_lf_sample_forwardfilt" class="doc_header"><code>update_lf_sample_forwardfilt</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor_fxns.py#L312" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>update_lf_sample_forwardfilt</code>(<strong><code>mod</code></strong>, <strong><code>y</code></strong>, <strong><code>F</code></strong>, <strong><code>a</code></strong>, <strong><code>R</code></strong>, <strong><code>phi</code></strong>)</p>
+<h4 id="update_lf_sample_forwardfilt" class="doc_header"><code>update_lf_sample_forwardfilt</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor_fxns.py#L318" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>update_lf_sample_forwardfilt</code>(<strong><code>mod</code></strong>, <strong><code>y</code></strong>, <strong><code>F</code></strong>, <strong><code>a</code></strong>, <strong><code>R</code></strong>, <strong><code>phi</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -275,9 +277,8 @@ nb_path: "nbs/14_latent_factor_fxns.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="forecast_marginal_lf_sample" class="doc_header"><code>forecast_marginal_lf_sample</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor_fxns.py#L329" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_marginal_lf_sample</code>(<strong><code>mod</code></strong>, <strong><code>k</code></strong>, <strong><code>X</code></strong>=<em><code>None</code></em>, <strong><code>phi_samps</code></strong>=<em><code>None</code></em>, <strong><code>mean_only</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="forecast_marginal_lf_sample" class="doc_header"><code>forecast_marginal_lf_sample</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor_fxns.py#L335" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_marginal_lf_sample</code>(<strong><code>mod</code></strong>, <strong><code>k</code></strong>, <strong><code>X</code></strong>=<em><code>None</code></em>, <strong><code>phi_samps</code></strong>=<em><code>None</code></em>, <strong><code>mean_only</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
-<p>Forecast function k steps ahead (marginal)</p>
 
 </div>
 
@@ -307,12 +308,8 @@ nb_path: "nbs/14_latent_factor_fxns.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="forecast_path_lf_sample" class="doc_header"><code>forecast_path_lf_sample</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor_fxns.py#L355" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_path_lf_sample</code>(<strong><code>mod</code></strong>, <strong><code>k</code></strong>, <strong><code>X</code></strong>=<em><code>None</code></em>, <strong><code>phi_samps</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="forecast_path_lf_sample" class="doc_header"><code>forecast_path_lf_sample</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor_fxns.py#L357" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_path_lf_sample</code>(<strong><code>mod</code></strong>, <strong><code>k</code></strong>, <strong><code>X</code></strong>=<em><code>None</code></em>, <strong><code>phi_samps</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
-<p>Forecast function for the k-step path with samples of the latent factor phi
-k: steps ahead to forecast
-X: array with k rows for the future regression components
-phi_samps: An nsamps length list of k-length lists with samples of the latent factor</p>
 
 </div>
 
@@ -326,7 +323,7 @@ phi_samps: An nsamps length list of k-length lists with samples of the latent fa
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>These functions can be called through <a href="/pybats_nbdev/dglm.html#dglm.update"><code>dglm.update</code></a>, <a href="/pybats_nbdev/dglm.html#dglm.forecast_marginal"><code>dglm.forecast_marginal</code></a>, and <a href="/pybats_nbdev/dglm.html#dglm.forecast_path"><code>dglm.forecast_path</code></a> by setting the argument <code>analytic=False</code>. They represent an alternative method of analysis by working with simulated values of the latent factor.</p>
+<p>These functions can be called through <a href="/pybats_nbdev/dglm.html#dglm.update"><code>dglm.update</code></a>, <a href="/pybats_nbdev/dglm.html#dglm.forecast_marginal"><code>dglm.forecast_marginal</code></a>, and <a href="/pybats_nbdev/dglm.html#dglm.forecast_path"><code>dglm.forecast_path</code></a> by setting the argument <code>analytic=False</code>. They represent an alternative method of analysis by working with simulated values of the latent factor. The simulated values are passed into the function as an array <code>phi_samps</code>, where each row contains a simulated value of the latent factor.</p>
 <p>This is a more accurate analysis method because it does not reduce the distribution of the latent factor down to its mean and variance. However, it is also more computationally demanding to work with the simulated values, so there is a trade-off between speed and accuracy.</p>
 
 </div>
@@ -356,9 +353,8 @@ phi_samps: An nsamps length list of k-length lists with samples of the latent fa
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="forecast_joint_marginal_lf_copula" class="doc_header"><code>forecast_joint_marginal_lf_copula</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor_fxns.py#L415" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_joint_marginal_lf_copula</code>(<strong><code>mod_list</code></strong>, <strong><code>k</code></strong>, <strong><code>X_list</code></strong>=<em><code>None</code></em>, <strong><code>phi_mu</code></strong>=<em><code>None</code></em>, <strong><code>phi_sigma</code></strong>=<em><code>None</code></em>, <strong><code>nsamps</code></strong>=<em><code>1</code></em>, <strong><code>y</code></strong>=<em><code>None</code></em>, <strong><code>t_dist</code></strong>=<em><code>False</code></em>, <strong><code>nu</code></strong>=<em><code>9</code></em>, <strong><code>return_cov</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="forecast_joint_marginal_lf_copula" class="doc_header"><code>forecast_joint_marginal_lf_copula</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor_fxns.py#L411" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_joint_marginal_lf_copula</code>(<strong><code>mod_list</code></strong>, <strong><code>k</code></strong>, <strong><code>X_list</code></strong>=<em><code>None</code></em>, <strong><code>phi_mu</code></strong>=<em><code>None</code></em>, <strong><code>phi_sigma</code></strong>=<em><code>None</code></em>, <strong><code>nsamps</code></strong>=<em><code>1</code></em>, <strong><code>y</code></strong>=<em><code>None</code></em>, <strong><code>t_dist</code></strong>=<em><code>False</code></em>, <strong><code>nu</code></strong>=<em><code>9</code></em>, <strong><code>return_cov</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
-<p>Forecast function for multiple models, marginally k-steps ahead</p>
 
 </div>
 
@@ -373,7 +369,7 @@ phi_samps: An nsamps length list of k-length lists with samples of the latent fa
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><a href="/pybats_nbdev/latent_factor_fxns.html#forecast_joint_marginal_lf_copula"><code>forecast_joint_marginal_lf_copula</code></a> is used to <em>recouple</em> a set of DGLMs which share the same latent factor. In other words, if the same latent factor is used in multiple models, then their forecasts will be correlated. This function allows for joint forecasting across these separated DGLMs.</p>
-<p>A classic example comes from retail sales. The latent factor may represent an effect at the total store level - say, customer traffic based on the day-of-week. A separate DGLM models the sales of each individual item. To jointly forecast the sales of many items, they can be passed into <a href="/pybats_nbdev/latent_factor_fxns.html#forecast_joint_marginal_lf_copula"><code>forecast_joint_marginal_lf_copula</code></a>, along with the latent factor mean and variance, which are called <code>phi_mu</code> and <code>phi_sigma.</code></p>
+<p>A classic example comes from retail sales. The latent factor may represent an effect at the total store level - say, customer traffic based on the day-of-week. A separate DGLM models the sales of each individual item. To jointly forecast the sales of many items, the models can all be passed into <a href="/pybats_nbdev/latent_factor_fxns.html#forecast_joint_marginal_lf_copula"><code>forecast_joint_marginal_lf_copula</code></a>, along with the latent factor mean and variance, to draw joint samples from the forecast distribution.</p>
 
 </div>
 </div>
@@ -402,20 +398,8 @@ phi_samps: An nsamps length list of k-length lists with samples of the latent fa
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="forecast_joint_marginal_lf_copula_dcmm" class="doc_header"><code>forecast_joint_marginal_lf_copula_dcmm</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor_fxns.py#L474" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_joint_marginal_lf_copula_dcmm</code>(<strong><code>dcmm_list</code></strong>, <strong><code>k</code></strong>, <strong><code>X_list</code></strong>=<em><code>None</code></em>, <strong><code>phi_mu</code></strong>=<em><code>None</code></em>, <strong><code>phi_sigma</code></strong>=<em><code>None</code></em>, <strong><code>nsamps</code></strong>=<em><code>1</code></em>, <strong><code>t_dist</code></strong>=<em><code>False</code></em>, <strong><code>nu</code></strong>=<em><code>9</code></em>, <strong><code>return_cov</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="forecast_joint_marginal_lf_copula_dcmm" class="doc_header"><code>forecast_joint_marginal_lf_copula_dcmm</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor_fxns.py#L467" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_joint_marginal_lf_copula_dcmm</code>(<strong><code>dcmm_list</code></strong>, <strong><code>k</code></strong>, <strong><code>X_list</code></strong>=<em><code>None</code></em>, <strong><code>phi_mu</code></strong>=<em><code>None</code></em>, <strong><code>phi_sigma</code></strong>=<em><code>None</code></em>, <strong><code>nsamps</code></strong>=<em><code>1</code></em>, <strong><code>t_dist</code></strong>=<em><code>False</code></em>, <strong><code>nu</code></strong>=<em><code>9</code></em>, <strong><code>return_cov</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
-<p>Forecast function for multiple DCMMs, marginally k-steps ahead
-:param mod_list: List of DCMMs
-:param k: forecast horizon
-:param X_list: List of X-values for each model. Assumes the Poisson and Bernoulli models have the same predictors.
-:param phi_mu: Latent factor mean. Assumes the Poisson and Bernoulli models have the same latent factors.
-:param phi_sigma: Latent factor covariance. Assumes the Poisson and Bernoulli models have the same latent factors.
-:param nsamps: number of samples
-:param y:
-:param t_dist:
-:param nu:
-:param return_cov:
-:return:</p>
 
 </div>
 
@@ -429,7 +413,7 @@ phi_samps: An nsamps length list of k-length lists with samples of the latent fa
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><a href="/pybats_nbdev/latent_factor_fxns.html#forecast_joint_marginal_lf_copula_dcmm"><code>forecast_joint_marginal_lf_copula_dcmm</code></a> behaves similarly to <a href="/pybats_nbdev/latent_factor_fxns.html#forecast_joint_marginal_lf_copula"><code>forecast_joint_marginal_lf_copula</code></a>, but for a set of related DCMMs, instead of related DGLMs.</p>
+<p><a href="/pybats_nbdev/latent_factor_fxns.html#forecast_joint_marginal_lf_copula_dcmm"><code>forecast_joint_marginal_lf_copula_dcmm</code></a> behaves similarly to <a href="/pybats_nbdev/latent_factor_fxns.html#forecast_joint_marginal_lf_copula"><code>forecast_joint_marginal_lf_copula</code></a>, but for a set of related DCMMs instead of related DGLMs.</p>
 
 </div>
 </div>
@@ -458,10 +442,8 @@ phi_samps: An nsamps length list of k-length lists with samples of the latent fa
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="forecast_marginal_lf_dcmm" class="doc_header"><code>forecast_marginal_lf_dcmm</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor_fxns.py#L558" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_marginal_lf_dcmm</code>(<strong><code>mod</code></strong>, <strong><code>k</code></strong>, <strong><code>X</code></strong>=<em><code>None</code></em>, <strong><code>phi_mu</code></strong>=<em><code>None</code></em>, <strong><code>phi_sigma</code></strong>=<em><code>None</code></em>, <strong><code>nsamps</code></strong>=<em><code>1</code></em>, <strong><code>t_dist</code></strong>=<em><code>False</code></em>, <strong><code>nu</code></strong>=<em><code>9</code></em>, <strong><code>return_cov</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="forecast_marginal_lf_dcmm" class="doc_header"><code>forecast_marginal_lf_dcmm</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor_fxns.py#L536" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_marginal_lf_dcmm</code>(<strong><code>mod</code></strong>, <strong><code>k</code></strong>, <strong><code>X</code></strong>=<em><code>None</code></em>, <strong><code>phi_mu</code></strong>=<em><code>None</code></em>, <strong><code>phi_sigma</code></strong>=<em><code>None</code></em>, <strong><code>nsamps</code></strong>=<em><code>1</code></em>, <strong><code>t_dist</code></strong>=<em><code>False</code></em>, <strong><code>nu</code></strong>=<em><code>9</code></em>, <strong><code>return_cov</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
-<p>Forecast function k steps ahead (marginal).
-Assumes that the Poisson and Bernoulli DGLMs share the same latent factor components</p>
 
 </div>
 
@@ -491,10 +473,8 @@ Assumes that the Poisson and Bernoulli DGLMs share the same latent factor compon
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="forecast_path_lf_dcmm" class="doc_header"><code>forecast_path_lf_dcmm</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor_fxns.py#L604" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_path_lf_dcmm</code>(<strong><code>mod</code></strong>, <strong><code>k</code></strong>, <strong><code>X</code></strong>=<em><code>None</code></em>, <strong><code>phi_mu</code></strong>=<em><code>None</code></em>, <strong><code>phi_sigma</code></strong>=<em><code>None</code></em>, <strong><code>phi_psi</code></strong>=<em><code>None</code></em>, <strong><code>nsamps</code></strong>=<em><code>1</code></em>, <strong><code>t_dist</code></strong>=<em><code>False</code></em>, <strong><code>nu</code></strong>=<em><code>9</code></em>, <strong><code>return_cov</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="forecast_path_lf_dcmm" class="doc_header"><code>forecast_path_lf_dcmm</code><a href="https://github.com/lavinei/pybats_nbdev/tree/master/pybats_nbdev/latent_factor_fxns.py#L579" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forecast_path_lf_dcmm</code>(<strong><code>mod</code></strong>, <strong><code>k</code></strong>, <strong><code>X</code></strong>=<em><code>None</code></em>, <strong><code>phi_mu</code></strong>=<em><code>None</code></em>, <strong><code>phi_sigma</code></strong>=<em><code>None</code></em>, <strong><code>phi_psi</code></strong>=<em><code>None</code></em>, <strong><code>nsamps</code></strong>=<em><code>1</code></em>, <strong><code>t_dist</code></strong>=<em><code>False</code></em>, <strong><code>nu</code></strong>=<em><code>9</code></em>, <strong><code>return_cov</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
-<p>Forecast the path over 1:k steps ahead.
-Assumes that the Poisson and Bernoulli DGLMs share the same latent factor components</p>
 
 </div>
 
@@ -506,6 +486,13 @@ Assumes that the Poisson and Bernoulli DGLMs share the same latent factor compon
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>These functions are for marginal and path forecasting with a latent factor DCMM. They may be accessed as methods from <a href="/pybats_nbdev/dcmm.html"><code>dcmm</code></a>.</p>
+
+</div>
+</div>
+</div>
 </div>
  
 

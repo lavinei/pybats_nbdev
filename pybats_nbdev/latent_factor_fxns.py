@@ -28,9 +28,11 @@ def update_F_lf(mod, phi, F=None):
 # Cell
 def update_lf_analytic(mod, y = None, X = None, phi_mu = None, phi_sigma = None):
     """
-    Test: $\phi_mu$ = latent factor mean.
+    DGLM update function with a latent factor.
 
-    Update function with a latent factor.
+    $\phi_{mu}$ = latent factor mean.
+
+    $\phi_{sigma}$ = latent factor variance.
     """
 
 
@@ -261,8 +263,12 @@ def forecast_path_lf_copula(mod, k, X = None, phi_mu = None, phi_sigma = None, p
 # Cell
 def update_lf_sample(mod, y = None, X = None, phi_samps = None, parallel=False):
     """
-    phi_samps: array of samples of the latent factor vector
+    DGLM update function with samples of a latent factor.
+
+    $\phi_{samps}$ = Array of simulated values of a latent factor.
     """
+
+
 
     # If data is missing then skip discounting and updating, posterior = prior
     if y is None or np.isnan(y):
@@ -327,9 +333,7 @@ def update_lf_sample_forwardfilt(mod, y, F, a, R, phi):
 
 # Cell
 def forecast_marginal_lf_sample(mod, k, X = None, phi_samps = None, mean_only = False):
-    """
-    Forecast function k steps ahead (marginal)
-    """
+
     # Plug in the correct F values
     F = update_F(mod, X, F=mod.F.copy())
 
@@ -340,9 +344,7 @@ def forecast_marginal_lf_sample(mod, k, X = None, phi_samps = None, mean_only = 
 
 # Internal Cell
 def lf_simulate_from_sample(mod, F, a, R, phi):
-    """
-    Simulate 'y' values using a single sample of the latent factor phi
-    """
+
     F = update_F_lf(mod, phi, F=F)
     # F[mod.ilf] = phi.reshape(-1,1)
     ft, qt = mod.get_mean_and_var(F, a, R)
@@ -353,12 +355,6 @@ def lf_simulate_from_sample(mod, F, a, R, phi):
 
 # Cell
 def forecast_path_lf_sample(mod, k, X=None, phi_samps = None):
-    """
-    Forecast function for the k-step path with samples of the latent factor phi
-    k: steps ahead to forecast
-    X: array with k rows for the future regression components
-    phi_samps: An nsamps length list of k-length lists with samples of the latent factor
-    """
 
     nsamps = len(phi_samps)
     samps = np.zeros([nsamps, k])
@@ -414,9 +410,6 @@ def forecast_path_lf_sample(mod, k, X=None, phi_samps = None):
 # Cell
 def forecast_joint_marginal_lf_copula(mod_list, k, X_list=None, phi_mu = None, phi_sigma = None,
                                       nsamps=1, y=None, t_dist=False, nu=9, return_cov=False):
-    """
-    Forecast function for multiple models, marginally k-steps ahead
-    """
 
     p = len(mod_list)
 
@@ -473,21 +466,6 @@ def forecast_joint_marginal_lf_copula(mod_list, k, X_list=None, phi_mu = None, p
 # Cell
 def forecast_joint_marginal_lf_copula_dcmm(dcmm_list, k, X_list=None, phi_mu = None, phi_sigma = None,
                                       nsamps=1, t_dist=False, nu=9, return_cov=False):
-    """
-    Forecast function for multiple DCMMs, marginally k-steps ahead
-    :param mod_list: List of DCMMs
-    :param k: forecast horizon
-    :param X_list: List of X-values for each model. Assumes the Poisson and Bernoulli models have the same predictors.
-    :param phi_mu: Latent factor mean. Assumes the Poisson and Bernoulli models have the same latent factors.
-    :param phi_sigma: Latent factor covariance. Assumes the Poisson and Bernoulli models have the same latent factors.
-    :param nsamps: number of samples
-    :param y:
-    :param t_dist:
-    :param nu:
-    :param return_cov:
-    :return:
-    """
-
 
     bern_list = [mod.bern_mod for mod in dcmm_list]
     pois_list = [mod.pois_mod for mod in dcmm_list]
@@ -556,10 +534,7 @@ def forecast_joint_marginal_lf_copula_dcmm(dcmm_list, k, X_list=None, phi_mu = N
 
 # Cell
 def forecast_marginal_lf_dcmm(mod, k, X=None, phi_mu=None, phi_sigma=None, nsamps=1, t_dist=False, nu=9, return_cov=False):
-    """
-    Forecast function k steps ahead (marginal).
-    Assumes that the Poisson and Bernoulli DGLMs share the same latent factor components
-    """
+
     mod_list = [mod.bern_mod, mod.pois_mod]
     lambda_mu = np.zeros(2)
     lambda_cov = np.zeros([2,2])
@@ -602,10 +577,6 @@ def forecast_marginal_lf_dcmm(mod, k, X=None, phi_mu=None, phi_sigma=None, nsamp
 
 # Cell
 def forecast_path_lf_dcmm(mod, k, X=None, phi_mu=None, phi_sigma=None, phi_psi=None, nsamps=1, t_dist=False, nu=9, return_cov=False):
-    """
-    Forecast the path over 1:k steps ahead.
-    Assumes that the Poisson and Bernoulli DGLMs share the same latent factor components
-    """
 
     lambda_mu = np.zeros(k*2)
     lambda_cov = np.zeros([k*2, k*2])
